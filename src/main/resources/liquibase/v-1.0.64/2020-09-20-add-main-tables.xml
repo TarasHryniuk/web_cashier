@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="t.hryniuk" id="1">
+
+        <createTable schemaName="public" tableName="categories">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(64)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable schemaName="public" tableName="products">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="price" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="weight" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_adding" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="categories_id" type="INT">
+                <constraints nullable="false" foreignKeyName="categories_id_fkey" references="categories(id)"/>
+            </column>
+        </createTable>
+
+        <createTable schemaName="public" tableName="terminals">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable schemaName="public" tableName="users">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="terminal_id" type="INT">
+                <constraints nullable="false" foreignKeyName="terminals_id_fkey" references="terminals(id)"/>
+            </column>
+            <column name="login" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="auth_code" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="full_name" type="VARCHAR(64)" />
+            <column name="role" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable schemaName="public" tableName="receipts">
+            <column name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="id_product" type="INT">
+                <constraints nullable="false" foreignKeyName="products_id_fkey" references="products(id)"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false" primaryKey="true" foreignKeyName="users_id_fkey" references="users(id)"/>
+            </column>
+            <column name="count" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="execute_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
+        <sql>
+            CREATE INDEX ON products ((lower(name)));
+            CREATE UNIQUE INDEX users_idx ON users (login);
+
+            CREATE SEQUENCE products_id_seq;
+            CREATE SEQUENCE receipts_id_seq;
+            CREATE SEQUENCE categories_id_seq;
+
+            ALTER TABLE products ALTER COLUMN id SET DEFAULT NEXTVAL('products_id_seq');
+            ALTER TABLE receipts ALTER COLUMN id SET DEFAULT NEXTVAL('receipts_id_seq');
+            ALTER TABLE categories ALTER COLUMN id SET DEFAULT NEXTVAL('categories_id_seq');
+        </sql>
+
+    </changeSet>
+
+</databaseChangeLog>

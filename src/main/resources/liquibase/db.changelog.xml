@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+    <changeSet author="micha_kops" id="2014-07-29_1440-create-book-table"
+               context="development">
+        <createTable tableName="book">
+            <column name="id" type="CHAR(36)">
+                <constraints nullable="false" />
+            </column>
+            <column name="title" type="VARCHAR(255)" />
+            <column name="published" type="DATETIME" />
+        </createTable>
+    </changeSet>
+    <changeSet author="micha_kops" id="2014-07-29_1450-add-a-book"
+               context="development">
+        <insert tableName="book">
+            <column name="id" value="3B79F749-5B96-46CD-AAF8-4E75D663E6D4"/>
+            <column name="title" value="Some Book"/>
+            <column name="published" value="2014-01-11 12:00:01"/>
+        </insert>
+    </changeSet>
+    <changeSet author="micha_kops" id="2014-07-29_1455-add-another-book"
+               context="development">
+        <insert tableName="book">
+            <column name="id" value="6FE7A1E5-B172-4D7C-97C7-88667862B264"/>
+            <column name="title" value="Another book"/>
+            <column name="published" value="2014-01-11 12:20:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
