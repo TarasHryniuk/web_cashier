@@ -2,7 +2,7 @@
 <%@ page session="true"%>
 <html>
 <head>
-<title>Login: Spring Security Web Application</title>
+<title>Access denied!</title>
 </head>
 <body>
 	Access denied!

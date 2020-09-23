@@ -11,7 +11,7 @@ public class User {
     private boolean active;
     private String login;
     private String authCode;
-    private Integer roles;
+    private Long roles;
     private Integer terminalId;
     private String fullName;
 
@@ -50,11 +50,20 @@ public class User {
         this.authCode = authCode;
     }
 
-    public Integer getRoles() {
+//    public Integer getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(Integer roles) {
+//        this.roles = roles;
+//    }
+
+
+    public Long getRoles() {
         return roles;
     }
 
-    public void setRoles(Integer roles) {
+    public void setRoles(Long roles) {
         this.roles = roles;
     }
 
@@ -122,12 +131,12 @@ public class User {
 
     public static void main(String[] args) {
         User uo = new User();
-        uo.setRoles(1);
-//        System.out.println(uo.hasRole(Role.PAYMENTS));
+        uo.setRoles(666L);
+        System.out.println(uo.hasRole(Role.HIGH_CASHIER));
         uo.addRole(Role.CASHIER);
 //        uo.addRole(Role.CHART_ACCOUNT);
-        System.out.println(uo.hasRole(Role.CASHIER));
-        uo.removeRole(Role.CASHIER);
-        System.out.println(uo.hasRole(Role.CASHIER));
+        System.out.println(uo.hasRole(Role.HIGH_CASHIER));
+//        uo.removeRole(Role.CASHIER);
+//        System.out.println(uo.hasRole(Role.CASHIER));
     }
 }

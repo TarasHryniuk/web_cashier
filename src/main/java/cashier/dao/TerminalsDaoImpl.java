@@ -30,7 +30,7 @@ public class TerminalsDaoImpl extends GenericDao {
             ps.setString(3, user.getLogin());
             ps.setString(4, user.getAuthCode());
             ps.setString(4, user.getFullName());
-            ps.setInt(5, user.getRoles());
+            ps.setLong(5, user.getRoles());
 
             if (ps.executeUpdate() != 1)
                 return false;
@@ -71,7 +71,7 @@ public class TerminalsDaoImpl extends GenericDao {
                 user.setLogin(rs.getString("login"));
                 user.setAuthCode(rs.getString("auth_code"));
                 user.setFullName(rs.getString("full_name"));
-                user.setRoles(rs.getInt("role"));
+                user.setRoles(rs.getLong("role"));
             }
         } catch (SQLException e) {
             LOGGER.error(e);

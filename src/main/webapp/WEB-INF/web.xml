@@ -7,7 +7,6 @@
                              http://java.sun.com/xml/ns/j2ee
                              http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          id="WebApp_9" version="2.4">
-    <display-name>Servlet Hello World</display-name>
 
     <resource-ref>
         <description>Connection Pool</description>
@@ -15,6 +14,16 @@
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
+
+    <filter>
+        <filter-name>SessionLocaleFilter</filter-name>
+        <filter-class>cashier.servlet.SessionLocaleFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>SessionLocaleFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
 
     <servlet>
         <servlet-name>auth</servlet-name>
