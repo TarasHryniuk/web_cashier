@@ -20,23 +20,10 @@
 	</appender>
 
 	<!-- Application Loggers -->
-	<logger name="org.springframework.web.servlet.DispatcherServlet">
-		<level value="INFO"/>
+	<logger name="cashier">
+		<level value="trace" />
 	</logger>
 
-	<!-- Application Loggers -->
-	<logger name="elpaysys.management">
-		<level value="all" />
-	</logger>
-
-    <logger name="elpaysys.management.service.impl.payments.PaymentsServiceImpl">
-        <level value="ALL"/>
-    </logger>
-
-	<logger name="elpaysys.management.web.reports">
-		<level value="ALL"/>
-	</logger>
-	
 	<!-- Root Logger -->
 	<root>
 		<priority value="info"/>

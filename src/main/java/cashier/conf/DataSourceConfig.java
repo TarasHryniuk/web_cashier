@@ -29,6 +29,7 @@ public class DataSourceConfig {
     private static DataSourceConfig dataSourceConfig;
     private static DataSource dataSource;
 
+    private boolean firstStart = true;
 
     private DataSourceConfig() {
         try {
@@ -38,7 +39,9 @@ public class DataSourceConfig {
             LOGGER.error(e);
         }
 
-        liquibase();
+        if(firstStart)
+            liquibase();
+        firstStart = false;
     }
 
     private void liquibase() {

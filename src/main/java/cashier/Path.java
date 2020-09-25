@@ -8,11 +8,11 @@ package cashier;
 public final class Path {
 	
 	// pages
-	public static final String PAGE__LOGIN = "/login.jsp";
-	public static final String PAGE__ERROR_PAGE = "/WEB-INF/jsp/error_page.jsp";
-	public static final String PAGE__LIST_MENU = "/WEB-INF/jsp/client/list_menu.jsp";
-	public static final String PAGE__LIST_ORDERS = "/WEB-INF/jsp/admin/list_orders.jsp";
-	public static final String PAGE__SETTINGS = "/WEB-INF/jsp/settings.jsp";
+	public static final String PAGE_LOGIN = "/login.jsp";
+	public static final String PAGE_ERROR_PAGE = "/error_page.jsp";
+	public static final String PAGE_MANAGER_MENU = "/manager_menu.jsp";
+	public static final String PAGE_CASHIER_MENU = "/cashier_menu.jsp";
+	public static final String PAGE_HEIGHT_CASHIER_MENU = "/height_cashier_menu.jsp";
 
 	// commands
 	public static final String COMMAND__LIST_ORDERS = "/controller?command=listOrders";

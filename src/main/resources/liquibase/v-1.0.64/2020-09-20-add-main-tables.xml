@@ -60,19 +60,18 @@
             <column name="active" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="terminal_id" type="INT">
-                <constraints nullable="false" foreignKeyName="terminals_id_fkey" references="terminals(id)"/>
-            </column>
+            <column name="terminal_id" type="INT"></column>
             <column name="login" type="VARCHAR(32)">
                 <constraints nullable="false"/>
             </column>
             <column name="auth_code" type="VARCHAR(60)">
                 <constraints nullable="false"/>
             </column>
-            <column name="full_name" type="VARCHAR(64)" />
+            <column name="full_name" type="VARCHAR(64)"/>
             <column name="role" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="locale" type="VARCHAR(15)"></column>
         </createTable>
 
         <createTable schemaName="public" tableName="receipts">
@@ -92,7 +91,8 @@
                 <constraints nullable="false"/>
             </column>
             <column name="canceled_user_id" type="INT">
-                <constraints nullable="false" primaryKey="true" foreignKeyName="canceled_users_id_fkey" references="users(id)"/>
+                <constraints nullable="false" primaryKey="true" foreignKeyName="canceled_users_id_fkey"
+                             references="users(id)"/>
             </column>
             <column name="status" type="SMALLINT">
                 <constraints nullable="false"/>

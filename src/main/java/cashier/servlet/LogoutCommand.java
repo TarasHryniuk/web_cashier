@@ -30,7 +30,7 @@ public class LogoutCommand extends Command {
 			session.invalidate();
 
 		log.debug("Command finished");
-		return Path.PAGE__LOGIN;
+		return Path.PAGE_LOGIN;
 	}
 
 }

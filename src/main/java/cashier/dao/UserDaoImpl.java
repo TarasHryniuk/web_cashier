@@ -18,8 +18,9 @@ public class UserDaoImpl extends GenericDao {
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     private static final String SQL_INSERT_USER = "INSERT INTO users VALUES (DEFAULT ,? ,? ,?, ?, ?, ?)";
-    private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM user WHERE login=?";
-    private static final String SQL_BLOCK_USER_BY_LOGIN = "UPDATE user SET active=? WHERE id=?";
+    private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
+    private static final String SQL_BLOCK_USER_BY_LOGIN = "UPDATE users SET active=? WHERE id=?";
+    private static final String SQL_CHANGE_USER_LOCALE = "UPDATE users SET locale=? WHERE id=?";
 
     public boolean insertUser(User user) {
         ResultSet rs = null;
@@ -73,6 +74,7 @@ public class UserDaoImpl extends GenericDao {
                 user.setAuthCode(rs.getString("auth_code"));
                 user.setFullName(rs.getString("full_name"));
                 user.setRole(rs.getInt("role"));
+                user.setLocaleName(rs.getString("locale"));
             }
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -81,6 +83,25 @@ public class UserDaoImpl extends GenericDao {
             LOCK.unlock();
         }
         return user;
+    }
+
+    public boolean changeUserLocale(User user) {
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_BLOCK_USER_BY_LOGIN)) {
+
+            ps.setString(1, user.getLocaleName());
+            ps.setString(2, user.getLogin());
+            if (ps.executeUpdate() != 1) {
+                return false;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Can't update user:" + e.getMessage());
+            return false;
+        } finally {
+            LOCK.unlock();
+        }
+        return true;
     }
 
     public boolean blockUserByLogin(User user) {

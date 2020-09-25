@@ -14,6 +14,7 @@ public class User {
     private Integer role;
     private Integer terminalId;
     private String fullName;
+    private String localeName;
 
     public User() {
     }
@@ -58,7 +59,6 @@ public class User {
 //        this.roles = roles;
 //    }
 
-
     public Integer getRole() {
         return role;
     }
@@ -84,6 +84,14 @@ public class User {
         this.login = login;
     }
 
+    public String getLocaleName() {
+        return localeName;
+    }
+
+    public void setLocaleName(String localeName) {
+        this.localeName = localeName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,7 +103,8 @@ public class User {
                 Objects.equals(authCode, user.authCode) &&
                 Objects.equals(role, user.role) &&
                 Objects.equals(terminalId, user.terminalId) &&
-                Objects.equals(fullName, user.fullName);
+                Objects.equals(fullName, user.fullName) &&
+                Objects.equals(localeName, user.localeName);
     }
 
     @Override
@@ -113,6 +122,7 @@ public class User {
                 .append(", role=").append(role)
                 .append(", terminalId=").append(terminalId)
                 .append(", fullName=").append(fullName)
+                .append(", localeName=").append(localeName)
                 .append("}");
         return stringBuilder.toString();
     }

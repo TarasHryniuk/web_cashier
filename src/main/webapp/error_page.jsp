@@ -7,19 +7,13 @@
 
 <c:set var="title" value="Error" scope="page" />
 <%@ include file="/parts/header.jspf" %>
-	
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>
+<link rel="shortcut icon" href="resources/img/xrp_small.png">
 <body>
-
 	<table id="main-container">
-
-		<%-- HEADER --%>
 		<%@ include file="parts/header.jspf"%>
-		<%-- HEADER --%>
-
 		<tr >
 			<td class="content">
-			<%-- CONTENT --%>
-				
 				<h2 class="error">
 					The following error occurred
 				</h2>
@@ -56,9 +50,7 @@
 			<%-- CONTENT --%>
 			</td>
 		</tr>
-
-		<%@ include file="parts/footer.jspf"%>
-		
 	</table>
+	<%@ include file="parts/footer.jspf"%>
 </body>
 </html>

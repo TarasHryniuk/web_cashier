@@ -1,3 +1,13 @@
-<tr>
-    <td id="footer" class="colLeft">&copy; Copyright 2020 final.project</td>
-</tr>
+<footer class="page-footer font-small special-color-dark pt-4">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+    <!-- Footer Elements -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">&copy; Copyright 2020 final.project
+    </div>
+    <!-- Copyright -->
+
+</footer>
