@@ -2,9 +2,8 @@ package cashier;
 
 /**
  * Path holder (jsp pages, controller commands).
- * 
- * @author D.Kolesnikov
- * 
+ * @author Taras Hryniuk, created on  21.09.2020
+ * email : hryniuk.t@gmail.com
  */
 public final class Path {
 	

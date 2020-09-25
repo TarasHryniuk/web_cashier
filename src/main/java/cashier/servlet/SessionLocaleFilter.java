@@ -8,7 +8,6 @@ import javax.servlet.http.*;
  * @author Taras Hryniuk, created on  22.09.2020
  * email : hryniuk.t@gmail.com
  */
-
 public class SessionLocaleFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

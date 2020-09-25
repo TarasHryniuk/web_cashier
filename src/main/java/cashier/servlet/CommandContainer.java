@@ -7,9 +7,8 @@ import java.util.TreeMap;
 
 /**
  * Holder for all commands.<br/>
- * 
- * @author D.Kolesnikov
- * 
+ * @author Taras Hryniuk, created on  21.09.2020
+ * email : hryniuk.t@gmail.com
  */
 public class CommandContainer {
 	

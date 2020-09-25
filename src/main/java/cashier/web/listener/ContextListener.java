@@ -12,9 +12,8 @@ import java.util.StringTokenizer;
 
 /**
  * Context listener.
- * 
- * @author D.Kolesnikov
- * 
+ * @author Taras Hryniuk, created on  21.09.2020
+ * email : hryniuk.t@gmail.com
  */
 public class ContextListener implements ServletContextListener {
 
