@@ -12,10 +12,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Taras Hryniuk, created on  21.09.2020
  * email : hryniuk.t@gmail.com
  */
-public class UserDaoHib extends GenericDao {
+public class UserDaoImpl extends GenericDao {
 
     private static final Lock LOCK = new ReentrantLock();
-    private static final Logger LOGGER = Logger.getLogger(UserDaoHib.class);
+    private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
     private static final String SQL_INSERT_USER = "INSERT INTO users VALUES (DEFAULT ,? ,? ,?, ?, ?, ?)";
     private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM user WHERE login=?";
@@ -31,7 +31,7 @@ public class UserDaoHib extends GenericDao {
             ps.setString(3, user.getLogin());
             ps.setString(4, user.getAuthCode());
             ps.setString(4, user.getFullName());
-            ps.setLong(5, user.getRoles());
+            ps.setInt(5, user.getRole());
 
             if (ps.executeUpdate() != 1)
                 return false;
@@ -72,7 +72,7 @@ public class UserDaoHib extends GenericDao {
                 user.setLogin(rs.getString("login"));
                 user.setAuthCode(rs.getString("auth_code"));
                 user.setFullName(rs.getString("full_name"));
-                user.setRoles(rs.getLong("role"));
+                user.setRole(rs.getInt("role"));
             }
         } catch (SQLException e) {
             LOGGER.error(e);

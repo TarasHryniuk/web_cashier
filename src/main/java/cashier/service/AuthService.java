@@ -5,4 +5,10 @@ package cashier.service;
  * email : hryniuk.t@gmail.com
  */
 public class AuthService {
+
+    public Integer doAuth(String authData){
+
+        return 0;
+    }
+
 }

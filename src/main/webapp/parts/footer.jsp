@@ -1,1 +1,0 @@
-<footer>&copy; Copyright 2020 final.project</footer>

@@ -54,7 +54,7 @@ public class DataSourceConfig {
         }
     }
 
-    public static DataSourceConfig getInstance() {
+    public static synchronized DataSourceConfig getInstance() {
         if (dataSourceConfig == null) {
             dataSourceConfig = new DataSourceConfig();
         }
