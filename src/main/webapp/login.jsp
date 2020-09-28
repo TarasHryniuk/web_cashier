@@ -1,6 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="/WEB-INF/views/parts/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}"/>
@@ -48,19 +46,20 @@
 <body>
 <div class="container">
         <form id="login_form" action="controller" method="post" class="well">
-<%--            <div style="display: inline-flex;">--%>
-<%--                <h2 style="color: #DEA230;margin-right: 124px;margin-bottom: 6px;"><fmt:message key="label"/></h2>--%>
-<%--                <div class="btn-group pull-right">--%>
-<%--                    <a data-toggle="dropdown" class="btn btn-default dropdown-toggle">--%>
-<%--                        <span><c:out value="${pageContext.response.locale}"/></span>--%>
-<%--                        <span class="caret"></span>--%>
-<%--                    </a>--%>
-<%--                    <ul class="dropdown-menu">--%>
-<%--                        <li><a><fmt:message key="lang.en"/></a></li>--%>
-<%--                        <li><a><fmt:message key="lang.ru"/></a></li>--%>
-<%--                        <li><a><fmt:message key="lang.ua"/></a></li>--%>
-<%--                    </ul>--%>
-<%--                </div>--%>
+            <div style="display: inline-flex;">
+                <h2 style="color: #DEA230;margin-right: 124px;margin-bottom: 6px;"><fmt:message key="label"/></h2>
+                <div class="btn-group pull-right">
+                    <a data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                        <span><c:out value="${pageContext.response.locale}"/></span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="?lang=en"><fmt:message key="lang.en"/></a></li>
+                        <li><a href="?lang=ru"><fmt:message key="lang.ru"/></a></li>
+                        <li><a href="?lang=ua"><fmt:message key="lang.ua"/></a></li>
+                    </ul>
+                </div>
+            </div>
 
             <input type="hidden" name="command" value="login"/>
             <input name="login" type="login" required="required" placeholder=<fmt:message key="login"/> class="form-control"/>
