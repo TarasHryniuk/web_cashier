@@ -58,7 +58,7 @@
     =============================================================-->
     <servlet>
         <servlet-name>Controller</servlet-name>
-        <servlet-class>cashier.Controller</servlet-class>
+        <servlet-class>cashier.servlet.Controller</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -97,7 +97,7 @@
     <!--
         <filter>
             <filter-name>CommandAccessFilter</filter-name>
-            <filter-class>ua.kharkov.knure.dkolesnikov.st4example.web.filter.CommandAccessFilter</filter-class>
+            <filter-class>.CommandAccessFilter</filter-class>
             <init-param>
                 <param-name>admin</param-name>
                 <param-value>listOrders</param-value>

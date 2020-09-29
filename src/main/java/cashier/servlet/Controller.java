@@ -1,7 +1,5 @@
-package cashier;
+package cashier.servlet;
 
-import cashier.servlet.Command;
-import cashier.servlet.CommandContainer;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;

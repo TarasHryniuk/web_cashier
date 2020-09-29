@@ -15,14 +15,12 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 
 /**
- * Login command.
- *
- * @author Taras Hryniuk, created on  21.09.2020
+ * @author Taras Hryniuk, created on  29.09.2020
  * email : hryniuk.t@gmail.com
  */
-public class LoginCommand extends Command {
+public class PaymentsCommand extends Command {
 
-    private static final Logger LOGGER = Logger.getLogger(LoginCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(PaymentsCommand.class);
 
     @Override
     public String execute(HttpServletRequest request,
@@ -79,24 +77,15 @@ public class LoginCommand extends Command {
         LOGGER.trace("userRole --> " + userRole);
 
         String terminalId = request.getParameter("terminal.id");
-        if (userRole == Role.CASHIER && null == terminalId){
+        if (userRole == Role.CASHIER && null == terminalId) {
             errorMessage = "Cashier must have terminal id";
             request.setAttribute("errorMessage", errorMessage);
             LOGGER.error("errorMessage --> " + errorMessage);
             return forward;
         }
 
-        if (userRole == Role.CASHIER)
-            forward = Path.PAGE_MENU;
 
-        if (userRole == Role.HIGH_CASHIER)
-            forward = Path.PAGE_MENU;
-
-        if (userRole == Role.MANAGER)
-            forward = Path.PAGE_MENU;
-
-        String language = request.getParameter("language");
-        session.setAttribute("language", language);
+        forward = Path.PAGE_MENU;
 
         session.setAttribute("user", user);
         LOGGER.trace("Set the session attribute: user --> " + user);
@@ -109,5 +98,4 @@ public class LoginCommand extends Command {
         LOGGER.debug("Command finished");
         return forward;
     }
-
 }

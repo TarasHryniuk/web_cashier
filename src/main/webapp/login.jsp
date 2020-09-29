@@ -48,16 +48,12 @@
         <form id="login_form" action="controller" method="post" class="well">
             <div style="display: inline-flex;">
                 <h2 style="color: #DEA230;margin-right: 124px;margin-bottom: 6px;"><fmt:message key="label"/></h2>
-                <div class="btn-group pull-right">
-                    <a data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                        <span><c:out value="${pageContext.response.locale}"/></span>
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="?lang=en"><fmt:message key="lang.en"/></a></li>
-                        <li><a href="?lang=ru"><fmt:message key="lang.ru"/></a></li>
-                        <li><a href="?lang=ua"><fmt:message key="lang.ua"/></a></li>
-                    </ul>
+                <div class="btn-group pull-left">
+                    <select name="language">
+                        <option value="en"><fmt:message key="lang.en"/></option>
+                        <option value="ru"><fmt:message key="lang.ru"/></option>
+                        <option value="ua"><fmt:message key="lang.ua"/></option>
+                    </select>
                 </div>
             </div>
 

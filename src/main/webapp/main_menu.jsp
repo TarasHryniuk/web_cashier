@@ -1,3 +1,6 @@
+<%@ include file="/WEB-INF/views/parts/include.jsp" %>
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="messages"/>
 <%--
   Created by IntelliJ IDEA.
   User: tarashryniuk
@@ -10,7 +13,22 @@
 <link rel="shortcut icon" href="resources/img/xrp_small.png">
 <html>
 <head>
-    <title>Title</title>
+    <title><fmt:message key="main.menu"/></title>
+
+    <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
+
+<%--        <form id="logout_form" action="controller" method="post" class="well">--%>
+
+<%--            <p>Введите длину в сантиметрах:--%>
+<%--            </p>--%>
+<%--            <input type="hidden" name="command" value="logout"/>--%>
+<%--            <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="login.submit"/>"/>--%>
+<%--        </form>--%>
+
+
+    <%@ include file="/WEB-INF/views/pages/payments.jsp" %>
+    <%@ include file="/WEB-INF/views/pages/documents.jsp" %>
+
     <%@ include file="parts/header.jspf" %>
 </head>
 <body>

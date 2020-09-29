@@ -20,7 +20,8 @@ public class CommandContainer {
 		// common commands
 		commands.put("login", new LoginCommand());
 		commands.put("logout", new LogoutCommand());
-//		commands.put("noCommand", new NoCommand());
+		commands.put("payments", new PaymentsCommand());
+		commands.put("users", new UsersCommand());
 //		commands.put("viewSettings", new ViewSettingsCommand());
 //		commands.put("updateSettings", new UpdateSettingsCommand());
 //

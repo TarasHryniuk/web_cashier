@@ -71,7 +71,6 @@
             <column name="role" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="locale" type="VARCHAR(15)"></column>
         </createTable>
 
         <createTable schemaName="public" tableName="receipts">
