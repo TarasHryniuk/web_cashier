@@ -16,25 +16,7 @@
 <head>
     <title><fmt:message key="main.menu"/></title>
 
-    <%
-        out.print("<br>name: " + session.getAttribute("user"));
-        User user = (User) session.getAttribute("user");
-        if(user.getRole() == 2) request.setAttribute("isManager", true);
-        if(user.getRole() == 1) request.setAttribute("isHeightCashier", true);
-        if(user.getRole() == 0) request.setAttribute("isCashier", true);
-        out.print(request.getAttribute("isManager"));
-        out.print(request.getAttribute("isHeightCashier"));
-        out.print(request.getAttribute("isCashier"));
-    %>
-
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
-<%--        <form id="logout_form" action="controller" method="post" class="well">--%>
-
-<%--            <p>Введите длину в сантиметрах:--%>
-<%--            </p>--%>
-<%--            <input type="hidden" name="command" value="logout"/>--%>
-<%--            <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="login.submit"/>"/>--%>
-<%--        </form>--%>
 
 
     <%@ include file="/payments.jsp" %>

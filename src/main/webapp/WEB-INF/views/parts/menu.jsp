@@ -24,7 +24,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-left">
                 <form id="users" action="controller" method="post">
-                    <input type="hidden" name="command" value="users"/>
+                    <input type="hidden" name="command" value="all_users"/>
                     <input type="submit" value="<fmt:message key="users"/>"/>
                 </form>
             </ul>

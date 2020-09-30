@@ -18,9 +18,9 @@ import java.sql.SQLException;
  * @author Taras Hryniuk, created on  30.09.2020
  * email : hryniuk.t@gmail.com
  */
-public class CreateUserCommand extends Command {
+public class RefactorUserCommand extends Command {
 
-    private static final Logger LOGGER = Logger.getLogger(CreateUserCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(RefactorUserCommand.class);
 
     @Override
     public String execute(HttpServletRequest request,

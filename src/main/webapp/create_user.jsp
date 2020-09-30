@@ -16,44 +16,16 @@
 <head>
 
     <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>
+    <link rel="shortcut icon" href="resources/img/xrp_small.png">
 
     <title><fmt:message key="create.user"/></title>
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
     <%@ include file="/WEB-INF/views/parts/user_menu.jsp" %>
 
-    <style type="text/css" media="screen">
-        .container {
-            padding: 150px 0 0;
-            width: 380px;
-        }
-
-        .form-control {
-            font-size: 16px;
-            height: 44px;
-            border-radius: 0;
-            margin-bottom: 10px;
-            padding: 6px 12px;
-        }
-
-        .btn {
-            padding: 6px 12px;
-        }
-
-        .well {
-            padding: 40px;
-            border: none;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding-top: 10px;
-            }
-        }
-    </style>
 </head>
 <body>
-<div class="container">
-    <form id="create_user" action="controller" method="post" class="well">
+<div class="col-xs-12 col-sm-6">
+    <form id="create_user" action="controller" method="post" class="tab-content">
         <input type="hidden" name="command" value="create_user"/>
         <input name="login" type="login" required="required" placeholder=<fmt:message key="login"/> class="form-control"/>
         <input name="password" type="password" required="required" placeholder=<fmt:message key="password"/> class="form-control"/>

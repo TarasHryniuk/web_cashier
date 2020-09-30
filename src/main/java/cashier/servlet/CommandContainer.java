@@ -23,6 +23,8 @@ public class CommandContainer {
 		commands.put("payments", new PaymentsCommand());
 		commands.put("users", new UsersCommand());
 		commands.put("create_user", new CreateUserCommand());
+		commands.put("all_users", new GetAllUsersCommand());
+		commands.put("refactor_user", new RefactorUserCommand());
 //		commands.put("viewSettings", new ViewSettingsCommand());
 //		commands.put("updateSettings", new UpdateSettingsCommand());
 //
@@ -48,7 +50,7 @@ public class CommandContainer {
 			log.trace("Command not found, name --> " + commandName);
 			return commands.get("noCommand"); 
 		}
-		
+
 		return commands.get(commandName);
 	}
 	

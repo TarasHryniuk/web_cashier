@@ -14,6 +14,7 @@ public class User {
     private Integer role;
     private Integer terminalId;
     private String fullName;
+    private String roleName;
 
     public User() {
     }
@@ -81,6 +82,14 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class UsersCommand extends Command {
         }
 
         if (userRole == Role.MANAGER)
-            forward = Path.PAGE_USER;
+            forward = Path.PAGE_ALL_USERS;
 
         LOGGER.debug("Command finished");
         return forward;
