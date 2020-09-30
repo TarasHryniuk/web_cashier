@@ -12,12 +12,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * @author Taras Hryniuk, created on  29.09.2020
+ * @author Taras Hryniuk, created on  30.09.2020
  * email : hryniuk.t@gmail.com
  */
-public class UsersCommand extends Command {
-
-    private static final Logger LOGGER = Logger.getLogger(UsersCommand.class);
+public class GetAllUsersCommand extends Command {
+    private static final Logger LOGGER = Logger.getLogger(GetAllUsersCommand.class);
 
     @Override
     public String execute(HttpServletRequest request,
@@ -40,8 +39,11 @@ public class UsersCommand extends Command {
             return forward;
         }
 
-        if (userRole == Role.MANAGER)
-            forward = Path.PAGE_USER;
+//        if (userRole == Role.MANAGER)
+//            forward = Path.PAGE_USER;
+
+
+
 
         LOGGER.debug("Command finished");
         return forward;

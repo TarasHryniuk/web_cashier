@@ -22,6 +22,7 @@ public class CommandContainer {
 		commands.put("logout", new LogoutCommand());
 		commands.put("payments", new PaymentsCommand());
 		commands.put("users", new UsersCommand());
+		commands.put("create_user", new CreateUserCommand());
 //		commands.put("viewSettings", new ViewSettingsCommand());
 //		commands.put("updateSettings", new UpdateSettingsCommand());
 //

@@ -1,3 +1,4 @@
+<%@ page import="cashier.dao.entity.User" %>
 <%@ include file="/WEB-INF/views/parts/include.jsp" %>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="messages"/>
@@ -15,8 +16,18 @@
 <head>
     <title><fmt:message key="main.menu"/></title>
 
-    <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
+    <%
+        out.print("<br>name: " + session.getAttribute("user"));
+        User user = (User) session.getAttribute("user");
+        if(user.getRole() == 2) request.setAttribute("isManager", true);
+        if(user.getRole() == 1) request.setAttribute("isHeightCashier", true);
+        if(user.getRole() == 0) request.setAttribute("isCashier", true);
+        out.print(request.getAttribute("isManager"));
+        out.print(request.getAttribute("isHeightCashier"));
+        out.print(request.getAttribute("isCashier"));
+    %>
 
+    <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
 <%--        <form id="logout_form" action="controller" method="post" class="well">--%>
 
 <%--            <p>Введите длину в сантиметрах:--%>
@@ -26,8 +37,8 @@
 <%--        </form>--%>
 
 
-    <%@ include file="/WEB-INF/views/pages/payments.jsp" %>
-    <%@ include file="/WEB-INF/views/pages/documents.jsp" %>
+    <%@ include file="/payments.jsp" %>
+    <%@ include file="/documents.jsp" %>
 
     <%@ include file="parts/header.jspf" %>
 </head>

@@ -46,7 +46,6 @@ public class ProductsDaoImpl extends GenericDao {
                 int idField = rs.getInt(1);
                 products.setId(idField);
             }
-            connection.commit();
         } catch (Exception e) {
             LOGGER.error(e);
             return false;

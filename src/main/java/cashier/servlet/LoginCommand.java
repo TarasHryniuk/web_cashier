@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 
 /**
@@ -34,6 +33,7 @@ public class LoginCommand extends Command {
 
         // obtain login and password from the request
         String login = request.getParameter("login");
+
         LOGGER.trace("Request parameter: loging --> " + login);
 
         String password = request.getParameter("password");
@@ -79,7 +79,7 @@ public class LoginCommand extends Command {
         LOGGER.trace("userRole --> " + userRole);
 
         String terminalId = request.getParameter("terminal.id");
-        if (userRole == Role.CASHIER && null == terminalId){
+        if (userRole == Role.CASHIER && null == terminalId) {
             errorMessage = "Cashier must have terminal id";
             request.setAttribute("errorMessage", errorMessage);
             LOGGER.error("errorMessage --> " + errorMessage);

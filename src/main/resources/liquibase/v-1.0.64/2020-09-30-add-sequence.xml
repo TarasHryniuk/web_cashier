@@ -6,6 +6,14 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="2020-09-30-add-sequence.xml" relativeToChangelogFile="true"/>
-    <include file="2020-09-20-add-main-tables.xml" relativeToChangelogFile="true"/>
+    <changeSet author="t.hryniuk" id="2">
+
+        <sql>
+            CREATE SEQUENCE user_id_seq;
+
+            ALTER TABLE users ALTER COLUMN id SET DEFAULT NEXTVAL('user_id_seq');
+        </sql>
+
+    </changeSet>
+
 </databaseChangeLog>

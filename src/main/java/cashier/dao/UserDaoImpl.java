@@ -5,6 +5,8 @@ import cashier.dao.entity.User;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -19,6 +21,7 @@ public class UserDaoImpl extends GenericDao {
 
     private static final String SQL_INSERT_USER = "INSERT INTO users VALUES (DEFAULT ,? ,? ,?, ?, ?, ?)";
     private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
+    private static final String SQL_FIND_ALL_USERS = "SELECT * FROM users LIMIT 20 OFFSET ?";
     private static final String SQL_BLOCK_USER_BY_LOGIN = "UPDATE users SET active=? WHERE id=?";
 
     public boolean insertUser(User user) {
@@ -26,12 +29,12 @@ public class UserDaoImpl extends GenericDao {
         LOCK.lock();
         try (Connection connection = DataSourceConfig.getInstance().getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setBoolean(1, user.isActive());
+            ps.setBoolean(1, true);
             ps.setInt(2, user.getTerminalId());
             ps.setString(3, user.getLogin());
             ps.setString(4, user.getAuthCode());
-            ps.setString(4, user.getFullName());
-            ps.setInt(5, user.getRole());
+            ps.setString(5, user.getFullName());
+            ps.setInt(6, user.getRole());
 
             if (ps.executeUpdate() != 1)
                 return false;
@@ -40,7 +43,6 @@ public class UserDaoImpl extends GenericDao {
                 int idField = rs.getInt(1);
                 user.setId(idField);
             }
-            connection.commit();
         } catch (Exception e) {
             LOGGER.error(e);
             return false;
@@ -81,6 +83,34 @@ public class UserDaoImpl extends GenericDao {
             LOCK.unlock();
         }
         return user;
+    }
+
+    public List<User> getAllUsers(Integer offset) {
+        ResultSet rs = null;
+        List<User> users = new LinkedList<>();
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL_USERS)) {
+            ps.setInt(1, offset);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setActive(rs.getBoolean("active"));
+                user.setTerminalId(rs.getInt("terminal_id"));
+                user.setLogin(rs.getString("login"));
+                user.setAuthCode(rs.getString("auth_code"));
+                user.setFullName(rs.getString("full_name"));
+                user.setRole(rs.getInt("role"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        } finally {
+            close(rs);
+            LOCK.unlock();
+        }
+        return users;
     }
 
     public boolean blockUserByLogin(User user) {
