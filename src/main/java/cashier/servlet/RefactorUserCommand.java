@@ -21,6 +21,7 @@ import java.sql.SQLException;
 public class RefactorUserCommand extends Command {
 
     private static final Logger LOGGER = Logger.getLogger(RefactorUserCommand.class);
+    private UserDaoImpl userDao;
 
     @Override
     public String execute(HttpServletRequest request,
@@ -36,42 +37,42 @@ public class RefactorUserCommand extends Command {
         Role userRole = Role.getRole((User) session.getAttribute("user"));
         LOGGER.trace("userRole --> " + userRole);
 
-        if (userRole == Role.CASHIER || userRole == Role.HIGH_CASHIER) {
-            errorMessage = "User don't have permissions";
+        userDao = new UserDaoImpl();
+
+        String login = request.getParameter("refactor_user_login");
+        String password = request.getParameter("password");
+        User user = userDao.getUserByLogin(login);
+
+        if (!StringHelpers.isNullOrEmpty(password)) {
+            user.setAuthCode(StringHelpers.digest(login + password));
+            try {
+                userDao.changePasswordUserByLogin(user);
+            } catch (Exception e){
+                errorMessage = "Something went wrong....";
+                request.setAttribute("errorMessage", errorMessage);
+                LOGGER.error("errorMessage --> " + errorMessage);
+                return forward;
+            }
+        }
+
+        user.setActive(Boolean.parseBoolean(request.getParameter("active")));
+        user.setRole(Integer.parseInt(request.getParameter("role")));
+        user.setFullName(request.getParameter("full.name"));
+        user.setTerminalId(!StringHelpers.isNullOrEmpty(request.getParameter("terminal.id")) ?
+                Integer.parseInt(request.getParameter("terminal.id")) : null);
+
+        try {
+            if (!userDao.updateUserByLogin(user)) {
+                errorMessage = "Something went wrong....";
+                request.setAttribute("errorMessage", errorMessage);
+                LOGGER.error("errorMessage --> " + errorMessage);
+                return forward;
+            }
+        } catch (Exception e) {
+            errorMessage = "Something went wrong....";
             request.setAttribute("errorMessage", errorMessage);
             LOGGER.error("errorMessage --> " + errorMessage);
             return forward;
-        }
-
-        User user = new User();
-
-        user.setLogin(request.getParameter("login"));
-        user.setAuthCode(StringHelpers.digest(request.getParameter("login") + request.getParameter("password")));
-        user.setRole(Integer.parseInt(request.getParameter("role")));
-        user.setFullName(request.getParameter("full.name"));
-        user.setTerminalId(!StringHelpers.isNullOrEmpty(request.getParameter("terminal.id"))?
-                Integer.parseInt(request.getParameter("terminal.id")) : null);
-
-
-        try {
-            if(!new UserDaoImpl().insertUser(user)){
-                errorMessage = "Something went wrong....";
-                request.setAttribute("errorMessage", errorMessage);
-                LOGGER.error("errorMessage --> " + errorMessage);
-                return forward;
-            }
-        } catch (SQLException e) {
-            if(e.getMessage().contains("duplicate key")){
-                errorMessage = "User already created";
-                request.setAttribute("errorMessage", errorMessage);
-                LOGGER.error("errorMessage --> " + errorMessage);
-                return forward;
-            } else {
-                errorMessage = "Something went wrong....";
-                request.setAttribute("errorMessage", errorMessage);
-                LOGGER.error("errorMessage --> " + errorMessage);
-                return forward;
-            }
         }
 
         forward = Path.PAGE_ALL_USERS;

@@ -39,11 +39,17 @@
                 <td>${element.active}</td>
                 <td>${element.fullName}</td>
                 <td>${element.roleName}</td>
-                <td><form id="cashier" action="controller" method="post">
-                    <input type="hidden" name="command" value="refactor_user"/>
-                    <input type="hidden" name="refactor_user" value=${element}/>
-                    <input type="submit" value="<fmt:message key="refactor.user"/>"/>
-                </form></td>
+                <td>
+                    <form id="cashier" action="refactor_user.jsp">
+                        <input type="hidden" name="command" value="refactor_user"/>
+                        <input type="hidden" name="refactor_user_active" value=${element.active}>
+                        <input type="hidden" name="refactor_user_full_name" value=${element.fullName}>
+                        <input type="hidden" name="refactor_user_role" value=${element.role}>
+                        <input type="hidden" name="refactor_user_terminal_id" value=${element.terminalId}>
+                        <input type="hidden" name="refactor_user_login" value=${element.login}>
+                        <input type="submit" value="<fmt:message key="refactor.user"/>">
+                    </form>
+                </td>
             </tr>
         </c:forEach>
     </table>
@@ -51,12 +57,12 @@
     <table align="center">
         <c:forEach items="${requestScope.count}" var="element1" varStatus="loop">
             <th width="40">
-            <form id="pagination" action="controller" method="post">
-                <input type="hidden" name="command" value="all_users"/>
-                <input type="hidden" name="page" value=${element1}>
-                <input type="submit" value=${element1}>
-            </form>
-                </th>
+                <form id="pagination" action="controller" method="post">
+                    <input type="hidden" name="command" value="all_users"/>
+                    <input type="hidden" name="page" value=${element1}>
+                    <input type="submit" value=${element1}>
+                </form>
+            </th>
         </c:forEach>
     </table>
 

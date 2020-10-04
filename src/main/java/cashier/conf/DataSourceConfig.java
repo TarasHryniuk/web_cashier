@@ -66,6 +66,8 @@ public class DataSourceConfig {
 
 
     public Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        Connection conn = dataSource.getConnection();
+        conn.setAutoCommit(true);
+        return conn;
     }
 }

@@ -18,10 +18,6 @@
 
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
 
-
-    <%@ include file="/payments.jsp" %>
-    <%@ include file="/documents.jsp" %>
-
     <%@ include file="parts/header.jspf" %>
 </head>
 <body>

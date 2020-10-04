@@ -10,11 +10,12 @@ public class Receipt {
     private Integer id;
     private Integer productID;
     private Integer userID;
+    private Integer cancelUserID;
     private Integer count;
     private Long price;
     private Short status;
-    private Long createdTime;
-    private Long executedTime;
+    private Long processingTime;
+    private Long cancelTime;
 
 
     public Receipt() {
@@ -68,20 +69,28 @@ public class Receipt {
         this.userID = userID;
     }
 
-    public Long getCreatedTime() {
-        return createdTime;
+    public Integer getCancelUserID() {
+        return cancelUserID;
     }
 
-    public void setCreatedTime(Long createdTime) {
-        this.createdTime = createdTime;
+    public void setCancelUserID(Integer cancelUserID) {
+        this.cancelUserID = cancelUserID;
     }
 
-    public Long getExecutedTime() {
-        return executedTime;
+    public Long getProcessingTime() {
+        return processingTime;
     }
 
-    public void setExecutedTime(Long executedTime) {
-        this.executedTime = executedTime;
+    public void setProcessingTime(Long processingTime) {
+        this.processingTime = processingTime;
+    }
+
+    public Long getCancelTime() {
+        return cancelTime;
+    }
+
+    public void setCancelTime(Long cancelTime) {
+        this.cancelTime = cancelTime;
     }
 
     @Override
@@ -92,16 +101,17 @@ public class Receipt {
         return Objects.equals(id, receipt.id) &&
                 Objects.equals(productID, receipt.productID) &&
                 Objects.equals(userID, receipt.userID) &&
+                Objects.equals(cancelUserID, receipt.cancelUserID) &&
                 Objects.equals(count, receipt.count) &&
                 Objects.equals(price, receipt.price) &&
                 Objects.equals(status, receipt.status) &&
-                Objects.equals(createdTime, receipt.createdTime) &&
-                Objects.equals(executedTime, receipt.executedTime);
+                Objects.equals(processingTime, receipt.processingTime) &&
+                Objects.equals(cancelTime, receipt.cancelTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, productID, userID, count, price, status, createdTime, executedTime);
+        return Objects.hash(id, productID, userID, cancelUserID, count, price, status, processingTime, cancelTime);
     }
 
     @Override
@@ -110,11 +120,12 @@ public class Receipt {
         stringBuilder.append("Receipts{id=").append(id)
                 .append(", productID=").append(productID)
                 .append(", userID=").append(userID)
+                .append(", cancelUserID=").append(cancelUserID)
                 .append(", count=").append(count)
                 .append(", price=").append(price)
                 .append(", status=").append(status)
-                .append(", createdTime=").append(createdTime)
-                .append(", executedTime=").append(executedTime)
+                .append(", processingTime=").append(processingTime)
+                .append(", cancelTime=").append(cancelTime)
                 .append('}');
         return stringBuilder.toString();
     }

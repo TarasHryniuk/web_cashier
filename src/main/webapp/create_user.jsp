@@ -31,7 +31,7 @@
         <input name="password" type="password" required="required" placeholder=<fmt:message key="password"/> class="form-control"/>
         <input name="terminal.id" type="terminal.id" placeholder=<fmt:message key="terminal.id"/> class="form-control"/>
         <input name="full.name" type="full.name" required="required" placeholder=<fmt:message key="full.name"/> class="form-control"/>
-        <select name="role">
+        <select name="role" class="form-control">
             <option value="0"><fmt:message key="cashier"/></option>
             <option value="1"><fmt:message key="height.cashier"/></option>
             <option value="2"><fmt:message key="manager"/></option>

@@ -25,14 +25,8 @@ public class CommandContainer {
 		commands.put("create_user", new CreateUserCommand());
 		commands.put("all_users", new GetAllUsersCommand());
 		commands.put("refactor_user", new RefactorUserCommand());
-//		commands.put("viewSettings", new ViewSettingsCommand());
-//		commands.put("updateSettings", new UpdateSettingsCommand());
-//
-//		// client commands
-//		commands.put("listMenu", new ListMenuCommand());
-//
-//		// admin commands
-//		commands.put("listOrders", new ListOrdersCommand());
+		commands.put("x.report", new DocumentsCommand());
+		commands.put("z.report", new DocumentsCommand());
 		
 		LOGGER.debug("Command container was successfully initialized");
 		LOGGER.trace("Number of commands --> " + commands.size());

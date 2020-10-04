@@ -1,18 +1,18 @@
 package cashier.servlet;
 
 import cashier.Path;
-import cashier.dao.UserDaoImpl;
+import cashier.dao.ReceiptsDaoImpl;
 import cashier.dao.entity.Role;
 import cashier.dao.entity.User;
-import cashier.util.StringHelpers;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Taras Hryniuk, created on  29.09.2020
@@ -21,6 +21,7 @@ import java.io.IOException;
 public class PaymentsCommand extends Command {
 
     private static final Logger LOGGER = Logger.getLogger(PaymentsCommand.class);
+    private ReceiptsDaoImpl receiptsDao;
 
     @Override
     public String execute(HttpServletRequest request,
@@ -29,71 +30,57 @@ public class PaymentsCommand extends Command {
         LOGGER.debug("Command starts");
 
         HttpSession session = request.getSession();
+        String forward;
 
-        // obtain login and password from the request
-        String login = request.getParameter("login");
-        LOGGER.trace("Request parameter: loging --> " + login);
-
-        String password = request.getParameter("password");
-
-        // error handler
-        String errorMessage = null;
-        String forward = Path.PAGE_ERROR_PAGE;
-
-        if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-            errorMessage = "Login/password cannot be empty";
-            request.setAttribute("errorMessage", errorMessage);
-            LOGGER.error("errorMessage --> " + errorMessage);
-            return forward;
-        }
-
-        User user = new UserDaoImpl().getUserByLogin(login);
-        LOGGER.trace("Found in DB: user --> " + user);
-
-        if (user == null) {
-            errorMessage = "Cannot find user with such login/password";
-            request.setAttribute("errorMessage", errorMessage);
-            LOGGER.error("errorMessage --> " + errorMessage);
-            return forward;
-        }
-
-        if (!user.isActive()) {
-            errorMessage = "User isn't active";
-            request.setAttribute("errorMessage", errorMessage);
-            LOGGER.error("errorMessage --> " + errorMessage);
-            return forward;
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(login).append(password);
-        if (!user.getAuthCode().equals(StringHelpers.digest(sb.toString()))) {
-            errorMessage = "Auth failed";
-            request.setAttribute("errorMessage", errorMessage);
-            LOGGER.error("errorMessage --> " + errorMessage);
-            return forward;
-        }
-
+        User user = (User) session.getAttribute("user");
         Role userRole = Role.getRole(user);
         LOGGER.trace("userRole --> " + userRole);
 
-        String terminalId = request.getParameter("terminal.id");
-        if (userRole == Role.CASHIER && null == terminalId) {
-            errorMessage = "Cashier must have terminal id";
-            request.setAttribute("errorMessage", errorMessage);
-            LOGGER.error("errorMessage --> " + errorMessage);
-            return forward;
+        receiptsDao = new ReceiptsDaoImpl();
+
+        if (userRole == Role.CASHIER || userRole == Role.HIGH_CASHIER) {
+            Integer page = null;
+            if (null == request.getParameter("page") || 1 == Integer.parseInt(request.getParameter("page")))
+                page = 0;
+            else
+                page = (Integer.parseInt(request.getParameter("page")) - 1) * 20;
+
+            request.setAttribute("payments", receiptsDao.findAllUserReceipts(user.getId(), page));
+            Integer count = receiptsDao.getAllUserReceiptsCount(user.getId()) / 20;
+
+            List<Integer> list = new ArrayList<>();
+
+            for (int i = 1; i <= count + 1; i++) {
+                list.add(i);
+            }
+
+            System.out.println(list.toString());
+            request.setAttribute("count", list);
+        } else {
+            Integer page = null;
+            if (null == request.getParameter("page") || 1 == Integer.parseInt(request.getParameter("page")))
+                page = 0;
+            else
+                page = (Integer.parseInt(request.getParameter("page")) - 1) * 20;
+
+            System.out.println("findAllReceipts: " + receiptsDao.findAllReceipts(page));
+            System.out.println("count: " + receiptsDao.getAllReceiptsCount());
+
+            request.setAttribute("payments", receiptsDao.findAllReceipts(page));
+            Integer count = receiptsDao.getAllReceiptsCount() / 20;
+
+            List<Integer> list = new ArrayList<>();
+
+            for (int i = 0; i <= count; i++) {
+                list.add(i + 1);
+            }
+
+            System.out.println(list.toString());
+            request.setAttribute("count", list);
+
         }
 
-
-        forward = Path.PAGE_MENU;
-
-        session.setAttribute("user", user);
-        LOGGER.trace("Set the session attribute: user --> " + user);
-
-        session.setAttribute("userRole", userRole);
-        LOGGER.trace("Set the session attribute: userRole --> " + userRole);
-
-        LOGGER.info("User " + user + " logged as " + userRole.toString().toLowerCase());
+        forward = Path.PAGE_PAYMENTS;
 
         LOGGER.debug("Command finished");
         return forward;

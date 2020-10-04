@@ -16,7 +16,7 @@
     <style type="text/css" media="screen">
         .container {
             padding: 150px 0 0;
-            width: 380px;
+            width: 500px;
         }
 
         .form-control {
@@ -49,7 +49,7 @@
             <div style="display: inline-flex;">
                 <h2 style="color: #DEA230;margin-right: 124px;margin-bottom: 6px;"><fmt:message key="label"/></h2>
                 <div class="btn-group pull-left">
-                    <select name="language">
+                    <select name="language" class="form-control">
                         <option value="en"><fmt:message key="lang.en"/></option>
                         <option value="ru"><fmt:message key="lang.ru"/></option>
                         <option value="ua"><fmt:message key="lang.ua"/></option>

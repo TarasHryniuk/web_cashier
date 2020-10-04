@@ -11,16 +11,15 @@
                     <input type="submit" value="<fmt:message key="all.user"/>"/>
                 </form>
             </ul>
-                <%
-                    out.print(session.getAttribute("userRole"));
-                    if("MANAGER" == session.getAttribute("userRole")){
+<%--                <%--%>
+<%--                    out.print(session.getAttribute("userRole"));--%>
+<%--                    if("MANAGER" == session.getAttribute("userRole")){--%>
 
-                    }
-                %>
+<%--                    }--%>
+<%--                %>--%>
             <ul class="nav navbar-nav navbar-left">
                 <form action="create_user.jsp">
-                    <input type="submit" value=
-                    <fmt:message key="create.user"/>/>
+                    <input type="submit" value=<fmt:message key="create.user"/>/>
                 </form>
             </ul>
     </div>

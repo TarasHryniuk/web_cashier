@@ -7,17 +7,19 @@
 --%>
 <%@ include file="/WEB-INF/views/parts/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session"/>
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="messages"/>
 <html lang="${param.lang}">
 <head>
 
-    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>
+<%--    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>--%>
 
-    <title><fmt:message key="documents"/></title>
-    <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
-    <%@ include file="/WEB-INF/views/parts/documents_menu.jsp" %>
+<%--    <title><fmt:message key="all.user"/></title>--%>
+<%--    <%@ include file="/WEB-INF/views/parts/menu.jsp" %>--%>
+<%--    <%@ include file="/WEB-INF/views/parts/user_menu.jsp" %>--%>
 
 </head>
 <%--<body>--%>

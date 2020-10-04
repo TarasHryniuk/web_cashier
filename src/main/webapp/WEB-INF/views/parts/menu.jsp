@@ -17,9 +17,8 @@
                 </form>
             </ul>
             <ul class="nav navbar-nav navbar-left">
-                <form id="documents" action="controller" method="post">
-                    <input type="hidden" name="command" value="documents"/>
-                    <input type="submit" value="<fmt:message key="documents"/>"/>
+                <form action="documents.jsp">
+                    <input type="submit" value=<fmt:message key="documents"/>>
                 </form>
             </ul>
             <ul class="nav navbar-nav navbar-left">

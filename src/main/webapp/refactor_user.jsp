@@ -25,16 +25,28 @@
 </head>
 <body>
 <div class="col-xs-12 col-sm-6">
-    <form id="create_user" action="controller" method="post" class="tab-content">
-        <input type="hidden" name="command" value="create_user"/>
-        <input name="login" type="login" required="required" placeholder=<fmt:message key="login"/> class="form-control"/>
-        <input name="password" type="password" required="required" placeholder=<fmt:message key="password"/> class="form-control"/>
-        <input name="terminal.id" type="terminal.id" placeholder=<fmt:message key="terminal.id"/> class="form-control"/>
-        <input name="full.name" type="full.name" required="required" placeholder=<fmt:message key="full.name"/> class="form-control"/>
-        <select name="role">
+    <form id="refactor_user" action="controller" method="post" class="tab-content">
+<%--        <c:if test="${refactor_user_active}" var="refactor_user_active" scope="request"/>--%>
+<%--        <%--%>
+<%--            out.print(request.getParameter("refactor_user_active"));--%>
+<%--            out.print(request.getParameter("refactor_user_terminal_id"));--%>
+<%--            out.print(request.getParameter("refactor_user_full_name"));--%>
+<%--            out.print(request.getParameter("refactor_user_role"));--%>
+<%--        %>--%>
+        <input type="hidden" name="command" value="refactor_user"/>
+        <input type="hidden" name="refactor_user_login" value="<c:out value="${param.refactor_user_login}"/>"/>
+        <input name="password" type="password" placeholder=<fmt:message key="password"/> class="form-control"/>
+        <input name="terminal.id" type="terminal.id" value="<c:out value="${param.refactor_user_terminal_id}"/>" placeholder=<fmt:message key="terminal.id"/> class="form-control"/>
+        <input name="full.name" type="full.name" value="<c:out value="${param.refactor_user_full_name}"/>" required="required" placeholder=<fmt:message key="full.name"/> class="form-control"/>
+        <select name="role" class="form-control">
             <option value="0"><fmt:message key="cashier"/></option>
             <option value="1"><fmt:message key="height.cashier"/></option>
             <option value="2"><fmt:message key="manager"/></option>
+        </select>
+
+        <select name="active" class="form-control">
+            <option value="true"><fmt:message key="active"/></option>
+            <option value="false"><fmt:message key="non.active"/></option>
         </select>
         <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="save"/>"/>
     </form>
