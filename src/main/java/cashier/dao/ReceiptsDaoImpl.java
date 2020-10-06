@@ -22,7 +22,7 @@ public class ReceiptsDaoImpl extends GenericDao {
 
     private static final String SQL_INSERT_RECEIPT = "INSERT INTO receipts VALUES (DEFAULT ,? ,? ,?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_CANCEL_RECEIPT = "UPDATE receipts SET status = 212, cancel_time = ?, cancel_user_id = ? WHERE \"id\" = ?";
-    private static final String SQL_FIND_MAX_RECEIPT_NO = "SELECT rec.receipt_id as max_num  FROM receipts as rec ORDER BY rec.receipt_id DESC";
+    private static final String SQL_FIND_MAX_RECEIPT_NO = "SELECT MAX(receipt_id) as max_num  FROM receipts";
     private static final String SQL_FIND_ALL_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
             "rec, products as prod WHERE rec.id_product = prod.id ORDER BY rec.id ASC LIMIT 20 OFFSET ?";
     private static final String SQL_FIND_ALL_BY_USER_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
@@ -37,12 +37,15 @@ public class ReceiptsDaoImpl extends GenericDao {
         try (Connection connection = DataSourceConfig.getInstance().getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL_INSERT_RECEIPT, Statement.RETURN_GENERATED_KEYS)) {
             for (Receipt receipt : receipts) {
-//                ps.setBoolean(1, receipt.getActive());
-//                ps.setString(2, receipt.getName());
-//                ps.setLong(3, receipt.getPrice());
-//                ps.setLong(4, receipt.getWeight());
-//                ps.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
-//                ps.setInt(6, receipt.getCategoriesId());
+                ps.setInt(1, receipt.getProductID());
+                ps.setInt(2, receipt.getReceiptId());
+                ps.setInt(3, receipt.getUserID());
+                ps.setObject(4, null);
+                ps.setInt(5, receipt.getCount());
+                ps.setLong(6, receipt.getPrice());
+                ps.setShort(7, receipt.getStatus());
+                ps.setTimestamp(8, new Timestamp(receipt.getProcessingTime()));
+                ps.setTimestamp(9, null);
 
                 if (ps.executeUpdate() != 1)
                     return false;

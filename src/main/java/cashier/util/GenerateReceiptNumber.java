@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GenerateReceiptNumber {
     private static ReceiptsDaoImpl receiptsDao;
 
-    private static AtomicInteger no = new AtomicInteger(0);
+    private static AtomicInteger no = new AtomicInteger(1);
 
     private GenerateReceiptNumber(AtomicInteger no) {
         this.no = no;
@@ -19,11 +19,11 @@ public class GenerateReceiptNumber {
 
     public static Integer getReceiptNo(){
 
-        if(no.equals(0)){
+        if(no.get() == 1){
             receiptsDao = new ReceiptsDaoImpl();
             no = new AtomicInteger(receiptsDao.getLastReceiptNo());
         }
 
-        return no.getAndIncrement();
+        return no.incrementAndGet();
     }
 }

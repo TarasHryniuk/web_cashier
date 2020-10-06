@@ -58,10 +58,10 @@ public class InitializeCashierWorkStationCommand extends Command {
                 if (!products.contains(product)) {
                     Receipt receipt = new Receipt();
                     receipt.setCount(product.getCount());
-                    if (null != receipts || !receipts.isEmpty())
-                        receipt.setReceiptId(receipts.get(0).getReceiptId());
-                    else
+                    if (null == receipts || receipts.isEmpty())
                         receipt.setReceiptId(GenerateReceiptNumber.getReceiptNo());
+                    else
+                        receipt.setReceiptId(receipts.get(0).getReceiptId());
                     receipt.setPrice(product.getPrice());
                     receipt.setStatus(Statuses.CREATED.shortValue());
                     receipt.setProductID(product.getId());

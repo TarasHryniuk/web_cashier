@@ -31,6 +31,7 @@ public class ProcessingReceiptCommand extends Command {
 
     private static final Logger LOGGER = Logger.getLogger(ProcessingReceiptCommand.class);
     private ReceiptsDaoImpl receiptsDao;
+    private ProductsDaoImpl productsDao;
 
     @Override
     public String execute(HttpServletRequest request,
@@ -46,6 +47,7 @@ public class ProcessingReceiptCommand extends Command {
 
         try {
             receiptsDao = new ReceiptsDaoImpl();
+            productsDao = new ProductsDaoImpl();
 
             if (request.getParameter("command").equals("pay_basket")) {
                 List<Receipt> receipts = (List<Receipt>) session.getAttribute("basket");
@@ -59,8 +61,11 @@ public class ProcessingReceiptCommand extends Command {
                     receipt.setStatus(Statuses.SUCCESS.shortValue());
                     receipt.setProcessingTime(new Date().getTime());
                 });
-
+//                productsDao.updateCountForProduct();
                 receiptsDao.insertReceipts(receipts);
+                session.setAttribute("products", null);
+                session.setAttribute("basket", null);
+                session.setAttribute("total_price", 0.00);
             } else if (request.getParameter("command").equals("cancel_basket")) {
                 Receipt receipt = (Receipt) session.getAttribute("cancel_receipt");
 

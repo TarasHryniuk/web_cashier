@@ -98,9 +98,7 @@
             <column name="processing_time" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="cancel_time" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
+            <column name="cancel_time" type="TIMESTAMP"></column>
         </createTable>
 
 
