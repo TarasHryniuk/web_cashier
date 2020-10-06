@@ -54,7 +54,6 @@ public class PaymentsCommand extends Command {
                 list.add(i);
             }
 
-            System.out.println(list.toString());
             request.setAttribute("count", list);
         } else {
             Integer page = null;
@@ -62,9 +61,6 @@ public class PaymentsCommand extends Command {
                 page = 0;
             else
                 page = (Integer.parseInt(request.getParameter("page")) - 1) * 20;
-
-            System.out.println("findAllReceipts: " + receiptsDao.findAllReceipts(page));
-            System.out.println("count: " + receiptsDao.getAllReceiptsCount());
 
             request.setAttribute("payments", receiptsDao.findAllReceipts(page));
             Integer count = receiptsDao.getAllReceiptsCount() / 20;
@@ -75,7 +71,6 @@ public class PaymentsCommand extends Command {
                 list.add(i + 1);
             }
 
-            System.out.println(list.toString());
             request.setAttribute("count", list);
 
         }

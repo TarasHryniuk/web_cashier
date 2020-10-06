@@ -5,8 +5,8 @@
     <div id="navigation" class="collapse navbar-collapse">
         <ul id="main-nav" class="nav navbar-nav">
             <ul class="nav navbar-nav navbar-left">
-                <form id="cashier" action="controller" method="post">
-                    <input type="hidden" name="command" value="cashier"/>
+                <form id="initialize.work.station" action="controller" method="post">
+                    <input type="hidden" name="command" value="initialize.work.station"/>
                     <input type="submit" value="<fmt:message key="cashier.window"/>"/>
                 </form>
             </ul>

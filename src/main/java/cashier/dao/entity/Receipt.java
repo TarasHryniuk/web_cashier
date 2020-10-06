@@ -8,7 +8,9 @@ import java.util.Objects;
  */
 public class Receipt {
     private Integer id;
+    private Integer receiptId;
     private Integer productID;
+    private String productName;
     private Integer userID;
     private Integer cancelUserID;
     private Integer count;
@@ -16,7 +18,6 @@ public class Receipt {
     private Short status;
     private Long processingTime;
     private Long cancelTime;
-
 
     public Receipt() {
     }
@@ -93,6 +94,22 @@ public class Receipt {
         this.cancelTime = cancelTime;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public Integer getReceiptId() {
+        return receiptId;
+    }
+
+    public void setReceiptId(Integer receiptId) {
+        this.receiptId = receiptId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -100,6 +117,7 @@ public class Receipt {
         Receipt receipt = (Receipt) o;
         return Objects.equals(id, receipt.id) &&
                 Objects.equals(productID, receipt.productID) &&
+                Objects.equals(receiptId, receipt.receiptId) &&
                 Objects.equals(userID, receipt.userID) &&
                 Objects.equals(cancelUserID, receipt.cancelUserID) &&
                 Objects.equals(count, receipt.count) &&
@@ -111,7 +129,7 @@ public class Receipt {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, productID, userID, cancelUserID, count, price, status, processingTime, cancelTime);
+        return Objects.hash(id, productID, userID, cancelUserID, count, price, status, receiptId, processingTime, cancelTime);
     }
 
     @Override
@@ -119,6 +137,8 @@ public class Receipt {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Receipts{id=").append(id)
                 .append(", productID=").append(productID)
+                .append(", receiptId=").append(receiptId)
+                .append(", productName=").append(productName)
                 .append(", userID=").append(userID)
                 .append(", cancelUserID=").append(cancelUserID)
                 .append(", count=").append(count)

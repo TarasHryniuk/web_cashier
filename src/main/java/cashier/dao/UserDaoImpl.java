@@ -4,7 +4,6 @@ import cashier.conf.DataSourceConfig;
 import cashier.dao.entity.Role;
 import cashier.dao.entity.User;
 import org.apache.log4j.Logger;
-import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -25,7 +24,8 @@ public class UserDaoImpl extends GenericDao {
     private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM users WHERE id=?";
     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM users ORDER BY id ASC LIMIT 20 OFFSET ?";
-    private static final String SQL_FIND_ALL_USERS_COUNT = "SELECT count(*) AS total FROM users";;
+    private static final String SQL_FIND_ALL_USERS_COUNT = "SELECT count(*) AS total FROM users";
+    ;
     private static final String SQL_CHANGE_PASSWORD_USER_BY_LOGIN = "UPDATE users SET auth_code=? WHERE login=?";
     private static final String SQL_UPDATE_USER_BY_LOGIN = "UPDATE users SET active=?, terminal_id=?, full_name=?, role=? WHERE login=?";
 
@@ -151,7 +151,7 @@ public class UserDaoImpl extends GenericDao {
         try (Connection connection = DataSourceConfig.getInstance().getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL_USERS_COUNT)) {
             rs = ps.executeQuery();
-            if(rs.next())
+            if (rs.next())
                 count = rs.getInt(1);
         } catch (SQLException e) {
             LOGGER.error(e);

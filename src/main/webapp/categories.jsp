@@ -15,11 +15,10 @@
 <html lang="${param.lang}">
 <head>
 
-<%--    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>--%>
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>
+    <link rel="shortcut icon" href="resources/img/xrp_small.png">
 
-<%--    <title><fmt:message key="all.user"/></title>--%>
-<%--    <%@ include file="/WEB-INF/views/parts/menu.jsp" %>--%>
-<%--    <%@ include file="/WEB-INF/views/parts/user_menu.jsp" %>--%>
+    <title><fmt:message key="categories"/></title>
 
 </head>
 <%--<body>--%>

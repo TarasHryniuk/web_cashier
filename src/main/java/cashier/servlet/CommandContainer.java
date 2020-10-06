@@ -1,5 +1,7 @@
 package cashier.servlet;
 
+import cashier.servlet.cashierCommands.InitializeCashierWorkStationCommand;
+import cashier.servlet.cashierCommands.ProcessingReceiptCommand;
 import org.apache.log4j.Logger;
 
 import java.util.Map;
@@ -27,7 +29,13 @@ public class CommandContainer {
 		commands.put("refactor_user", new RefactorUserCommand());
 		commands.put("x.report", new DocumentsCommand());
 		commands.put("z.report", new DocumentsCommand());
-		
+		commands.put("initialize.work.station", new InitializeCashierWorkStationCommand());
+		commands.put("add_to_basket", new InitializeCashierWorkStationCommand());
+		commands.put("remove_from_basket", new InitializeCashierWorkStationCommand());
+		commands.put("clear_basket", new InitializeCashierWorkStationCommand());
+		commands.put("pay_basket", new ProcessingReceiptCommand());
+		commands.put("cancel_basket", new ProcessingReceiptCommand());
+
 		LOGGER.debug("Command container was successfully initialized");
 		LOGGER.trace("Number of commands --> " + commands.size());
 	}

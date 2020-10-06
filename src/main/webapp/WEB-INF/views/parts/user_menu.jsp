@@ -5,22 +5,20 @@
 <div>
     <div class="collapse navbar-collapse">
         <ul id="main-nav" class="nav navbar-nav">
-            <ul class="nav navbar-nav navbar-left">
-                <form id="cashier" action="controller" method="post">
-                    <input type="hidden" name="command" value="all_users"/>
-                    <input type="submit" value="<fmt:message key="all.user"/>"/>
-                </form>
-            </ul>
-<%--                <%--%>
-<%--                    out.print(session.getAttribute("userRole"));--%>
-<%--                    if("MANAGER" == session.getAttribute("userRole")){--%>
+            <c:if test="${sessionScope.userRole=='MANAGER'}">
+                <ul class="nav navbar-nav navbar-left">
+                    <form id="cashier" action="controller" method="post">
+                        <input type="hidden" name="command" value="all_users"/>
+                        <input type="submit" value="<fmt:message key="all.user"/>"/>
+                    </form>
+                </ul>
 
-<%--                    }--%>
-<%--                %>--%>
-            <ul class="nav navbar-nav navbar-left">
-                <form action="create_user.jsp">
-                    <input type="submit" value=<fmt:message key="create.user"/>/>
-                </form>
-            </ul>
+                <ul class="nav navbar-nav navbar-left">
+                    <form action="create_category.jsp">
+                        <input type="submit" value=<fmt:message key="create.category"/>/>
+                    </form>
+                </ul>
+            </c:if>
+        </ul>
     </div>
 </div>

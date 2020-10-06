@@ -39,6 +39,7 @@
             <column name="categories_id" type="INT">
                 <constraints nullable="false" foreignKeyName="categories_id_fkey" references="categories(id)"/>
             </column>
+            <column name="count" type="INT"></column>
         </createTable>
 
         <createTable schemaName="public" tableName="terminals">
@@ -80,6 +81,7 @@
             <column name="id_product" type="INT">
                 <constraints nullable="false" foreignKeyName="products_id_fkey" references="products(id)"/>
             </column>
+            <column name="receipt_id" type="INT"></column>
             <column name="user_id" type="INT">
                 <constraints nullable="false" primaryKey="true" foreignKeyName="users_id_fkey" references="users(id)"/>
             </column>

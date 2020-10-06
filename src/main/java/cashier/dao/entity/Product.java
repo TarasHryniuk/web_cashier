@@ -14,6 +14,7 @@ public class Product {
     private Long weight;
     private Long dateOfAdding;
     private Integer categoriesId;
+    private Integer count;
 
     public Product() {
     }
@@ -66,13 +67,20 @@ public class Product {
         this.dateOfAdding = dateOfAdding;
     }
 
-
     public Integer getCategoriesId() {
         return categoriesId;
     }
 
     public void setCategoriesId(Integer categoriesId) {
         this.categoriesId = categoriesId;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     @Override
@@ -86,7 +94,8 @@ public class Product {
                 Objects.equals(price, product.price) &&
                 Objects.equals(weight, product.weight) &&
                 Objects.equals(dateOfAdding, product.dateOfAdding) &&
-                Objects.equals(categoriesId, product.categoriesId);
+                Objects.equals(categoriesId, product.categoriesId) &&
+                Objects.equals(count, product.count);
     }
 
     @Override
@@ -104,6 +113,7 @@ public class Product {
                 .append(", weight='").append(weight).append('\'')
                 .append(", dateOfAdding='").append(dateOfAdding).append('\'')
                 .append(", categoriesId='").append(categoriesId).append('\'')
+                .append(", count='").append(count).append('\'')
                 .append('}');
         return stringBuilder.toString();
     }

@@ -1,4 +1,4 @@
-package cashier.service;
+package cashier;
 
 /**
  * @author Taras Hryniuk, created on  23.09.2020

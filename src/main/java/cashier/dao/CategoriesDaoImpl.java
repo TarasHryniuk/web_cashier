@@ -3,9 +3,13 @@ package cashier.dao;
 import cashier.conf.DataSourceConfig;
 import cashier.dao.entity.Category;
 import cashier.dao.entity.Receipt;
+import cashier.dao.entity.Role;
+import cashier.dao.entity.User;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -18,6 +22,8 @@ public class CategoriesDaoImpl extends GenericDao{
     private static final Logger LOGGER = Logger.getLogger(ProductsDaoImpl.class);
 
     private static final String SQL_INSERT_CATEGORIES = "INSERT INTO categories VALUES (DEFAULT ,?)";
+    private static final String SQL_FIND_CATEGORY_BY_NAME = "SELECT * FROM categories WHERE name=?";
+    private static final String SQL_FIND_ALL_CATEGORIES = "SELECT * FROM categories ORDER BY id ASC";
 
     public boolean insertCategory(Category category) {
         ResultSet rs = null;
@@ -48,5 +54,49 @@ public class CategoriesDaoImpl extends GenericDao{
             }
         }
         return true;
+    }
+
+    public Category getCategoryByName(String name) {
+        ResultSet rs = null;
+        Category category = null;
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_FIND_CATEGORY_BY_NAME)) {
+            ps.setString(1, name);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                category = new Category();
+                category.setId(rs.getInt("id"));
+                category.setName(rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        } finally {
+            close(rs);
+            LOCK.unlock();
+        }
+        return category;
+    }
+
+    public List<Category> getAllCategories() {
+        ResultSet rs = null;
+        List<Category> categories = new LinkedList<>();
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL_CATEGORIES)) {
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Category category = new Category();
+                category.setId(rs.getInt("id"));
+                category.setName(rs.getString("name"));
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        } finally {
+            close(rs);
+            LOCK.unlock();
+        }
+        return categories;
     }
 }

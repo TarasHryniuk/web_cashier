@@ -26,25 +26,35 @@
 <body>
 <div class="col-xs-12 col-sm-6">
     <form id="refactor_user" action="controller" method="post" class="tab-content">
-<%--        <c:if test="${refactor_user_active}" var="refactor_user_active" scope="request"/>--%>
-<%--        <%--%>
-<%--            out.print(request.getParameter("refactor_user_active"));--%>
-<%--            out.print(request.getParameter("refactor_user_terminal_id"));--%>
-<%--            out.print(request.getParameter("refactor_user_full_name"));--%>
-<%--            out.print(request.getParameter("refactor_user_role"));--%>
-<%--        %>--%>
         <input type="hidden" name="command" value="refactor_user"/>
         <input type="hidden" name="refactor_user_login" value="<c:out value="${param.refactor_user_login}"/>"/>
         <input name="password" type="password" placeholder=<fmt:message key="password"/> class="form-control"/>
         <input name="terminal.id" type="terminal.id" value="<c:out value="${param.refactor_user_terminal_id}"/>" placeholder=<fmt:message key="terminal.id"/> class="form-control"/>
         <input name="full.name" type="full.name" value="<c:out value="${param.refactor_user_full_name}"/>" required="required" placeholder=<fmt:message key="full.name"/> class="form-control"/>
         <select name="role" class="form-control">
+            <c:if test="${sessionScope.userRole=='MANAGER'}">
+                <option selected = "selected" value="2"><fmt:message key="manager"/></option>
+            </c:if>
+            <c:if test="${sessionScope.userRole=='HIGH_CASHIER'}">
+                <option selected = "selected" value="1"><fmt:message key="height.cashier"/></option>
+            </c:if>
+
+            <c:if test="${sessionScope.userRole=='CASHIER'}">
+                <option selected = "selected" value="0"><fmt:message key="cashier"/></option>
+            </c:if>
+
             <option value="0"><fmt:message key="cashier"/></option>
             <option value="1"><fmt:message key="height.cashier"/></option>
             <option value="2"><fmt:message key="manager"/></option>
         </select>
 
         <select name="active" class="form-control">
+            <c:if test="${sessionScope.refactor_user_active=='true'}">
+                <option selected = "selected" value="true"><fmt:message key="active"/></option>
+            </c:if>
+            <c:if test="${sessionScope.refactor_user_active=='false'}">
+                <option selected = "selected" value="false"><fmt:message key="non.active"/></option>
+            </c:if>
             <option value="true"><fmt:message key="active"/></option>
             <option value="false"><fmt:message key="non.active"/></option>
         </select>
