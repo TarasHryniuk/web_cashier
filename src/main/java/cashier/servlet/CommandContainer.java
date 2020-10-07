@@ -28,8 +28,8 @@ public class CommandContainer {
 		commands.put("all_users", new GetAllUsersCommand());
 		commands.put("refactor_user", new RefactorUserCommand());
 		commands.put("delete_user", new RefactorUserCommand());
-		commands.put("x.report", new DocumentsCommand());
-		commands.put("z.report", new DocumentsCommand());
+		commands.put("x_report", new DocumentsCommand());
+		commands.put("z_report", new DocumentsCommand());
 		commands.put("initialize.work.station", new InitializeCashierWorkStationCommand());
 		commands.put("add_to_basket", new InitializeCashierWorkStationCommand());
 		commands.put("remove_from_basket", new InitializeCashierWorkStationCommand());

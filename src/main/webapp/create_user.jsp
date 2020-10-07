@@ -24,14 +24,35 @@
 
 </head>
 <body>
+<script type="text/javascript">
+
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[A-Za-z0-9№;$%^!.,&*|~₴]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+</script>
+
 <div class="col-xs-12 col-sm-6">
     <form id="create_user" action="controller" method="post" class="tab-content">
 
         <label><fmt:message key="login"/></label>
-        <input name="login" type="text" required="required" placeholder=<fmt:message key="login"/> class="form-control"/>
+        <input name="login" type="text" required="required" onkeypress='validate(event)' placeholder=<fmt:message key="login" /> class="form-control"/>
 
         <label><fmt:message key="password"/></label>
-        <input name="password" type="password" required="required" placeholder=<fmt:message key="password"/> class="form-control"/>
+        <input name="password" type="password" required="required" onkeypress='validate(event)' placeholder=<fmt:message key="password"/> class="form-control"/>
 
         <label><fmt:message key="full.name"/></label>
         <input name="full.name" type="text" required="required" placeholder=<fmt:message key="full.name"/> class="form-control"/>

@@ -54,7 +54,6 @@
                         <input type="hidden" name="command" value="refactor_user"/>
                         <input type="hidden" name="refactor_user_active" value=${element.active}>
                         <input type="hidden" name="refactor_user_full_name" value=${element.fullName}>
-                        <c:out value="${param.refactor_user_full_name}"/>
                         <input type="hidden" name="refactor_user_role" value=${element.role}>
                         <input type="hidden" name="refactor_user_terminal_id" value=${element.terminalId}>
                         <input type="hidden" name="refactor_user_login" value=${element.login}>

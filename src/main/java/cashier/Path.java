@@ -13,7 +13,7 @@ public final class Path {
 	public static final String PAGE_MENU = "/main_menu.jsp";
 	public static final String PAGE_ALL_USERS = "/all_users.jsp";
 	public static final String PAGE_PAYMENTS = "/payments.jsp";
-	public static final String PAGE_DOCUMENTS = "/WEB-INF/views/parts/doc.jspf";
+	public static final String PAGE_DOCUMENTS = "/documents.jsp";
 	public static final String PAGE_CASHIER_WORK_STATION = "/cashier_work_station.jsp";
 	public static final String SUCCESS = "/success_page.jsp";
 

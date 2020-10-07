@@ -5,6 +5,7 @@ import cashier.dao.ReceiptsDaoImpl;
 import cashier.dao.entity.Receipt;
 import cashier.dao.entity.Role;
 import cashier.dao.entity.User;
+import cashier.util.TotalReceiptAmount;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -12,9 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,22 +48,14 @@ public class DocumentsCommand extends Command {
 
         receiptsDao = new ReceiptsDaoImpl();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+        List<Receipt> receipts = receiptsDao.findAllReceiptsByCurrentDate(user);
+        request.setAttribute("total_success_amount", TotalReceiptAmount.getTotalSuccessReceiptsAmount(receipts) / 100.0);
+        request.setAttribute("reports_total_count", TotalReceiptAmount.getTotalReceiptsCount(receipts));
+        request.setAttribute("reports_success_count", TotalReceiptAmount.getTotalSuccessReceiptsCount(receipts));
+        request.setAttribute("total_cancel_amount", TotalReceiptAmount.getTotalCancelReceiptsAmount(receipts) / 100.0);
+        request.setAttribute("reports_cancel_count", TotalReceiptAmount.getTotalCancelledReceiptsCount(receipts));
 
-        Timestamp startTime = new Timestamp(calendar.getTimeInMillis());
-
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-
-        Timestamp endTime = new Timestamp(calendar.getTimeInMillis());
-
-        List<Receipt> receipts = receiptsDao.findAllReceiptsByCurrentDate(startTime, endTime, user);
-
-//        Long totalAmount = ;
+        request.setAttribute("report_name", request.getParameter("command").equals("x_report") ? "X Звіт" : "Z Звіт");
 
         forward = Path.PAGE_DOCUMENTS;
 
