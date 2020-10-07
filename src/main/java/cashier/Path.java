@@ -15,6 +15,7 @@ public final class Path {
 	public static final String PAGE_PAYMENTS = "/payments.jsp";
 	public static final String PAGE_DOCUMENTS = "/WEB-INF/views/parts/doc.jspf";
 	public static final String PAGE_CASHIER_WORK_STATION = "/cashier_work_station.jsp";
+	public static final String SUCCESS = "/success_page.jsp";
 
 	// commands
 	public static final String COMMAND__LIST_ORDERS = "/controller?command=listOrders";

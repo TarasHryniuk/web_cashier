@@ -22,15 +22,13 @@
 
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
     <%@ include file="/WEB-INF/views/parts/payments_menu.jsp" %>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-
 </head>
 <body>
 <div class="col-xs-12 col-sm-6">
 
     <script type="text/javascript">
 
-    function validate(evt) {
+        function validate(evt) {
             var theEvent = evt || window.event;
 
             // Handle paste
@@ -50,26 +48,17 @@
     </script>
 
     <form>
-<%--        <b><fmt:message key="good_id"/></b>--%>
-<%--        <select name='goods_by_id' class="form-control">--%>
-<%--            <c:forEach items="${requestScope.goods}" var="goods">--%>
-<%--                <option value="${goods.id}">${goods.id}</option>--%>
-<%--            </c:forEach>--%>
-<%--        </select>--%>
-
         <b><fmt:message key="goods"/></b>
 
-        <select id="opt_ph" name='goods_id' class="form-control">
-            <c:forEach items="${requestScope.goods}" var="goods">
-                <option value="${goods.id}">${goods.name}</option>
+        <select name='goods_id' class="form-control">
+            <c:forEach items="${sessionScope.goods}" var="goods">
+                <option value="${goods.id}">${goods.name} ${goods.price / 100.0} uah</option>
             </c:forEach>
         </select>
 
         <b><fmt:message key="count"/></b>
-        <input name="count" onkeypress='validate(event)' type="text" required="required" placeholder=<fmt:message key="count"/> class="form-control"/>
-
-        <b><fmt:message key="price"/></b>
-        <input id="price" name="price" maxlength="30" value="" autocomplete="off" class="form-control"/>
+        <input name="count" onkeypress='validate(event)' type="text" min="0" required="required" placeholder=
+        <fmt:message key="count"/> class="form-control"/>
 
         <input type="hidden" name="command" value="add_to_basket"/>
 
@@ -87,34 +76,40 @@
             <th><fmt:message key="cancel"/></th>
         </tr>
 
-        <c:forEach items="${sessionScope.products}" var="products" varStatus="loop">
+        <c:forEach items="${sessionScope.basket}" var="basket" varStatus="loop">
             <tr>
-                <td>${products.name}</td>
-                <td>${products.price}</td>
-                <td>${products.count}</td>
-<%--                <c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">--%>
-                <td>
-                    <form>
-                        <input type="hidden" name="command" value="remove_from_basket"/>
-                        <input type="hidden" name="cancel_product_id" value="${products.id}"/>
-                        <input type="hidden" name="cancel_product_count" value="${products.count}"/>
-                        <input type="submit" value="<fmt:message key="cancel"/>">
-                    </form>
-                </td>
-<%--                </c:if>--%>
+                <td>${basket.productName}</td>
+                <td>${basket.price}</td>
+                <td>${basket.count}</td>
+                <c:if test="${not empty sessionScope.basket}">
+                    <td>
+                        <form>
+                            <input type="hidden" name="command" value="remove_from_basket"/>
+                            <input type="hidden" name="cancel_product_name" value="${basket.productName}"/>
+                            <input type="hidden" name="cancel_product_count" value="${basket.count}"/>
+                            <input type="submit" value="<fmt:message key="cancel"/>">
+                        </form>
+                    </td>
+                </c:if>
             </tr>
         </c:forEach>
     </table>
-    <b><fmt:message key="total.price"/></b>
-    <input readonly="readonly" name="total.price" type="text" required="required" value="${sessionScope.total_price}" class="form-control"/>
-    <form id="pay_basket" action="controller" method="post" class="well">
-        <input type="hidden" name="command" value="pay_basket"/>
-        <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="pay"/>"/>
-    </form>
-    <form id="clear_basket" action="controller" method="post" class="well">
-        <input type="hidden" name="command" value="clear_basket"/>
-        <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="clear"/>"/>
-    </form>
+
+    <c:if test="${not empty sessionScope.basket}">
+        <b><fmt:message key="total.price"/></b>
+
+        <input readonly="readonly" name="total.price" type="text" required="required"
+               value="${sessionScope.total_price}" class="form-control"/>
+        <form action="controller" method="post" class="well">
+            <input type="hidden" name="command" value="pay_basket"/>
+            <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="pay"/>"/>
+        </form>
+        <form action="controller" method="post" class="well">
+            <input type="hidden" name="command" value="clear_basket"/>
+            <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="clear"/>"/>
+        </form>
+    </c:if>
+
 </div>
 </body>
 </html>

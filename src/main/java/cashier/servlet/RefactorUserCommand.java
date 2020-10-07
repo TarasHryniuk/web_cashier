@@ -1,9 +1,13 @@
 package cashier.servlet;
 
 import cashier.Path;
+import cashier.Statuses;
 import cashier.dao.UserDaoImpl;
+import cashier.dao.entity.Product;
+import cashier.dao.entity.Receipt;
 import cashier.dao.entity.Role;
 import cashier.dao.entity.User;
+import cashier.util.GenerateReceiptNumber;
 import cashier.util.StringHelpers;
 import org.apache.log4j.Logger;
 
@@ -47,7 +51,7 @@ public class RefactorUserCommand extends Command {
             user.setAuthCode(StringHelpers.digest(login + password));
             try {
                 userDao.changePasswordUserByLogin(user);
-            } catch (Exception e){
+            } catch (Exception e) {
                 errorMessage = "Something went wrong....";
                 request.setAttribute("errorMessage", errorMessage);
                 LOGGER.error("errorMessage --> " + errorMessage);
@@ -55,18 +59,30 @@ public class RefactorUserCommand extends Command {
             }
         }
 
-        user.setActive(Boolean.parseBoolean(request.getParameter("active")));
-        user.setRole(Integer.parseInt(request.getParameter("role")));
-        user.setFullName(request.getParameter("full.name"));
-        user.setTerminalId(!StringHelpers.isNullOrEmpty(request.getParameter("terminal.id")) ?
-                Integer.parseInt(request.getParameter("terminal.id")) : null);
-
         try {
-            if (!userDao.updateUserByLogin(user)) {
-                errorMessage = "Something went wrong....";
-                request.setAttribute("errorMessage", errorMessage);
-                LOGGER.error("errorMessage --> " + errorMessage);
-                return forward;
+            if (request.getParameter("command").equals("refactor_user")) {
+                user.setActive(Boolean.parseBoolean(request.getParameter("active")));
+                user.setRole(Integer.parseInt(request.getParameter("role")));
+                user.setFullName(request.getParameter("full.name"));
+                user.setTerminalId(!StringHelpers.isNullOrEmpty(request.getParameter("terminal.id")) ?
+                        Integer.parseInt(request.getParameter("terminal.id")) : null);
+
+                if (!userDao.updateUserByLogin(user)) {
+                    errorMessage = "Something went wrong....";
+                    request.setAttribute("errorMessage", errorMessage);
+                    LOGGER.error("errorMessage --> " + errorMessage);
+                    return forward;
+                }
+
+            } else if (request.getParameter("command").equals("delete_user")) {
+
+                if (!userDao.deleteUserByLogin(user)) {
+                    errorMessage = "Something went wrong....";
+                    request.setAttribute("errorMessage", errorMessage);
+                    LOGGER.error("errorMessage --> " + errorMessage);
+                    return forward;
+                }
+
             }
         } catch (Exception e) {
             errorMessage = "Something went wrong....";
@@ -75,7 +91,8 @@ public class RefactorUserCommand extends Command {
             return forward;
         }
 
-        forward = Path.PAGE_ALL_USERS;
+
+        forward = Path.SUCCESS;
 
 
         LOGGER.debug("Command finished");

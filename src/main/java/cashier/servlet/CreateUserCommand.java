@@ -45,13 +45,14 @@ public class CreateUserCommand extends Command {
 
         User user = new User();
 
-        user.setLogin(request.getParameter("login"));
-        user.setAuthCode(StringHelpers.digest(request.getParameter("login") + request.getParameter("password")));
-        user.setRole(Integer.parseInt(request.getParameter("role")));
-        user.setFullName(request.getParameter("full.name"));
-        user.setTerminalId(!StringHelpers.isNullOrEmpty(request.getParameter("terminal.id"))?
-                Integer.parseInt(request.getParameter("terminal.id")) : null);
-
+        if (!request.getParameter("command").equals("create_category")) {
+            user.setLogin(request.getParameter("login"));
+            user.setAuthCode(StringHelpers.digest(request.getParameter("login") + request.getParameter("password")));
+            user.setRole(Integer.parseInt(request.getParameter("role")));
+            user.setFullName(request.getParameter("full.name"));
+            user.setTerminalId(!StringHelpers.isNullOrEmpty(request.getParameter("terminal.id")) ?
+                    Integer.parseInt(request.getParameter("terminal.id")) : null);
+        }
 
         try {
             if(!new UserDaoImpl().insertUser(user)){
@@ -74,7 +75,7 @@ public class CreateUserCommand extends Command {
             }
         }
 
-        forward = Path.PAGE_ALL_USERS;
+        forward = Path.SUCCESS;
 
 
         LOGGER.debug("Command finished");

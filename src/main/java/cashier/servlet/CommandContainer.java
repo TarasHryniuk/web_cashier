@@ -27,12 +27,16 @@ public class CommandContainer {
 		commands.put("create_user", new CreateUserCommand());
 		commands.put("all_users", new GetAllUsersCommand());
 		commands.put("refactor_user", new RefactorUserCommand());
+		commands.put("delete_user", new RefactorUserCommand());
 		commands.put("x.report", new DocumentsCommand());
 		commands.put("z.report", new DocumentsCommand());
 		commands.put("initialize.work.station", new InitializeCashierWorkStationCommand());
 		commands.put("add_to_basket", new InitializeCashierWorkStationCommand());
 		commands.put("remove_from_basket", new InitializeCashierWorkStationCommand());
 		commands.put("clear_basket", new InitializeCashierWorkStationCommand());
+		commands.put("create_category", new InitializeCashierWorkStationCommand());
+		commands.put("create_product", new InitializeCashierWorkStationCommand());
+		commands.put("refactor_product", new InitializeCashierWorkStationCommand());
 		commands.put("pay_basket", new ProcessingReceiptCommand());
 		commands.put("cancel_basket", new ProcessingReceiptCommand());
 

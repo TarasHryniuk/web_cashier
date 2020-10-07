@@ -51,6 +51,7 @@ public class ProcessingReceiptCommand extends Command {
 
             if (request.getParameter("command").equals("pay_basket")) {
                 List<Receipt> receipts = (List<Receipt>) session.getAttribute("basket");
+                List<Product> products = (List<Product>) session.getAttribute("products");
                 if (null == receipts || receipts.isEmpty()) {
                     errorMessage = "Something went wrong....";
                     request.setAttribute("errorMessage", errorMessage);
@@ -61,11 +62,17 @@ public class ProcessingReceiptCommand extends Command {
                     receipt.setStatus(Statuses.SUCCESS.shortValue());
                     receipt.setProcessingTime(new Date().getTime());
                 });
-//                productsDao.updateCountForProduct();
                 receiptsDao.insertReceipts(receipts);
+
+                for (Product product : products) {
+                    productsDao.updateCountForProduct(product);
+                }
+
                 session.setAttribute("products", null);
                 session.setAttribute("basket", null);
                 session.setAttribute("total_price", 0.00);
+                forward = Path.SUCCESS;
+                return forward;
             } else if (request.getParameter("command").equals("cancel_basket")) {
                 Receipt receipt = (Receipt) session.getAttribute("cancel_receipt");
 
@@ -73,6 +80,19 @@ public class ProcessingReceiptCommand extends Command {
                 receipt.setCancelTime(new Date().getTime());
                 receipt.setCancelUserID(user.getId());
                 receiptsDao.cancelReceipt(receipt);
+
+                List<Product> products = new LinkedList<>();
+                List<Receipt> receipts = receiptsDao.findAllByReceiptId(receipt.getReceiptId());
+                for (Receipt receiptRecalc : receipts){
+                    Product product = productsDao.getProductsByName(receiptRecalc.getProductName());
+                    product.setCount(product.getCount() + receiptRecalc.getCount());
+                }
+
+                for (Product product : products) {
+                    productsDao.updateCountForProduct(product);
+                }
+                forward = Path.SUCCESS;
+                return forward;
             }
 
         } catch (Exception e) {

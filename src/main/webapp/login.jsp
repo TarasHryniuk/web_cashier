@@ -53,6 +53,7 @@
                         <option value="en"><fmt:message key="lang.en"/></option>
                         <option value="ru"><fmt:message key="lang.ru"/></option>
                         <option value="ua"><fmt:message key="lang.ua"/></option>
+                        <input type="hidden" name="command" value="login"/>
                     </select>
                 </div>
             </div>
@@ -60,7 +61,7 @@
             <input type="hidden" name="command" value="login"/>
             <input name="login" type="login" required="required" placeholder=<fmt:message key="login"/> class="form-control"/>
             <input name="password" type="password" required="required" placeholder=<fmt:message key="password"/> class="form-control"/>
-            <input name="terminal.id" type="terminal.id" placeholder=<fmt:message key="terminal.id"/> class="form-control"/>
+<%--            <input name="terminal.id" type="terminal.id" placeholder=<fmt:message key="terminal.id"/> class="form-control"/>--%>
 
             <div class="alert alert-danger" style="display: none;"><strong><fmt:message key="login.error"/></strong>
             </div>

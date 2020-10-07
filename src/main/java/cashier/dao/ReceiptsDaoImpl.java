@@ -25,6 +25,10 @@ public class ReceiptsDaoImpl extends GenericDao {
     private static final String SQL_FIND_MAX_RECEIPT_NO = "SELECT MAX(receipt_id) as max_num  FROM receipts";
     private static final String SQL_FIND_ALL_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
             "rec, products as prod WHERE rec.id_product = prod.id ORDER BY rec.id ASC LIMIT 20 OFFSET ?";
+
+    private static final String SQL_FIND_ALL_BY_RECEIPT_ID = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
+            "rec, products as prod WHERE rec.id_product = prod.id AND rec.receipt_id = ?";
+
     private static final String SQL_FIND_ALL_BY_USER_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
             "rec, products as prod WHERE rec.id_product = prod.id AND rec.user_id = ? ORDER BY rec.id ASC LIMIT 20 OFFSET ?";
     private static final String SQL_FIND_ALL_RECEIPTS_TODAY = "SELECT * FROM receipts WHERE execute_time>= ? AND execute_time <= ? AND status = 3 AND user_id = ?";
@@ -97,32 +101,37 @@ public class ReceiptsDaoImpl extends GenericDao {
         return true;
     }
 
-//    public Product getProductsByName(String name) {
-//        ResultSet rs = null;
-//        Product product = null;
-//        LOCK.lock();
-//        try (Connection connection = DataSourceConfig.getInstance().getConnection();
-//             PreparedStatement ps = connection.prepareStatement(SQL_FIND_PRODUCT_BY_NAME)) {
-//            ps.setString(1, name);
-//            rs = ps.executeQuery();
-//            if (rs.next()) {
-//                product = new Product();
-//                product.setId(rs.getInt("id"));
-//                product.setActive(rs.getBoolean("active"));
-//                product.setName(rs.getString("name"));
-//                product.setPrice(rs.getLong("price"));
-//                product.setWeight(rs.getLong("weight"));
-//                product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
-//                product.setCategoriesId(rs.getInt("categories_id"));
-//            }
-//        } catch (SQLException e) {
-//            LOGGER.error(e);
-//        } finally {
-//            close(rs);
-//            LOCK.unlock();
-//        }
-//        return product;
-//    }
+    public List<Receipt> findAllByReceiptId(Integer receiptId) {
+        ResultSet rs = null;
+        List<Receipt> receipts = new LinkedList<>();
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL_BY_RECEIPT_ID)) {
+            ps.setInt(1, receiptId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Receipt payment = new Receipt();
+                payment.setId(rs.getInt("id"));
+                payment.setProductID(rs.getInt("id_product"));
+                payment.setUserID(rs.getInt("user_id"));
+                payment.setCount(rs.getInt("count"));
+                payment.setPrice(rs.getLong("price"));
+                payment.setStatus(rs.getShort("status"));
+                payment.setProcessingTime(rs.getTimestamp("processing_time").getTime());
+                Timestamp cancelTime = rs.getTimestamp("cancel_time");
+                payment.setCancelTime(null != cancelTime ? cancelTime.getTime() : null);
+                payment.setCancelUserID(rs.getInt("cancel_user_id"));
+                payment.setProductName(rs.getString("product_name"));
+                receipts.add(payment);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        } finally {
+            close(rs);
+            LOCK.unlock();
+        }
+        return receipts;
+    }
 
     public List<Receipt> findAllUserReceipts(Integer userId, Integer offset) {
         ResultSet rs = null;

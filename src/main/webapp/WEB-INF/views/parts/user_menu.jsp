@@ -14,8 +14,8 @@
                 </ul>
 
                 <ul class="nav navbar-nav navbar-left">
-                    <form action="create_category.jsp">
-                        <input type="submit" value=<fmt:message key="create.category"/>/>
+                    <form action="create_user.jsp">
+                        <input type="submit" value=<fmt:message key="create.user"/>/>
                     </form>
                 </ul>
             </c:if>

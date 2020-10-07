@@ -20,14 +20,15 @@ public class UserDaoImpl extends GenericDao {
     private static final Lock LOCK = new ReentrantLock();
     private static final Logger LOGGER = Logger.getLogger(UserDaoImpl.class);
 
-    private static final String SQL_INSERT_USER = "INSERT INTO users VALUES (DEFAULT ,? ,? ,?, ?, ?, ?)";
+    private static final String SQL_INSERT_USER = "INSERT INTO users VALUES (DEFAULT ,? ,? ,?, ?, ?)";
     private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM users WHERE id=?";
     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM users ORDER BY id ASC LIMIT 20 OFFSET ?";
     private static final String SQL_FIND_ALL_USERS_COUNT = "SELECT count(*) AS total FROM users";
     ;
     private static final String SQL_CHANGE_PASSWORD_USER_BY_LOGIN = "UPDATE users SET auth_code=? WHERE login=?";
-    private static final String SQL_UPDATE_USER_BY_LOGIN = "UPDATE users SET active=?, terminal_id=?, full_name=?, role=? WHERE login=?";
+    private static final String SQL_UPDATE_USER_BY_LOGIN = "UPDATE users SET active=?, full_name=?, role=? WHERE login=?";
+    private static final String SQL_DELETE_USER_BY_LOGIN = "DELETE FROM users WHERE \"login\" = ?";
 
     public boolean insertUser(User user) throws SQLException {
         ResultSet rs = null;
@@ -35,11 +36,10 @@ public class UserDaoImpl extends GenericDao {
         try (Connection connection = DataSourceConfig.getInstance().getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
             ps.setBoolean(1, true);
-            ps.setObject(2, user.getTerminalId());
-            ps.setString(3, user.getLogin());
-            ps.setString(4, user.getAuthCode());
-            ps.setString(5, user.getFullName());
-            ps.setInt(6, user.getRole());
+            ps.setString(2, user.getLogin());
+            ps.setString(3, user.getAuthCode());
+            ps.setString(4, user.getFullName());
+            ps.setInt(5, user.getRole());
 
             if (ps.executeUpdate() != 1)
                 return false;
@@ -72,7 +72,6 @@ public class UserDaoImpl extends GenericDao {
                 user = new User();
                 user.setId(rs.getInt("id"));
                 user.setActive(rs.getBoolean("active"));
-                user.setTerminalId(rs.getInt("terminal_id"));
                 user.setLogin(rs.getString("login"));
                 user.setAuthCode(rs.getString("auth_code"));
                 user.setFullName(rs.getString("full_name"));
@@ -99,7 +98,6 @@ public class UserDaoImpl extends GenericDao {
                 user = new User();
                 user.setId(rs.getInt("id"));
                 user.setActive(rs.getBoolean("active"));
-                user.setTerminalId(rs.getInt("terminal_id"));
                 user.setLogin(rs.getString("login"));
                 user.setAuthCode(rs.getString("auth_code"));
                 user.setFullName(rs.getString("full_name"));
@@ -126,7 +124,6 @@ public class UserDaoImpl extends GenericDao {
                 User user = new User();
                 user.setId(rs.getInt("id"));
                 user.setActive(rs.getBoolean("active"));
-                user.setTerminalId(rs.getInt("terminal_id"));
                 user.setLogin(rs.getString("login"));
                 user.setAuthCode(rs.getString("auth_code"));
                 user.setFullName(rs.getString("full_name"));
@@ -187,10 +184,27 @@ public class UserDaoImpl extends GenericDao {
              PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_USER_BY_LOGIN)) {
 
             ps.setBoolean(1, user.isActive());
-            ps.setInt(2, user.getTerminalId());
-            ps.setString(3, user.getFullName());
-            ps.setInt(4, user.getRole());
-            ps.setString(5, user.getLogin());
+            ps.setString(2, user.getFullName());
+            ps.setInt(3, user.getRole());
+            ps.setString(4, user.getLogin());
+            if (ps.executeUpdate() != 1) {
+                return false;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Can't update user:", e);
+            return false;
+        } finally {
+            LOCK.unlock();
+        }
+        return true;
+    }
+
+    public boolean deleteUserByLogin(User user) {
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_DELETE_USER_BY_LOGIN)) {
+
+            ps.setString(1, user.getLogin());
             if (ps.executeUpdate() != 1) {
                 return false;
             }

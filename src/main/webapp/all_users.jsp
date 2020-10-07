@@ -23,8 +23,7 @@
 
 </head>
 <body>
-<div class="table-responsive"
-     data-bind="flash: {error: state.error, success: state.success}, hover_loader: state.loading">
+<div class="table-responsive">
     <table class="table table-bordered table-hover table-striped table-condensed">
         <tr>
             <th><fmt:message key="login"/></th>
@@ -32,11 +31,22 @@
             <th><fmt:message key="full.name"/></th>
             <th><fmt:message key="role"/></th>
             <th><fmt:message key="config"/></th>
+            <th><fmt:message key="delete"/></th>
         </tr>
         <c:forEach items="${requestScope.users}" var="element" varStatus="loop">
             <tr>
                 <td>${element.login}</td>
-                <td>${element.active}</td>
+
+                <c:if test="${element.active=='true'}">
+                <td>
+                    <button type="button" class="icon-ok text-success"></button>
+                </td>
+                </c:if>
+                <c:if test="${element.active=='false'}">
+                    <td>
+                        <button type="button" class="icon-remove text-danger"></button>
+                    </td>
+                </c:if>
                 <td>${element.fullName}</td>
                 <td>${element.roleName}</td>
                 <td>
@@ -44,10 +54,18 @@
                         <input type="hidden" name="command" value="refactor_user"/>
                         <input type="hidden" name="refactor_user_active" value=${element.active}>
                         <input type="hidden" name="refactor_user_full_name" value=${element.fullName}>
+                        <c:out value="${param.refactor_user_full_name}"/>
                         <input type="hidden" name="refactor_user_role" value=${element.role}>
                         <input type="hidden" name="refactor_user_terminal_id" value=${element.terminalId}>
                         <input type="hidden" name="refactor_user_login" value=${element.login}>
                         <input type="submit" value="<fmt:message key="refactor.user"/>">
+                    </form>
+                </td>
+                <td>
+                    <form id="delete_user" action="controller" method="post">
+                        <input type="hidden" name="command" value="delete_user"/>
+                        <input type="hidden" name="refactor_user_login" value=${element.login}>
+                        <input type="submit" value="<fmt:message key="delete"/>">
                     </form>
                 </td>
             </tr>

@@ -20,7 +20,7 @@ public class ProductsDaoImpl extends GenericDao {
     private static final Lock LOCK = new ReentrantLock();
     private static final Logger LOGGER = Logger.getLogger(ProductsDaoImpl.class);
 
-    private static final String SQL_INSERT_PRODUCT = "INSERT INTO products VALUES (DEFAULT ,? ,? ,?, ?, ?, ?)";
+    private static final String SQL_INSERT_PRODUCT = "INSERT INTO products VALUES (DEFAULT ,? ,? ,?, ?, ?, ?, ?)";
     private static final String SQL_FIND_ALL_PRESENT_PRODUCTS = "SELECT * FROM products WHERE count != 0 AND active = true";
     private static final String SQL_FIND_PRODUCT_BY_ID = "SELECT * FROM products WHERE count != 0 AND active = true AND id = ?";
     private static final String SQL_FIND_PRODUCT_BY_NAME = "SELECT * FROM products WHERE count != 0 AND active = true AND name = ?";
@@ -28,6 +28,7 @@ public class ProductsDaoImpl extends GenericDao {
     private static final String SQL_FIND_PRODUCTS_BY_CATEGORY_ID = "SELECT * FROM products WHERE categories_id = ?";
     private static final String SQL_CHANGE_PRICE_FOR_PRODUCT = "UPDATE products SET price=? WHERE name=?";
     private static final String SQL_CHANGE_COUNT_FOR_PRODUCT = "UPDATE products SET count=? WHERE name=?";
+    private static final String SQL_UPDATE_PRODUCT = "UPDATE products SET count=?, price=? WHERE id=?";
     private static final String SQL_CHANGE_WEIGHT_FOR_PRODUCT = "UPDATE products SET weight=? WHERE name=?";
 
     public boolean insertProduct(Product products) {
@@ -36,7 +37,7 @@ public class ProductsDaoImpl extends GenericDao {
         LOCK.lock();
         try (Connection connection = DataSourceConfig.getInstance().getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL_INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setBoolean(1, products.getActive());
+            ps.setBoolean(1, true);
             ps.setString(2, products.getName());
             ps.setLong(3, products.getPrice());
             ps.setLong(4, products.getWeight());
@@ -257,12 +258,32 @@ public class ProductsDaoImpl extends GenericDao {
         return true;
     }
 
+    public boolean updateProduct(Product product) {
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_UPDATE_PRODUCT)) {
+
+            ps.setLong(1, product.getCount());
+            ps.setLong(2, product.getPrice());
+            ps.setInt(3, product.getId());
+            if (ps.executeUpdate() != 1) {
+                return false;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Can't update product:" + e.getMessage());
+            return false;
+        } finally {
+            LOCK.unlock();
+        }
+        return true;
+    }
+
     public boolean updateCountForProduct(Product product) {
         LOCK.lock();
         try (Connection connection = DataSourceConfig.getInstance().getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL_CHANGE_COUNT_FOR_PRODUCT)) {
 
-            ps.setLong(1, product.getPrice());
+            ps.setLong(1, product.getCount());
             ps.setString(2, product.getName());
             if (ps.executeUpdate() != 1) {
                 return false;

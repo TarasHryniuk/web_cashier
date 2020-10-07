@@ -4,6 +4,7 @@ import cashier.Path;
 import cashier.Statuses;
 import cashier.dao.CategoriesDaoImpl;
 import cashier.dao.ProductsDaoImpl;
+import cashier.dao.entity.Category;
 import cashier.dao.entity.Product;
 import cashier.dao.entity.Receipt;
 import cashier.dao.entity.User;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.rmi.server.ExportException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,7 +46,10 @@ public class InitializeCashierWorkStationCommand extends Command {
 
         try {
             productsDao = new ProductsDaoImpl();
-            request.setAttribute("goods", productsDao.findAllPresentProducts());
+            session.setAttribute("goods", productsDao.findAllPresentProducts());
+
+            categoriesDao = new CategoriesDaoImpl();
+            session.setAttribute("categories", categoriesDao.getAllCategories());
 
             List<Product> products = (List<Product>) session.getAttribute("products");
             List<Receipt> receipts = (List<Receipt>) session.getAttribute("basket");
@@ -53,16 +58,17 @@ public class InitializeCashierWorkStationCommand extends Command {
 
             if (request.getParameter("command").equals("add_to_basket")) {
                 Product product = productsDao.getProductsById(Integer.parseInt(request.getParameter("goods_id")));
-                product.setCount(Integer.parseInt(request.getParameter("count")));
+                product.setCount(product.getCount() - Integer.parseInt(request.getParameter("count")));
 
                 if (!products.contains(product)) {
                     Receipt receipt = new Receipt();
-                    receipt.setCount(product.getCount());
+                    receipt.setCount(Integer.parseInt(request.getParameter("count")));
                     if (null == receipts || receipts.isEmpty())
                         receipt.setReceiptId(GenerateReceiptNumber.getReceiptNo());
                     else
                         receipt.setReceiptId(receipts.get(0).getReceiptId());
                     receipt.setPrice(product.getPrice());
+                    receipt.setProductName(product.getName());
                     receipt.setStatus(Statuses.CREATED.shortValue());
                     receipt.setProductID(product.getId());
                     receipt.setUserID(user.getId());
@@ -75,11 +81,15 @@ public class InitializeCashierWorkStationCommand extends Command {
                 }
             } else if (request.getParameter("command").equals("remove_from_basket")) {
 
-                Product product = productsDao.getProductsById(Integer.parseInt(request.getParameter("cancel_product_id")));
+                Product product = productsDao.getProductsByName(request.getParameter("cancel_product_name"));
                 product.setCount(Integer.parseInt(request.getParameter("cancel_product_count")));
 
                 Receipt receipt = new Receipt();
                 receipt.setCount(product.getCount());
+                if (null == receipts || receipts.isEmpty())
+                    receipt.setReceiptId(GenerateReceiptNumber.getReceiptNo());
+                else
+                    receipt.setReceiptId(receipts.get(0).getReceiptId());
                 receipt.setPrice(product.getPrice());
                 receipt.setStatus(Statuses.CREATED.shortValue());
                 receipt.setProductID(product.getId());
@@ -96,6 +106,42 @@ public class InitializeCashierWorkStationCommand extends Command {
                 session.setAttribute("products", null);
                 session.setAttribute("basket", null);
                 session.setAttribute("total_price", 0.00);
+            } else if (request.getParameter("command").equals("refactor_product")) {
+
+                Product product = new Product();
+                product.setPrice(Long.parseLong(request.getParameter("count")));
+                product.setCount(Integer.parseInt(request.getParameter("price")));
+                product.setId(Integer.parseInt(request.getParameter("goods_id")));
+
+                if (productsDao.updateProduct(product)) {
+                    forward = Path.SUCCESS;
+                    return forward;
+                } else {
+                    throw new Exception();
+                }
+
+            } else if (request.getParameter("command").equals("create_category")) {
+                Category category = new Category();
+                category.setName(request.getParameter("name"));
+                if (categoriesDao.insertCategory(category)) {
+                    forward = Path.SUCCESS;
+                    return forward;
+                } else {
+                    throw new Exception();
+                }
+            } else if (request.getParameter("command").equals("create_product")) {
+                Product product = new Product();
+                product.setName(request.getParameter("name"));
+                product.setPrice(Long.parseLong(request.getParameter("price")));
+                product.setCount(Integer.parseInt(request.getParameter("count")));
+                product.setWeight(Long.parseLong(request.getParameter("weight")));
+                product.setCategoriesId(Integer.parseInt(request.getParameter("category_id")));
+                if (productsDao.insertProduct(product)) {
+                    forward = Path.SUCCESS;
+                    return forward;
+                } else {
+                    throw new Exception();
+                }
             }
 
         } catch (Exception e) {
