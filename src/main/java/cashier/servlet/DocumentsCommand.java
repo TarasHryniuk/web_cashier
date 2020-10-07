@@ -5,7 +5,7 @@ import cashier.dao.ReceiptsDaoImpl;
 import cashier.dao.entity.Receipt;
 import cashier.dao.entity.Role;
 import cashier.dao.entity.User;
-import cashier.util.TotalReceiptAmount;
+import cashier.util.CalculateValuesByReceipts;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -49,11 +49,11 @@ public class DocumentsCommand extends Command {
         receiptsDao = new ReceiptsDaoImpl();
 
         List<Receipt> receipts = receiptsDao.findAllReceiptsByCurrentDate(user);
-        request.setAttribute("total_success_amount", TotalReceiptAmount.getTotalSuccessReceiptsAmount(receipts) / 100.0);
-        request.setAttribute("reports_total_count", TotalReceiptAmount.getTotalReceiptsCount(receipts));
-        request.setAttribute("reports_success_count", TotalReceiptAmount.getTotalSuccessReceiptsCount(receipts));
-        request.setAttribute("total_cancel_amount", TotalReceiptAmount.getTotalCancelReceiptsAmount(receipts) / 100.0);
-        request.setAttribute("reports_cancel_count", TotalReceiptAmount.getTotalCancelledReceiptsCount(receipts));
+        request.setAttribute("total_success_amount", CalculateValuesByReceipts.getTotalSuccessReceiptsAmount(receipts) / 100.0);
+        request.setAttribute("reports_total_count", CalculateValuesByReceipts.getTotalReceiptsCount(receipts));
+        request.setAttribute("reports_success_count", CalculateValuesByReceipts.getTotalSuccessReceiptsCount(receipts));
+        request.setAttribute("total_cancel_amount", CalculateValuesByReceipts.getTotalCancelReceiptsAmount(receipts) / 100.0);
+        request.setAttribute("reports_cancel_count", CalculateValuesByReceipts.getTotalCancelledReceiptsCount(receipts));
 
         request.setAttribute("report_name", request.getParameter("command").equals("x_report") ? "X Звіт" : "Z Звіт");
 

@@ -9,7 +9,7 @@ import java.util.List;
  * @author Taras Hryniuk, created on  07.10.2020
  * email : hryniuk.t@gmail.com
  */
-public class TotalReceiptAmount {
+public class CalculateValuesByReceipts {
 
     public static Long getTotalAmount(List<Receipt> receipts) {
         Long startPrice = 0L;

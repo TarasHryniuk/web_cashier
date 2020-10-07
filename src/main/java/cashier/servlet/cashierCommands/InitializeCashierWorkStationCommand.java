@@ -10,7 +10,7 @@ import cashier.dao.entity.Receipt;
 import cashier.dao.entity.User;
 import cashier.servlet.Command;
 import cashier.util.GenerateReceiptNumber;
-import cashier.util.TotalReceiptAmount;
+import cashier.util.CalculateValuesByReceipts;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.rmi.server.ExportException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -78,7 +77,7 @@ public class InitializeCashierWorkStationCommand extends Command {
                     receipts.add(receipt);
                     session.setAttribute("products", products);
                     session.setAttribute("basket", receipts);
-                    session.setAttribute("total_price", TotalReceiptAmount.getTotalAmount(receipts) / 100.0);
+                    session.setAttribute("total_price", CalculateValuesByReceipts.getTotalAmount(receipts) / 100.0);
                 }
             } else if (request.getParameter("command").equals("remove_from_basket")) {
 
@@ -100,7 +99,7 @@ public class InitializeCashierWorkStationCommand extends Command {
                 receipts.remove(receipt);
                 session.setAttribute("products", products);
                 session.setAttribute("basket", receipts);
-                session.setAttribute("total_price", TotalReceiptAmount.getTotalAmount(receipts) / 100.0);
+                session.setAttribute("total_price", CalculateValuesByReceipts.getTotalAmount(receipts) / 100.0);
             } else if (request.getParameter("command").equals("clear_basket")) {
                 products = null;
                 receipts = null;
