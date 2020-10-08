@@ -88,7 +88,7 @@ public class DocumentsCommand extends Command {
     }
 
     private JasperPrint getJasperPrint() {
-        String fileName = File.separator + "reports" + File.separator + "final_project_document.jasper";
+        String fileName = File.separator + "reports" + File.separator + "document.jasper";
         InputStream inputStream = getClass().getResourceAsStream(fileName);
         JasperPrint print;
         try {
