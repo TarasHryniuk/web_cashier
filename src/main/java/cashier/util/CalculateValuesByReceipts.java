@@ -3,6 +3,7 @@ package cashier.util;
 import cashier.Statuses;
 import cashier.dao.entity.Receipt;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -51,5 +52,7 @@ public class CalculateValuesByReceipts {
 
         return startPrice;
     }
+
+
 
 }

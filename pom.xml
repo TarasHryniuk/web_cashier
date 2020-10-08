@@ -82,6 +82,12 @@
 
         <!-- Report tools ? -->
 
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.15.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
