@@ -23,8 +23,10 @@ public class ReceiptsDaoImpl extends GenericDao {
     private static final String SQL_INSERT_RECEIPT = "INSERT INTO receipts VALUES (DEFAULT ,? ,? ,?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_CANCEL_RECEIPT = "UPDATE receipts SET status = 212, cancel_time = ?, cancel_user_id = ? WHERE \"id\" = ?";
     private static final String SQL_FIND_MAX_RECEIPT_NO = "SELECT MAX(receipt_id) as max_num  FROM receipts";
-    private static final String SQL_FIND_ALL_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
-            "rec, products as prod WHERE rec.id_product = prod.id ORDER BY rec.id ASC LIMIT 20 OFFSET ?";
+
+    private static final String SQL_FIND_ALL_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name, u.\"login\" " +
+            "as user_login FROM receipts as rec, products as prod, users as u WHERE rec.id_product = prod.id " +
+            "AND rec.user_id = u.\"id\" ORDER BY rec.id DESC LIMIT 20 OFFSET ?";
 
     private static final String SQL_FIND_ALL_BY_RECEIPT_ID = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
             "rec, products as prod WHERE rec.id_product = prod.id AND rec.receipt_id = ?";
@@ -32,7 +34,7 @@ public class ReceiptsDaoImpl extends GenericDao {
     private static final String SQL_FIND_ALL_BY_USER_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
             "rec, products as prod WHERE rec.id_product = prod.id AND rec.user_id = ? ORDER BY rec.id ASC LIMIT 20 OFFSET ?";
 
-    private static final String SQL_FIND_RECEIPTS_TODAY = "SELECT * FROM receipts WHERE processing_time>= CURRENT_DATE " +
+    private static final String SQL_FIND_RECEIPTS_TODAY = "SELECT * FROM receipts WHERE processing_time >= CURRENT_DATE " +
             "AND processing_time <= CURRENT_DATE + INTERVAL '1 DAY' AND user_id = ?";
 
     private static final String SQL_FIND_ALL_RECEIPTS_COUNT = "SELECT count(*) AS total FROM receipts";
@@ -197,19 +199,20 @@ public class ReceiptsDaoImpl extends GenericDao {
             ps.setInt(1, offset);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Receipt payment = new Receipt();
-                payment.setId(rs.getInt("id"));
-                payment.setProductID(rs.getInt("id_product"));
-                payment.setUserID(rs.getInt("user_id"));
-                payment.setCount(rs.getInt("count"));
-                payment.setPrice(rs.getLong("price"));
-                payment.setStatus(rs.getShort("status"));
-                payment.setProcessingTime(rs.getTimestamp("processing_time").getTime());
+                Receipt receipt = new Receipt();
+                receipt.setId(rs.getInt("id"));
+                receipt.setProductID(rs.getInt("id_product"));
+                receipt.setUserID(rs.getInt("user_id"));
+                receipt.setCount(rs.getInt("count"));
+                receipt.setPrice(rs.getLong("price"));
+                receipt.setStatus(rs.getShort("status"));
+                receipt.setProcessingTime(rs.getTimestamp("processing_time").getTime());
                 Timestamp cancelTime = rs.getTimestamp("cancel_time");
-                payment.setCancelTime(null != cancelTime ? cancelTime.getTime() : null);
-                payment.setCancelUserID(rs.getInt("cancel_user_id"));
-                payment.setProductName(rs.getString("product_name"));
-                receipts.add(payment);
+                receipt.setCancelTime(null != cancelTime ? cancelTime.getTime() : null);
+                receipt.setCancelUserID(rs.getInt("cancel_user_id"));
+                receipt.setProductName(rs.getString("product_name"));
+                receipt.setUserLogin(rs.getString("user_login"));
+                receipts.add(receipt);
             }
         } catch (SQLException e) {
             LOGGER.error(e);

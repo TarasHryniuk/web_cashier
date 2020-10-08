@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,16 +64,17 @@ public class DocumentsCommand extends Command {
 
         List<Receipt> receipts = receiptsDao.findAllReceiptsByCurrentDate(user);
 
+        DecimalFormat formatter = new DecimalFormat("#####0.00");
+
         valuesMap = new HashMap<>();
-        valuesMap.put("total_success_amount", CalculateValuesByReceipts.getTotalSuccessReceiptsAmount(receipts) / 100.0);
-        valuesMap.put("reports_total_count", CalculateValuesByReceipts.getTotalReceiptsCount(receipts));
-        valuesMap.put("reports_success_count", CalculateValuesByReceipts.getTotalCancelReceiptsAmount(receipts) / 100.0);
-        valuesMap.put("total_cancel_amount", CalculateValuesByReceipts.getTotalSuccessReceiptsAmount(receipts) / 100.0);
-        valuesMap.put("reports_cancel_count", CalculateValuesByReceipts.getTotalCancelledReceiptsCount(receipts));
-        valuesMap.put("report_name", request.getParameter("command").equals("x_report") ? "X Звіт" : "Z Звіт");
+        valuesMap.put("{total.success.amount}", formatter.format(CalculateValuesByReceipts.getTotalSuccessReceiptsAmount(receipts) / 100.0));
+        valuesMap.put("{reports.total.count}", String.valueOf(CalculateValuesByReceipts.getTotalReceiptsCount(receipts)));
+        valuesMap.put("{reports.success.count}", String.valueOf(CalculateValuesByReceipts.getTotalSuccessReceiptsCount(receipts)));
+        valuesMap.put("{total.cancel.amount}", formatter.format(CalculateValuesByReceipts.getTotalSuccessReceiptsAmount(receipts) / 100.0));
+        valuesMap.put("{reports.cancel.count}", String.valueOf(CalculateValuesByReceipts.getTotalCancelledReceiptsCount(receipts)));
+        valuesMap.put("{report.name}", request.getParameter("command").equals("x_report") ? "X Звіт" : "Z Звіт");
 
-
-        if(request.getParameter("command").equals("x_report") || request.getParameter("command").equals("Z_report")) {
+        if(request.getParameter("command").equals("x_report") || request.getParameter("command").equals("z_report")) {
             response.setContentType("image/jpeg");
             OutputStream out = response.getOutputStream();
             ImageIO.write((BufferedImage) extractPrintImage(getJasperPrint()), "jpg", out);
@@ -90,11 +92,10 @@ public class DocumentsCommand extends Command {
         InputStream inputStream = getClass().getResourceAsStream(fileName);
         JasperPrint print;
         try {
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<>();
             map.put("map", valuesMap);
 
-            File f = new File(fileName);
-            System.out.println("ClassLoader.getResource(): " + f.exists());
+            System.out.println("valuesMap: " + valuesMap.toString());
             print = JasperFillManager.fillReport(inputStream, map, new JREmptyDataSource());
 
             return print;

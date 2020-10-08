@@ -18,6 +18,7 @@ public class Receipt {
     private Short status;
     private Long processingTime;
     private Long cancelTime;
+    private String userLogin;
 
     public Receipt() {
     }
@@ -110,6 +111,14 @@ public class Receipt {
         this.receiptId = receiptId;
     }
 
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -146,6 +155,7 @@ public class Receipt {
                 .append(", status=").append(status)
                 .append(", processingTime=").append(processingTime)
                 .append(", cancelTime=").append(cancelTime)
+                .append(", userLogin=").append(userLogin)
                 .append('}');
         return stringBuilder.toString();
     }

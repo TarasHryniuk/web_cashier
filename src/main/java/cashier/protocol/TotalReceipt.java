@@ -8,8 +8,10 @@ import java.util.Objects;
  */
 public class TotalReceipt {
     private Integer id;
-    private Long totalAmount;
-
+    private Boolean active;
+    private String totalAmount;
+    private String login;
+    private String date;
 
     public Integer getId() {
         return id;
@@ -19,12 +21,36 @@ public class TotalReceipt {
         this.id = id;
     }
 
-    public Long getTotalAmount() {
+    public String getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Long totalAmount) {
+    public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override
@@ -32,13 +58,12 @@ public class TotalReceipt {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TotalReceipt that = (TotalReceipt) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(totalAmount, that.totalAmount);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, totalAmount);
+        return Objects.hash(id);
     }
 
     @Override
