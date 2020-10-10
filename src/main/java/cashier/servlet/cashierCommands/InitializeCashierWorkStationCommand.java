@@ -11,6 +11,7 @@ import cashier.dao.entity.User;
 import cashier.servlet.Command;
 import cashier.util.GenerateReceiptNumber;
 import cashier.util.CalculateValuesByReceipts;
+import cashier.util.StringHelpers;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -45,11 +46,16 @@ public class InitializeCashierWorkStationCommand extends Command {
         String forward = Path.PAGE_ERROR_PAGE;
 
         try {
-            productsDao = new ProductsDaoImpl();
-            session.setAttribute("goods", productsDao.findAllPresentProducts());
 
             categoriesDao = new CategoriesDaoImpl();
             session.setAttribute("categories", categoriesDao.getAllCategories());
+
+//            if(!StringHelpers.isNullOrEmpty((String) session.getAttribute("category_id")))
+                System.out.println("categories.id: " + request.getAttribute("categories.id"));
+                System.out.println("categories.id: " + session.getAttribute("categories.id"));
+
+            productsDao = new ProductsDaoImpl();
+            session.setAttribute("goods", productsDao.findAllPresentProducts());
 
             List<Product> products = (List<Product>) session.getAttribute("products");
             List<Receipt> receipts = (List<Receipt>) session.getAttribute("basket");

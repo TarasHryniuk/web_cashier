@@ -54,4 +54,8 @@ public class StringHelpers {
         return "";
     }
 
+    public static void main(String[] args) {
+        System.out.println(StringHelpers.digest("login" + "password"));
+    }
+
 }

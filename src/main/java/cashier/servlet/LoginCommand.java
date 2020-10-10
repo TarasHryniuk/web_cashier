@@ -68,6 +68,8 @@ public class LoginCommand extends Command {
 
         StringBuilder sb = new StringBuilder();
         sb.append(login).append(password);
+        System.out.println(sb.toString());
+        System.out.println(StringHelpers.digest(sb.toString()));
         if (!user.getAuthCode().equals(StringHelpers.digest(sb.toString()))) {
             errorMessage = "Auth failed";
             request.setAttribute("errorMessage", errorMessage);

@@ -24,15 +24,15 @@ public class ReceiptsDaoImpl extends GenericDao {
     private static final String SQL_CANCEL_RECEIPT = "UPDATE receipts SET status = 212, cancel_time = ?, cancel_user_id = ? WHERE \"id\" = ?";
     private static final String SQL_FIND_MAX_RECEIPT_NO = "SELECT MAX(receipt_id) as max_num  FROM receipts";
 
-    private static final String SQL_FIND_ALL_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name, u.\"login\" " +
-            "as user_login FROM receipts as rec, products as prod, users as u WHERE rec.id_product = prod.id " +
-            "AND rec.user_id = u.\"id\" ORDER BY rec.id DESC LIMIT 20 OFFSET ?";
+    private static final String SQL_FIND_ALL_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name, u.\"login\" as user_login " +
+            "FROM receipts as rec JOIN users u ON rec.user_id = u.\"id\" JOIN products as prod ON rec.id_product = prod.id " +
+            "ORDER BY rec.id DESC LIMIT 20 OFFSET ?";
 
-    private static final String SQL_FIND_ALL_BY_RECEIPT_ID = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
-            "rec, products as prod WHERE rec.id_product = prod.id AND rec.receipt_id = ?";
+    private static final String SQL_FIND_ALL_BY_RECEIPT_ID = "SELECT rec.*, prod.\"name\" as product_name FROM receipts " +
+            "as rec JOIN products as prod ON rec.id_product = prod.id AND rec.receipt_id = ?";
 
-    private static final String SQL_FIND_ALL_BY_USER_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name FROM receipts as " +
-            "rec, products as prod WHERE rec.id_product = prod.id AND rec.user_id = ? ORDER BY rec.id ASC LIMIT 20 OFFSET ?";
+    private static final String SQL_FIND_ALL_BY_USER_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name FROM receipts " +
+            "as rec JOIN products as prod ON rec.id_product = prod.id WHERE rec.user_id = ? ORDER BY rec.id ASC LIMIT 20 OFFSET ?";
 
     private static final String SQL_FIND_RECEIPTS_TODAY = "SELECT * FROM receipts WHERE processing_time >= CURRENT_DATE " +
             "AND processing_time <= CURRENT_DATE + INTERVAL '1 DAY' AND user_id = ?";

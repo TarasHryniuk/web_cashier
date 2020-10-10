@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -23,6 +24,7 @@ public class ProductsDaoImpl extends GenericDao {
     private static final String SQL_INSERT_PRODUCT = "INSERT INTO products VALUES (DEFAULT ,? ,? ,?, ?, ?, ?, ?)";
     private static final String SQL_FIND_ALL_PRESENT_PRODUCTS = "SELECT * FROM products WHERE count != 0 AND active = true";
     private static final String SQL_FIND_PRODUCT_BY_ID = "SELECT * FROM products WHERE count != 0 AND active = true AND id = ?";
+    private static final String SQL_FIND_PRODUCT_BY_CATEGORY_ID = "SELECT * FROM products WHERE count != 0 AND active = true AND categories_id = ?";
     private static final String SQL_FIND_PRODUCT_BY_NAME = "SELECT * FROM products WHERE count != 0 AND active = true AND name = ?";
     private static final String SQL_FIND_ALL_PRODUCTS = "SELECT * FROM products";
     private static final String SQL_FIND_PRODUCTS_BY_CATEGORY_ID = "SELECT * FROM products WHERE categories_id = ?";
@@ -65,6 +67,35 @@ public class ProductsDaoImpl extends GenericDao {
             }
         }
         return true;
+    }
+
+    public List<Product> getProductsByCategoryId(Integer categoryId) {
+        ResultSet rs = null;
+        List<Product> products = new LinkedList<>();
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_FIND_PRODUCT_BY_CATEGORY_ID)) {
+            ps.setInt(1, categoryId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setActive(rs.getBoolean("active"));
+                product.setName(rs.getString("name"));
+                product.setPrice(rs.getLong("price"));
+                product.setWeight(rs.getLong("weight"));
+                product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
+                product.setCategoriesId(rs.getInt("categories_id"));
+                product.setCount(rs.getInt("count"));
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        } finally {
+            close(rs);
+            LOCK.unlock();
+        }
+        return products;
     }
 
     public Product getProductsById(Integer id) {

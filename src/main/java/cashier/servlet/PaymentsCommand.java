@@ -15,7 +15,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Taras Hryniuk, created on  29.09.2020
@@ -71,22 +74,40 @@ public class PaymentsCommand extends Command {
             List<Receipt> receipts = receiptsDao.findAllReceipts(page);
             List<TotalReceipt> totalReceipts = new LinkedList<>();
 
-            for (Receipt receipt : receipts) {
-//                if(totalReceipts){
-//
-//                }
 
-                TotalReceipt totalReceipt = new TotalReceipt();
-                totalReceipt.setId(receipt.getId());
-//                if(totalReceipts.contains(totalReceipt)){
-                    totalReceipt.setTotalAmount(formatter.format((receipt.getPrice() * receipt.getCount()) / 100.0));
-                    totalReceipt.setLogin(receipt.getUserLogin());
-                    totalReceipt.setActive(null == receipt.getCancelTime());
+
+            for (Receipt receipt : receipts) {
+
+//                if (totalReceipts.isEmpty()) {
+                    TotalReceipt tr = new TotalReceipt();
+                    tr.setId(receipt.getReceiptId());
+                    tr.setTotalAmount(formatter.format((receipt.getPrice() * receipt.getCount()) / 100.0));
+                    tr.setLogin(receipt.getUserLogin());
+                    tr.setActive(null == receipt.getCancelTime());
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    totalReceipt.setDate(sdf.format(new Date(receipt.getProcessingTime())));
-                    totalReceipts.add(totalReceipt);
+                    tr.setDate(sdf.format(new Date(receipt.getProcessingTime())));
+                    totalReceipts.add(tr);
 //                } else {
-//                    totalReceipt.setTotalAmount(totalReceipt.getTotalAmount() + (receipt.getPrice() * receipt.getCount()));
+//
+//                    for (int i = 0; i < totalReceipts.size(); i++){
+////                    for (TotalReceipt totalReceipt : totalReceipts) {
+//
+//                        if (totalReceipts.get(i).getId() == receipt.getId()) {
+//                            TotalReceipt tr = totalReceipts.get(i);
+////                            tr.setTotalAmount(formatter.format(tr.getTotalAmount() + ((receipt.getPrice() * receipt.getCount()) / 100.0)));
+//                            totalReceipts.add(tr);
+//                        } else {
+//                            TotalReceipt tr = new TotalReceipt();
+//                            tr.setId(receipt.getId());
+//                            tr.setTotalAmount(formatter.format((receipt.getPrice() * receipt.getCount()) / 100.0));
+//                            tr.setLogin(receipt.getUserLogin());
+//                            tr.setActive(null == receipt.getCancelTime());
+//                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//                            tr.setDate(sdf.format(new Date(receipt.getProcessingTime())));
+//                            totalReceipts.add(tr);
+//                        }
+//
+//                    }
 //                }
 
             }

@@ -15,101 +15,153 @@
 <html lang="${param.lang}">
 <head>
 
-    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap/bootstrap.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/custom.css" media="screen"/>
+
     <link rel="shortcut icon" href="resources/img/xrp_small.png">
 
     <title><fmt:message key="cashier.window"/></title>
 
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
     <%@ include file="/WEB-INF/views/parts/payments_menu.jsp" %>
+
+    <style>
+        /* Style the input field */
+        #myInput {
+            padding: 20px;
+            margin-top: -6px;
+            border: 0;
+            border-radius: 0;
+            background: #f1f1f1;
+        }
+    </style>
 </head>
 <body>
-<div class="col-xs-12 col-sm-6">
 
-    <script type="text/javascript">
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
 
-        function validate(evt) {
-            var theEvent = evt || window.event;
+            <script type="text/javascript">
 
-            // Handle paste
-            if (theEvent.type === 'paste') {
-                key = event.clipboardData.getData('text/plain');
-            } else {
-                // Handle key press
-                var key = theEvent.keyCode || theEvent.which;
-                key = String.fromCharCode(key);
-            }
-            var regex = /[0-9]|\./;
-            if (!regex.test(key)) {
-                theEvent.returnValue = false;
-                if (theEvent.preventDefault) theEvent.preventDefault();
-            }
-        }
-    </script>
+                function validate(evt) {
+                    var theEvent = evt || window.event;
 
-    <form>
-        <b><fmt:message key="goods"/></b>
+                    // Handle paste
+                    if (theEvent.type === 'paste') {
+                        key = event.clipboardData.getData('text/plain');
+                    } else {
+                        // Handle key press
+                        var key = theEvent.keyCode || theEvent.which;
+                        key = String.fromCharCode(key);
+                    }
+                    var regex = /[0-9]|\./;
+                    if (!regex.test(key)) {
+                        theEvent.returnValue = false;
+                        if (theEvent.preventDefault) theEvent.preventDefault();
+                    }
+                }
+            </script>
 
-        <select name='goods_id' class="form-control">
-            <c:forEach items="${sessionScope.goods}" var="goods">
-                <option value="${goods.id}">${goods.name} ${goods.price / 100.0} uah</option>
-            </c:forEach>
-        </select>
+            <form>
+                <div class="form-group">
+                    <div class="dropdown-container">
+                        <label><fmt:message key="categories"/></label>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" id="dropdown-categories" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                123456
+                            </button>
+                            <div id="dropdown-categories-menu" class="dropdown-menu" aria-labelledby="dropdown-categories"></div>
+                        </div>
+                    </div>
+                </div>
 
-        <b><fmt:message key="count"/></b>
-        <input name="count" onkeypress='validate(event)' type="text" min="0" required="required" placeholder=
-        <fmt:message key="count"/> class="form-control"/>
+                <table id="products" class="table table-bordered table-hover table-striped table-condensed hided">
+                    <thead>
+                        <tr>
+                            <th><fmt:message key="goods"/></th>
+                            <th><fmt:message key="price"/></th>
+                            <th><fmt:message key="weight"/></th>
+                            <th><fmt:message key="count"/></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
 
-        <input type="hidden" name="command" value="add_to_basket"/>
+                <div id="product-count-group" class="form-group hided">
+                    <label><fmt:message key="count"/></label>
+                    <input name="count" type="number" class="form-control" id="product-count" placeholder="<fmt:message key="count"/>">
+                </div>
 
-        <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="add"/>"/>
-    </form>
+                <div id="countAlertError" class="alert alert-danger hided" role="alert">
+                    <h4 class="alert-heading">Error</h4>
+                    <p>User picked a higher count than exists</p>
+                </div>
+
+                <input type="hidden" name="product_id" value=""/>
+                <input type="hidden" name="categories.id" value=""/>
+                <input type="hidden" name="command" value="add_to_basket"/>
+                <input type="submit" class="hided" />
+
+                <div class="text-right">
+                    <button id="addProduct" style="width: 100px;" type="button" class="btn btn-secondary hided"><fmt:message key="add"/></button>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <b><fmt:message key="summary"/></b>
+            <table class="table table-bordered table-hover table-striped table-condensed">
+                <tr>
+                    <th><fmt:message key="goods"/></th>
+                    <th><fmt:message key="price"/></th>
+                    <th><fmt:message key="count"/></th>
+                    <th><fmt:message key="cancel"/></th>
+                </tr>
+
+                <c:forEach items="${sessionScope.basket}" var="basket" varStatus="loop">
+                    <tr>
+                        <td>${basket.productName}</td>
+                        <td>${basket.price}</td>
+                        <td>${basket.count}</td>
+                        <c:if test="${not empty sessionScope.basket}">
+                            <td>
+                                <form>
+                                    <input type="hidden" name="command" value="remove_from_basket"/>
+                                    <input type="hidden" name="cancel_product_name" value="${basket.productName}"/>
+                                    <input type="hidden" name="cancel_product_count" value="${basket.count}"/>
+                                    <input type="submit" value="<fmt:message key="cancel"/>">
+                                </form>
+                            </td>
+                        </c:if>
+                    </tr>
+                </c:forEach>
+            </table>
+
+            <c:if test="${not empty sessionScope.basket}">
+                <b><fmt:message key="total.price"/></b>
+
+                <input readonly="readonly" name="total.price" type="text" required="required"
+                       value="${sessionScope.total_price}" class="form-control"/>
+                <form action="controller" method="post" class="well">
+                    <input type="hidden" name="command" value="pay_basket"/>
+                    <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="pay"/>"/>
+                </form>
+                <form action="controller" method="post" class="well">
+                    <input type="hidden" name="command" value="clear_basket"/>
+                    <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="clear"/>"/>
+                </form>
+            </c:if>
+
+        </div>
+    </div>
 </div>
 
-<div class="col-xs-12 col-sm-6">
-    <b><fmt:message key="summary"/></b>
-    <table class="table table-bordered table-hover table-striped table-condensed">
-        <tr>
-            <th><fmt:message key="goods"/></th>
-            <th><fmt:message key="price"/></th>
-            <th><fmt:message key="count"/></th>
-            <th><fmt:message key="cancel"/></th>
-        </tr>
+<script type="text/javascript" src="resources/js/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script type="text/javascript" src="resources/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/cashier_work_station.js"></script>
 
-        <c:forEach items="${sessionScope.basket}" var="basket" varStatus="loop">
-            <tr>
-                <td>${basket.productName}</td>
-                <td>${basket.price}</td>
-                <td>${basket.count}</td>
-                <c:if test="${not empty sessionScope.basket}">
-                    <td>
-                        <form>
-                            <input type="hidden" name="command" value="remove_from_basket"/>
-                            <input type="hidden" name="cancel_product_name" value="${basket.productName}"/>
-                            <input type="hidden" name="cancel_product_count" value="${basket.count}"/>
-                            <input type="submit" value="<fmt:message key="cancel"/>">
-                        </form>
-                    </td>
-                </c:if>
-            </tr>
-        </c:forEach>
-    </table>
-
-    <c:if test="${not empty sessionScope.basket}">
-        <b><fmt:message key="total.price"/></b>
-
-        <input readonly="readonly" name="total.price" type="text" required="required"
-               value="${sessionScope.total_price}" class="form-control"/>
-        <form action="controller" method="post" class="well">
-            <input type="hidden" name="command" value="pay_basket"/>
-            <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="pay"/>"/>
-        </form>
-        <form action="controller" method="post" class="well">
-            <input type="hidden" name="command" value="clear_basket"/>
-            <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="clear"/>"/>
-        </form>
-    </c:if>
-
-</div>
 </body>
 </html>

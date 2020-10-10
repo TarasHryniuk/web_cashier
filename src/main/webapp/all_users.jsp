@@ -15,7 +15,8 @@
 <html lang="${param.lang}">
 <head>
 
-    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap/bootstrap.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/custom.css" media="screen"/>
 
     <title><fmt:message key="all.user"/></title>
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>

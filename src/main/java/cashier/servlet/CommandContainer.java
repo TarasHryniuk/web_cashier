@@ -39,6 +39,7 @@ public class CommandContainer {
 		commands.put("refactor_product", new InitializeCashierWorkStationCommand());
 		commands.put("pay_basket", new ProcessingReceiptCommand());
 		commands.put("cancel_basket", new ProcessingReceiptCommand());
+		commands.put("print_receipt", new PrintBillCommand());
 
 		LOGGER.debug("Command container was successfully initialized");
 		LOGGER.trace("Number of commands --> " + commands.size());

@@ -15,7 +15,8 @@
 <html lang="${param.lang}">
 <head>
 
-    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap/bootstrap.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/custom.css" media="screen"/>
     <link rel="shortcut icon" href="resources/img/xrp_small.png">
 
     <title><fmt:message key="all.user"/></title>
@@ -87,8 +88,8 @@
 
                 <td>
                     <form id="print_receipt" action="controller" method="post">
-                        <input type="hidden" name="command" value="cancel_receipt"/>
-                        <input type="hidden" name="refactor_user_login" value=${element.id}>
+                        <input type="hidden" name="command" value="print_receipt"/>
+                        <input type="hidden" name="print_bill" value=${element.id}>
                         <input type="submit" value="<fmt:message key="print.receipt"/>">
                     </form>
                 </td>

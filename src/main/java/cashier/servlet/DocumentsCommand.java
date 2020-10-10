@@ -5,6 +5,7 @@ import cashier.dao.ReceiptsDaoImpl;
 import cashier.dao.entity.Receipt;
 import cashier.dao.entity.Role;
 import cashier.dao.entity.User;
+import cashier.services.PrintJasperService;
 import cashier.util.CalculateValuesByReceipts;
 import net.sf.jasperreports.engine.*;
 import org.apache.log4j.Logger;
@@ -35,7 +36,8 @@ public class DocumentsCommand extends Command {
     private static final Logger LOGGER = Logger.getLogger(DocumentsCommand.class);
     private ReceiptsDaoImpl receiptsDao;
 
-    private static final JasperPrintManager printManager = JasperPrintManager.getInstance(DefaultJasperReportsContext.getInstance());
+    private PrintJasperService printJasperService;
+
     private Map<String, Object> valuesMap;
 
     @Override
@@ -74,10 +76,11 @@ public class DocumentsCommand extends Command {
         valuesMap.put("{reports.cancel.count}", String.valueOf(CalculateValuesByReceipts.getTotalCancelledReceiptsCount(receipts)));
         valuesMap.put("{report.name}", request.getParameter("command").equals("x_report") ? "X Звіт" : "Z Звіт");
 
-        if(request.getParameter("command").equals("x_report") || request.getParameter("command").equals("z_report")) {
+        if (request.getParameter("command").equals("x_report") || request.getParameter("command").equals("z_report")) {
+            printJasperService = new PrintJasperService();
             response.setContentType("image/jpeg");
             OutputStream out = response.getOutputStream();
-            ImageIO.write((BufferedImage) extractPrintImage(getJasperPrint()), "jpg", out);
+            ImageIO.write((BufferedImage) printJasperService.extractPrintImage(printJasperService.getJasperPrint(valuesMap, PrintJasperService.REPORT)), "jpg", out);
             out.close();
         }
 
@@ -85,40 +88,6 @@ public class DocumentsCommand extends Command {
 
         LOGGER.debug("Command finished");
         return forward;
-    }
-
-    private JasperPrint getJasperPrint() {
-        String fileName = File.separator + "reports" + File.separator + "document.jasper";
-        InputStream inputStream = getClass().getResourceAsStream(fileName);
-        JasperPrint print;
-        try {
-            Map<String, Object> map = new HashMap<>();
-            map.put("map", valuesMap);
-
-            System.out.println("valuesMap: " + valuesMap.toString());
-            print = JasperFillManager.fillReport(inputStream, map, new JREmptyDataSource());
-
-            return print;
-        } catch (JRException e) {
-            LOGGER.error(e);
-        } catch (Exception e) {
-            LOGGER.error(e);
-        }
-
-        return null;
-    }
-
-    private Image extractPrintImage(JasperPrint print) {
-        Image rendered_image = null;
-        try {
-
-            rendered_image = (BufferedImage) printManager.printPageToImage(print, 0, 1.9f);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.error(e);
-        }
-        return rendered_image;
     }
 
 
