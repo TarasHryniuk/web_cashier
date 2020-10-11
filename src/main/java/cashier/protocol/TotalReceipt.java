@@ -12,6 +12,7 @@ public class TotalReceipt {
     private String totalAmount;
     private String login;
     private String date;
+    private Short status;
 
     public Integer getId() {
         return id;
@@ -27,6 +28,14 @@ public class TotalReceipt {
 
     public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public Short getStatus() {
+        return status;
+    }
+
+    public void setStatus(Short status) {
+        this.status = status;
     }
 
     public String getLogin() {

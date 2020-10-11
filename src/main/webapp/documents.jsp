@@ -16,7 +16,8 @@
 <html lang="${param.lang}">
 <head>
 
-    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap/bootstrap.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/custom.css" media="screen"/>
     <link rel="shortcut icon" href="resources/img/xrp_small.png">
 
     <title><fmt:message key="documents"/></title>
@@ -25,6 +26,8 @@
 
 </head>
     <body>
-
+    <script type="text/javascript" src="resources/js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="resources/js/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="resources/js/documents.js"></script>
     </body>
 </html>

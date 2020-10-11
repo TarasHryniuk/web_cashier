@@ -63,7 +63,7 @@ public class CreateUserCommand extends Command {
             }
         } catch (SQLException e) {
             if(e.getMessage().contains("duplicate key")){
-                errorMessage = "User already created";
+                errorMessage = "User has already created";
                 request.setAttribute("errorMessage", errorMessage);
                 LOGGER.error("errorMessage --> " + errorMessage);
                 return forward;

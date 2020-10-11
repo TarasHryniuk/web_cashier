@@ -1,13 +1,9 @@
 package cashier.servlet;
 
 import cashier.Path;
-import cashier.Statuses;
 import cashier.dao.UserDaoImpl;
-import cashier.dao.entity.Product;
-import cashier.dao.entity.Receipt;
 import cashier.dao.entity.Role;
 import cashier.dao.entity.User;
-import cashier.util.GenerateReceiptNumber;
 import cashier.util.StringHelpers;
 import org.apache.log4j.Logger;
 
@@ -16,15 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * @author Taras Hryniuk, created on  30.09.2020
  * email : hryniuk.t@gmail.com
  */
-public class RefactorUserCommand extends Command {
+public class EditUserCommand extends Command {
 
-    private static final Logger LOGGER = Logger.getLogger(RefactorUserCommand.class);
+    private static final Logger LOGGER = Logger.getLogger(EditUserCommand.class);
     private UserDaoImpl userDao;
 
     @Override

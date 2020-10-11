@@ -4,7 +4,7 @@
 
 <c:set var="title" value="Error" scope="page"/>
 <%@ include file="/parts/header.jspf" %>
-<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap/bootstrap.css" media="screen"/>
 <link rel="shortcut icon" href="resources/img/xrp_small.png">
 <body>
 <div class="container">

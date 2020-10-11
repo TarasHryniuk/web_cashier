@@ -68,6 +68,7 @@ public class LoginCommand extends Command {
 
         StringBuilder sb = new StringBuilder();
         sb.append(login).append(password);
+
         if (!user.getAuthCode().equals(StringHelpers.digest(sb.toString()))) {
             errorMessage = "Auth failed";
             request.setAttribute("errorMessage", errorMessage);
@@ -86,14 +87,7 @@ public class LoginCommand extends Command {
             return forward;
         }
 
-        if (userRole == Role.CASHIER)
-            forward = Path.PAGE_MENU;
-
-        if (userRole == Role.HIGH_CASHIER)
-            forward = Path.PAGE_MENU;
-
-        if (userRole == Role.MANAGER)
-            forward = Path.PAGE_MENU;
+        forward = Path.PAGE_MENU;
 
         String language = request.getParameter("language");
         session.setAttribute("language", language);
