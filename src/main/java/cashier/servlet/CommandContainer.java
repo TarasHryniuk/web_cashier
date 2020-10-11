@@ -26,8 +26,8 @@ public class CommandContainer {
 		commands.put("users", new UsersCommand());
 		commands.put("create_user", new CreateUserCommand());
 		commands.put("all_users", new GetAllUsersCommand());
-		commands.put("refactor_user", new RefactorUserCommand());
-		commands.put("delete_user", new RefactorUserCommand());
+		commands.put("refactor_user", new EditUserCommand());
+		commands.put("delete_user", new EditUserCommand());
 		commands.put("x_report", new DocumentsCommand());
 		commands.put("z_report", new DocumentsCommand());
 		commands.put("initialize.work.station", new InitializeCashierWorkStationCommand());
@@ -38,7 +38,9 @@ public class CommandContainer {
 		commands.put("create_product", new InitializeCashierWorkStationCommand());
 		commands.put("refactor_product", new InitializeCashierWorkStationCommand());
 		commands.put("pay_basket", new ProcessingReceiptCommand());
-		commands.put("cancel_basket", new ProcessingReceiptCommand());
+		commands.put("cancel_receipt", new ProcessingReceiptCommand());
+		commands.put("edit_receipt", new ProcessingReceiptCommand());
+		commands.put("cancel_product_from_receipt", new ProcessingReceiptCommand());
 		commands.put("print_receipt", new PrintBillCommand());
 
 		LOGGER.debug("Command container was successfully initialized");

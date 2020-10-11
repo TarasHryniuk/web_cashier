@@ -21,19 +21,19 @@
 
     <title><fmt:message key="all.user"/></title>
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
-    <%--    <%@ include file="/WEB-INF/views/parts/user_menu.jsp" %>--%>
 
 </head>
 <body>
-<div class="table-responsive"
-     data-bind="flash: {error: state.error, success: state.success}, hover_loader: state.loading">
+<div class="container">
+    <div class="row">
+<div class="table-responsive">
     <table class="table table-bordered table-hover table-striped table-condensed">
         <tr>
             <th><fmt:message key="id"/></th>
             <th><fmt:message key="total.price"/></th>
             <th><fmt:message key="cashier"/></th>
-            <th><fmt:message key="goods"/></th>
             <th><fmt:message key="processing.time"/></th>
+            <th><fmt:message key="edit"/></th>
             <th><fmt:message key="cancel"/></th>
             <th><fmt:message key="print.receipt"/></th>
         </tr>
@@ -42,46 +42,24 @@
                 <td>${element.id}</td>
                 <td>${element.totalAmount}</td>
                 <td>${element.login}</td>
-                <td>
-                    <c:forEach items="${requestScope.receipts}" var="receipts" varStatus="loop">
-                        <c:if test="${receipts.id==element.id}">
-                            <table class="table table-bordered table-hover table-striped table-condensed">
-                                <tr>
-                                    <td>
-                                        <c:if test="${element.active=='true'}">
-                                    <td>
-                                        <button type="button" class="icon-ok text-success"></button>
-                                    </td>
-                                    </c:if>
-                                    <c:if test="${element.active=='false'}">
-                                        <td>
-                                            <button type="button" class="icon-remove text-danger"></button>
-                                        </td>
-                                    </c:if>
-                                    <td>${receipts.productName}</td>
-                                    <td>${receipts.count}</td>
-                                    <c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
-                                        <td>
-                                            <form id="cancel_product_in_receipt" action="controller" method="post">
-                                                <input type="hidden" name="command" value="cancel_receipt"/>
-                                                <input type="hidden" name="refactor_user_login" value=${element.id}>
-                                                <input type="submit" value="<fmt:message key="cancel"/>">
-                                            </form>
-                                        </td>
-                                    </c:if>
-                                </tr>
-                            </table>
-                        </c:if>
-                    </c:forEach>
-                </td>
-
                 <td>${element.date}</td>
+
                 <c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
+                    <td>
+                        <form id="edit_receipt" action="controller" method="post">
+                            <input type="hidden" name="command" value="edit_receipt"/>
+<%--                            <input type="hidden" name="edit_receipt" value=${element.id}>--%>
+<%--                            <input type="hidden" name="edit_receipt_name" value=${element.name}>--%>
+<%--                            <input type="hidden" name="edit_receipt_count" value=${element.count}>--%>
+                            <input type="submit" class="btn btn-link"  value="<fmt:message key="edit"/>">
+                        </form>
+                    </td>
+
                     <td>
                         <form id="cancel_receipt" action="controller" method="post">
                             <input type="hidden" name="command" value="cancel_receipt"/>
-                            <input type="hidden" name="refactor_user_login" value=${element.id}>
-                            <input type="submit" value="<fmt:message key="cancel"/>">
+                            <input type="hidden" name="cancel_receipt_id" value=${element.id}>
+                            <input type="submit" class="btn btn-link" value="<fmt:message key="cancel"/>">
                         </form>
                     </td>
                 </c:if>
@@ -90,7 +68,7 @@
                     <form id="print_receipt" action="controller" method="post">
                         <input type="hidden" name="command" value="print_receipt"/>
                         <input type="hidden" name="print_bill" value=${element.id}>
-                        <input type="submit" value="<fmt:message key="print.receipt"/>">
+                        <input type="submit" class="btn btn-link" value="<fmt:message key="print.receipt"/>">
                     </form>
                 </td>
             </tr>
@@ -103,7 +81,7 @@
                 <form id="pagination" action="controller" method="post">
                     <input type="hidden" name="command" value="payments"/>
                     <input type="hidden" name="page" value=${element1}>
-                    <input type="submit" value=${element1}>
+                    <input type="submit" class="btn btn-link"  value=${element1}>
                 </form>
             </th>
         </c:forEach>
@@ -111,6 +89,12 @@
 
 </div>
 </div>
+</div>
+</div>
+
+<script type="text/javascript" src="resources/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/payments.js"></script>
 
 </body>
 </html>

@@ -11,23 +11,23 @@
 <fmt:setBundle basename="messages"/>
 <html>
 <head>
-    <div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-left">
+    <div class="nav justify-content-center">
+        <div id="navigation" class="nav-item">
+            <ul id="main-nav" class="nav-item">
                 <c:if test="${sessionScope.userRole=='MANAGER'}">
-                    <ul class="nav navbar-nav navbar-left">
-                        <form action="manage_products.jsp">
-                            <input type="submit" value=<fmt:message key="edit.products"/>>
+                    <ul class="nav-item">
+                        <form action="edit_products.jsp">
+                            <input class="btn btn-link" type="submit" value="<fmt:message key="edit.products"/>"/>
                         </form>
                     </ul>
-                    <ul class="nav navbar-nav navbar-left">
+                    <ul class="nav-item">
                         <form action="create_category.jsp">
-                            <input type="submit" value=<fmt:message key="category.create"/>>
+                            <input class="btn btn-link" type="submit" value="<fmt:message key="category.create"/>"/>
                         </form>
                     </ul>
-                    <ul class="nav navbar-nav navbar-left">
+                    <ul class="nav-item">
                         <form action="create_product.jsp">
-                            <input type="submit" value=<fmt:message key="create.product"/>>
+                            <input class="btn btn-link" type="submit" value="<fmt:message key="create.product"/>"/>
                         </form>
                     </ul>
                 </c:if>
@@ -36,6 +36,5 @@
     </div>
 </head>
 <body>
-
 </body>
 </html>

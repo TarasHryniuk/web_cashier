@@ -61,7 +61,6 @@
             <column name="active" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="terminal_id" type="INT"></column>
             <column name="login" type="VARCHAR(32)">
                 <constraints nullable="false"/>
             </column>

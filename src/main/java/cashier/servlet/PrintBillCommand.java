@@ -47,8 +47,7 @@ public class PrintBillCommand extends Command {
         try {
             receiptsDao = new ReceiptsDaoImpl();
             userDao = new UserDaoImpl();
-//            Integer receiptId = Integer.parseInt(request.getParameter("print_bill"));
-            Integer receiptId = 16;
+            Integer receiptId = Integer.parseInt(request.getParameter("print_bill"));
 
             List<Receipt> receipts = receiptsDao.findAllByReceiptId(receiptId);
 

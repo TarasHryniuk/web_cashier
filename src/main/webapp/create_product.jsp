@@ -50,6 +50,13 @@
     <form id="create_product" action="controller" method="post" class="tab-content">
         <input type="hidden" name="command" value="create_product"/>
 
+        <label><fmt:message key="categories"/></label>
+        <select name='category_id' class="form-control">
+            <c:forEach items="${sessionScope.categories}" var="category">
+                <option value="${category.id}">${category.name}</option>
+            </c:forEach>
+        </select>
+
         <label><fmt:message key="name"/></label>
         <input name="name" type="text" required="required" placeholder=<fmt:message key="name"/> class="form-control"/>
 
@@ -61,13 +68,6 @@
 
         <label><fmt:message key="weight"/></label>
         <input name="weight" onkeypress='validate(event)' type="text" required="required" placeholder=<fmt:message key="weight"/> class="form-control"/>
-
-        <label><fmt:message key="categories"/></label>
-        <select name='category_id' class="form-control">
-            <c:forEach items="${sessionScope.categories}" var="category">
-                <option value="${category.id}">${category.name}</option>
-            </c:forEach>
-        </select>
 
         <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="save"/>"/>
     </form>

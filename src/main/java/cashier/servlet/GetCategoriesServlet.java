@@ -35,8 +35,6 @@ public class GetCategoriesServlet extends HttpServlet {
 
         String categoriesJsonString = new Gson().toJson(categoriesDao.getAllCategories());
 
-        System.out.println(categoriesJsonString);
-
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

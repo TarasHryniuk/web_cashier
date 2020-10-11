@@ -25,7 +25,7 @@ public class ProductsDaoImpl extends GenericDao {
     private static final String SQL_FIND_ALL_PRESENT_PRODUCTS = "SELECT * FROM products WHERE count != 0 AND active = true";
     private static final String SQL_FIND_PRODUCT_BY_ID = "SELECT * FROM products WHERE count != 0 AND active = true AND id = ?";
     private static final String SQL_FIND_PRODUCT_BY_CATEGORY_ID = "SELECT * FROM products WHERE count != 0 AND active = true AND categories_id = ?";
-    private static final String SQL_FIND_PRODUCT_BY_NAME = "SELECT * FROM products WHERE count != 0 AND active = true AND name = ?";
+    private static final String SQL_FIND_PRODUCT_BY_NAME = "SELECT * FROM products WHERE name = ?";
     private static final String SQL_FIND_ALL_PRODUCTS = "SELECT * FROM products";
     private static final String SQL_FIND_PRODUCTS_BY_CATEGORY_ID = "SELECT * FROM products WHERE categories_id = ?";
     private static final String SQL_CHANGE_PRICE_FOR_PRODUCT = "UPDATE products SET price=? WHERE name=?";

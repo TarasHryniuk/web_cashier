@@ -25,16 +25,6 @@
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
     <%@ include file="/WEB-INF/views/parts/payments_menu.jsp" %>
 
-    <style>
-        /* Style the input field */
-        #myInput {
-            padding: 20px;
-            margin-top: -6px;
-            border: 0;
-            border-radius: 0;
-            background: #f1f1f1;
-        }
-    </style>
 </head>
 <body>
 
@@ -64,12 +54,14 @@
             </script>
 
             <form>
+                <input type="hidden" name="command" value="add_to_basket"/>
+                <input type="submit" class="hided" />
                 <div class="form-group">
                     <div class="dropdown-container">
                         <label><fmt:message key="categories"/></label>
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" id="dropdown-categories" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                123456
+                                <fmt:message key="categories"/>
                             </button>
                             <div id="dropdown-categories-menu" class="dropdown-menu" aria-labelledby="dropdown-categories"></div>
                         </div>
@@ -90,12 +82,12 @@
 
                 <div id="product-count-group" class="form-group hided">
                     <label><fmt:message key="count"/></label>
-                    <input name="count" type="number" class="form-control" id="product-count" placeholder="<fmt:message key="count"/>">
+                    <input name="count" type="number" onkeypress='validate(event)' type="text" min="0" required="required" class="form-control" id="product-count" placeholder="<fmt:message key="count"/>">
                 </div>
 
                 <div id="countAlertError" class="alert alert-danger hided" role="alert">
-                    <h4 class="alert-heading">Error</h4>
-                    <p>User picked a higher count than exists</p>
+                    <h4 class="alert-heading"><fmt:message key="error"/></h4>
+                    <p><fmt:message key="error.count.product"/></p>
                 </div>
 
                 <input type="hidden" name="product_id" value=""/>

@@ -30,7 +30,7 @@ public class PrintJasperService {
             Map<String, Object> map = new HashMap<>();
             map.put("map", valuesMap);
 
-            System.out.println("valuesMap: " + valuesMap.toString());
+            LOGGER.info("valuesMap for printing: " + valuesMap.toString());
             print = JasperFillManager.fillReport(inputStream, map, new JREmptyDataSource());
 
             return print;

@@ -50,10 +50,6 @@ public class InitializeCashierWorkStationCommand extends Command {
             categoriesDao = new CategoriesDaoImpl();
             session.setAttribute("categories", categoriesDao.getAllCategories());
 
-//            if(!StringHelpers.isNullOrEmpty((String) session.getAttribute("category_id")))
-                System.out.println("categories.id: " + request.getAttribute("categories.id"));
-                System.out.println("categories.id: " + session.getAttribute("categories.id"));
-
             productsDao = new ProductsDaoImpl();
             session.setAttribute("goods", productsDao.findAllPresentProducts());
 
@@ -63,7 +59,8 @@ public class InitializeCashierWorkStationCommand extends Command {
             if (null == receipts || receipts.isEmpty()) receipts = new LinkedList<>();
 
             if (request.getParameter("command").equals("add_to_basket")) {
-                Product product = productsDao.getProductsById(Integer.parseInt(request.getParameter("goods_id")));
+
+                Product product = productsDao.getProductsById(Integer.parseInt(request.getParameter("product_id")));
                 product.setCount(product.getCount() - Integer.parseInt(request.getParameter("count")));
 
                 if (!products.contains(product)) {
@@ -151,6 +148,7 @@ public class InitializeCashierWorkStationCommand extends Command {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             errorMessage = "Something went wrong....";
             request.setAttribute("errorMessage", errorMessage);
             LOGGER.error(e);

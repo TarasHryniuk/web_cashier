@@ -40,7 +40,6 @@ public class CategoriesDaoImpl extends GenericDao{
                 int idField = rs.getInt(1);
                 category.setId(idField);
             }
-            connection.commit();
         } catch (Exception e) {
             LOGGER.error(e);
             return false;

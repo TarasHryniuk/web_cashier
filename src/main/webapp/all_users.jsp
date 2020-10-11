@@ -40,25 +40,25 @@
 
                 <c:if test="${element.active=='true'}">
                 <td>
-                    <button type="button" class="icon-ok text-success"></button>
+                    <button type="button" class="btn btn-success"></button>
                 </td>
                 </c:if>
                 <c:if test="${element.active=='false'}">
                     <td>
-                        <button type="button" class="icon-remove text-danger"></button>
+                        <button type="button" class="btn btn-danger"></button>
                     </td>
                 </c:if>
                 <td>${element.fullName}</td>
                 <td>${element.roleName}</td>
                 <td>
-                    <form id="cashier" action="refactor_user.jsp">
+                    <form id="cashier" action="edit_user.jsp">
                         <input type="hidden" name="command" value="refactor_user"/>
                         <input type="hidden" name="refactor_user_active" value=${element.active}>
                         <input type="hidden" name="refactor_user_full_name" value=${element.fullName}>
                         <input type="hidden" name="refactor_user_role" value=${element.role}>
                         <input type="hidden" name="refactor_user_terminal_id" value=${element.terminalId}>
                         <input type="hidden" name="refactor_user_login" value=${element.login}>
-                        <input type="submit" value="<fmt:message key="refactor.user"/>">
+                        <input type="submit" value="<fmt:message key="edit"/>">
                     </form>
                 </td>
                 <td>
@@ -86,6 +86,10 @@
 
 </div>
 </div>
+
+<script type="text/javascript" src="resources/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/users.js"></script>
 
 </body>
 </html>
