@@ -88,50 +88,11 @@ public class ProcessingReceiptCommand extends Command {
             } else if (request.getParameter("command").equals("cancel_product_from_receipt")) {
                 if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
                     Receipt receipt = new Receipt();
-                    Integer receiptId = Integer.parseInt(request.getParameter("edit_receipt"));
-                    System.out.println("receiptId: " + receiptId);
-                    String nameProduct = request.getParameter("edit_receipt_name");
-                    Integer count = Integer.parseInt(request.getParameter("edit_receipt_count"));
 
-                    Product product = productsDao.getProductsByName(nameProduct);
-
-                    User user = (User) session.getAttribute("user");
-                    receipt.setId(Integer.parseInt(request.getParameter("cancel_product_id")));
-                    receipt.setCancelTime(new Date().getTime());
-                    receipt.setCancelUserID(user.getId());
-                    receipt.setProductID(product.getId());
-
-                    Receipt editReceipt = receiptsDao.findById(receipt.getId());
-
-                    if (null != editReceipt && editReceipt.getCancelTime() == null) {
-                        if (receiptsDao.cancelReceipt(receipt)) {
-                            product.setCount(product.getCount() + receipt.getCount());
-                            productsDao.updateCountForProduct(product);
-                        } else {
-                            throw new Exception("Error while cancel receipt. Id: " + receipt.getReceiptId());
-                        }
-                    } else {
-                        errorMessage = new StringBuilder().append("Receipt №").append(receipt.getId()).append(" has already canceled").toString();
-                        request.setAttribute("errorMessage", errorMessage);
-                        LOGGER.error("errorMessage --> " + errorMessage);
-                        return forward;
-                    }
-
-                    forward = Path.SUCCESS;
-                    return forward;
-                } else {
-                    errorMessage = "User don't have permissions";
-                    request.setAttribute("errorMessage", errorMessage);
-                    LOGGER.error("errorMessage --> " + errorMessage);
-                    return forward;
-                }
-            } else if (request.getParameter("command").equals("cancel_receipt")) {
-                if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
-                    Receipt receipt = new Receipt();
-
+                    Integer productName = Integer.parseInt(request.getParameter("cancel_product_name"));
+                    Integer productId = Integer.parseInt(request.getParameter("cancel_product_id"));
+                    Integer productCount = Integer.parseInt(request.getParameter("cancel_product_count"));
                     Integer cancelReceiptId = Integer.parseInt(request.getParameter("cancel_receipt_id"));
-
-                    System.out.println();
 
                     User user = (User) session.getAttribute("user");
 
@@ -167,7 +128,46 @@ public class ProcessingReceiptCommand extends Command {
                     LOGGER.error("errorMessage --> " + errorMessage);
                     return forward;
                 }
+            } else if (request.getParameter("command").equals("cancel_receipt")) {
+                if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
+                    Receipt receipt = new Receipt();
 
+                    Integer cancelReceiptId = Integer.parseInt(request.getParameter("cancel_receipt_id"));
+
+                    User user = (User) session.getAttribute("user");
+
+                    List<Receipt> receiptsForCancelation = receiptsDao.findAllSuccessByReceiptId(cancelReceiptId);
+
+                    if (null == receiptsForCancelation || receiptsForCancelation.isEmpty()) {
+                        errorMessage = new StringBuilder().append("Receipt № ").append(cancelReceiptId).append(" has already canceled").toString();
+                        request.setAttribute("errorMessage", errorMessage);
+                        LOGGER.error("errorMessage --> " + errorMessage);
+                        return forward;
+                    }
+
+                    receipt.setReceiptId(cancelReceiptId);
+                    receipt.setCancelTime(new Date().getTime());
+                    receipt.setCancelUserID(user.getId());
+
+                    if (receiptsDao.cancelReceipt(receipt)) {
+                        for (Receipt r : receiptsForCancelation) {
+                            Product product = productsDao.getProductsById(r.getProductID());
+                            product.setCount(product.getCount() + r.getCount());
+                            if (!productsDao.updateCountForProduct(product)) {
+                            }
+                        }
+                    } else {
+                        throw new Exception("Error while cancel receipt. Id: " + cancelReceiptId);
+                    }
+
+                    forward = Path.SUCCESS;
+                    return forward;
+                } else {
+                    errorMessage = "User don't have permissions";
+                    request.setAttribute("errorMessage", errorMessage);
+                    LOGGER.error("errorMessage --> " + errorMessage);
+                    return forward;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

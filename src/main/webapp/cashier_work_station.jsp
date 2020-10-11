@@ -115,7 +115,7 @@
                 <c:forEach items="${sessionScope.basket}" var="basket" varStatus="loop">
                     <tr>
                         <td>${basket.productName}</td>
-                        <td>${basket.price}</td>
+                        <td>${basket.price / 100.0}</td>
                         <td>${basket.count}</td>
                         <c:if test="${not empty sessionScope.basket}">
                             <td>

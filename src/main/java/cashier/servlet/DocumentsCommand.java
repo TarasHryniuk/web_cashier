@@ -5,6 +5,7 @@ import cashier.dao.ReceiptsDaoImpl;
 import cashier.dao.entity.Receipt;
 import cashier.dao.entity.Role;
 import cashier.dao.entity.User;
+import cashier.protocol.TotalReceipt;
 import cashier.services.PrintJasperService;
 import cashier.util.CalculateValuesByReceipts;
 import net.sf.jasperreports.engine.*;
@@ -64,16 +65,16 @@ public class DocumentsCommand extends Command {
 
         receiptsDao = new ReceiptsDaoImpl();
 
-        List<Receipt> receipts = receiptsDao.findAllReceiptsByCurrentDate(user);
+        List<TotalReceipt> receipts = receiptsDao.findAllTotalReceiptsByCurrentDate(user);
 
         DecimalFormat formatter = new DecimalFormat("#####0.00");
 
         valuesMap = new HashMap<>();
-        valuesMap.put("{total.success.amount}", formatter.format(CalculateValuesByReceipts.getTotalSuccessReceiptsAmount(receipts) / 100.0));
-        valuesMap.put("{reports.total.count}", String.valueOf(CalculateValuesByReceipts.getTotalReceiptsCount(receipts)));
-        valuesMap.put("{reports.success.count}", String.valueOf(CalculateValuesByReceipts.getTotalSuccessReceiptsCount(receipts)));
-        valuesMap.put("{total.cancel.amount}", formatter.format(CalculateValuesByReceipts.getTotalSuccessReceiptsAmount(receipts) / 100.0));
-        valuesMap.put("{reports.cancel.count}", String.valueOf(CalculateValuesByReceipts.getTotalCancelledReceiptsCount(receipts)));
+        valuesMap.put("{total.success.amount}", formatter.format(CalculateValuesByReceipts.getTotalSuccessReceiptsAmountTR(receipts) / 100.0));
+        valuesMap.put("{reports.total.count}", String.valueOf(CalculateValuesByReceipts.getTotalReceiptsCountTR(receipts)));
+        valuesMap.put("{reports.success.count}", String.valueOf(CalculateValuesByReceipts.getTotalSuccessReceiptsCountTR(receipts)));
+        valuesMap.put("{total.cancel.amount}", formatter.format(CalculateValuesByReceipts.getTotalCancelReceiptsAmountTR(receipts) / 100.0));
+        valuesMap.put("{reports.cancel.count}", String.valueOf(CalculateValuesByReceipts.getTotalCancelledReceiptsCountTR(receipts)));
         valuesMap.put("{report.name}", request.getParameter("command").equals("x_report") ? "X Звіт" : "Z Звіт");
 
         if (request.getParameter("command").equals("x_report") || request.getParameter("command").equals("z_report")) {

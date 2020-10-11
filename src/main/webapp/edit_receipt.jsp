@@ -29,7 +29,6 @@
     <table class="table table-bordered table-hover table-striped table-condensed">
         <tr>
             <th><fmt:message key="goods"/></th>
-            <th><fmt:message key="active"/></th>
             <th><fmt:message key="price"/></th>
             <th><fmt:message key="count"/></th>
             <th><fmt:message key="cancel"/></th>
@@ -38,21 +37,12 @@
         <c:forEach items="${requestScope.receipt_for_editing}" var="receipt_for_editing" varStatus="loop">
             <tr>
                 <td>${receipt_for_editing.productName}</td>
-                <c:if test="${empty receipt_for_editing.cancelTime}">
-                    <td>
-                        <button type="button" class="btn btn-success"></button>
-                    </td>
-                </c:if>
-                <c:if test="${not empty receipt_for_editing.cancelTime}">
-                    <td>
-                        <button type="button" class="btn btn-danger"></button>
-                    </td>
-                </c:if>
-                <td>${receipt_for_editing.price}</td>
+                <td>${receipt_for_editing.price / 100.0}</td>
                 <td>${receipt_for_editing.count}</td>
                 <td>
                     <form>
                         <input type="hidden" name="command" value="cancel_product_from_receipt"/>
+                        <input type="hidden" name="cancel_receipt_id" value="${receipt_for_editing.id}"/>
                         <input type="hidden" name="cancel_product_name" value="${receipt_for_editing.productName}"/>
                         <input type="hidden" name="cancel_product_id" value="${receipt_for_editing.id}"/>
                         <input type="hidden" name="cancel_product_count" value="${receipt_for_editing.count}"/>

@@ -25,45 +25,50 @@
 
 </head>
 <body>
-<div class="col-xs-12 col-sm-6">
-    <script type="text/javascript">
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <script type="text/javascript">
 
-        function validate(evt) {
-            var theEvent = evt || window.event;
+                function validate(evt) {
+                    var theEvent = evt || window.event;
 
-            // Handle paste
-            if (theEvent.type === 'paste') {
-                key = event.clipboardData.getData('text/plain');
-            } else {
-                // Handle key press
-                var key = theEvent.keyCode || theEvent.which;
-                key = String.fromCharCode(key);
-            }
-            var regex = /[0-9]|\./;
-            if (!regex.test(key)) {
-                theEvent.returnValue = false;
-                if (theEvent.preventDefault) theEvent.preventDefault();
-            }
-        }
-    </script>
+                    // Handle paste
+                    if (theEvent.type === 'paste') {
+                        key = event.clipboardData.getData('text/plain');
+                    } else {
+                        // Handle key press
+                        var key = theEvent.keyCode || theEvent.which;
+                        key = String.fromCharCode(key);
+                    }
+                    var regex = /[0-9]|\./;
+                    if (!regex.test(key)) {
+                        theEvent.returnValue = false;
+                        if (theEvent.preventDefault) theEvent.preventDefault();
+                    }
+                }
+            </script>
 
-    <form id="refactor_product" action="controller" method="post" class="tab-content">
-        <b><fmt:message key="goods"/></b>
-        <select name='goods_id' class="form-control">
-            <c:forEach items="${sessionScope.goods}" var="goods">
-                <option value="${goods.id}">${goods.name} ${goods.price / 100.0} uah</option>
-            </c:forEach>
-        </select>
+            <form id="refactor_product" action="controller" method="post" class="tab-content">
+                <b><fmt:message key="goods"/></b>
+                <select name='goods_id' class="form-control">
+                    <c:forEach items="${sessionScope.goods}" var="goods">
+                        <option value="${goods.id}">${goods.name} ${goods.price / 100.0} uah</option>
+                    </c:forEach>
+                </select>
 
-        <b><fmt:message key="count"/></b>
-        <input name="count" onkeypress='validate(event)' type="text" min="0" required="required" placeholder=<fmt:message key="count"/> class="form-control"/>
+                <b><fmt:message key="count"/></b>
+                <input name="count" onkeypress='validate(event)' type="text" min="0" required="required" placeholder=
+                <fmt:message key="count"/> class="form-control"/>
 
-        <b><fmt:message key="price"/></b>
-        <input name="price" onkeypress='validate(event)' type="text" min="0" required="required" placeholder=<fmt:message key="price"/> class="form-control"/>
-        <input type="hidden" name="command" value="refactor_product"/>
-        <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="add"/>"/>
-    </form>
-</div>
+                <b><fmt:message key="price"/></b>
+                <input name="price" onkeypress='validate(event)' type="text" min="0" required="required" placeholder=
+                <fmt:message key="price"/> class="form-control"/>
+                <input type="hidden" name="command" value="refactor_product"/>
+                <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="add"/>"/>
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>

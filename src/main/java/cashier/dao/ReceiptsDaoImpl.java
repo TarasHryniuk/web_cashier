@@ -3,9 +3,12 @@ package cashier.dao;
 import cashier.conf.DataSourceConfig;
 import cashier.dao.entity.Receipt;
 import cashier.dao.entity.User;
+import cashier.protocol.TotalReceipt;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -29,6 +32,14 @@ public class ReceiptsDaoImpl extends GenericDao {
             "FROM receipts as rec JOIN users u ON rec.user_id = u.\"id\" JOIN products as prod ON rec.id_product = prod.id " +
             "ORDER BY rec.id DESC LIMIT 20 OFFSET ?";
 
+    private static final String SQL_FIND_ALL_GROUPING = "SELECT receipt_id as receipt_id, \"sum\"(rec.price * rec.count) as sum, processing_time " +
+            "as processing_time, u.\"login\" as login , status FROM receipts as rec JOIN users u ON rec.user_id = u.\"id\" " +
+            "GROUP BY receipt_id, processing_time, user_id, u.\"login\", status ORDER BY rec.receipt_id DESC LIMIT 20 OFFSET ?";
+
+    private static final String SQL_FIND_ALL_BY_USER_ID_GROUPING = "SELECT receipt_id as receipt_id, \"sum\"(rec.price * rec.count) as sum, processing_time " +
+            "as processing_time, u.\"login\" as login , status FROM receipts as rec JOIN users u ON rec.user_id = u.\"id\" " +
+            "GROUP BY receipt_id, processing_time, user_id, u.\"login\", status WHERE user_id = ? ORDER BY rec.receipt_id DESC LIMIT 20 OFFSET ?";
+
     private static final String SQL_FIND_BY_RECEIPT_ID = "SELECT rec.*, prod.\"name\" as product_name FROM receipts " +
             "as rec JOIN products as prod ON rec.id_product = prod.id AND rec.id = ?";
 
@@ -42,11 +53,15 @@ public class ReceiptsDaoImpl extends GenericDao {
     private static final String SQL_FIND_ALL_BY_USER_RECEIPTS = "SELECT rec.*, prod.\"name\" as product_name FROM receipts " +
             "as rec JOIN products as prod ON rec.id_product = prod.id WHERE rec.user_id = ? ORDER BY rec.id ASC LIMIT 20 OFFSET ?";
 
-    private static final String SQL_FIND_RECEIPTS_TODAY = "SELECT * FROM receipts WHERE processing_time >= CURRENT_DATE " +
-            "AND processing_time <= CURRENT_DATE + INTERVAL '1 DAY' AND user_id = ?";
+    private static final String SQL_FIND_RECEIPTS_TODAY = "SELECT receipt_id as receipt_id, \"sum\"(rec.price * rec.count) as sum, " +
+            "processing_time as processing_time, status FROM receipts as rec WHERE processing_time >= CURRENT_DATE " +
+            "AND processing_time <= CURRENT_DATE + INTERVAL '1 DAY' AND user_id = ? GROUP BY rec.receipt_id, " +
+            "rec.processing_time, rec.cancel_time, rec.user_id, rec.status";
 
     private static final String SQL_FIND_ALL_RECEIPTS_COUNT = "SELECT count(*) AS total FROM receipts";
     private static final String SQL_FIND_ALL_USER_RECEIPTS_COUNT = "SELECT count(*) AS total FROM receipts WHERE cashier_id = ?";
+
+    private static final String SQL_DELETE_PRODUCT_FROM_RECEIPT = "DELETE FROM receipts WHERE \"receipt_id\" = ? AND user_id = ?";
 
     public boolean insertReceipts(List<Receipt> receipts) {
         ResultSet rs = null;
@@ -100,6 +115,33 @@ public class ReceiptsDaoImpl extends GenericDao {
             if (ps.executeUpdate() != 1)
                 return false;
         } catch (Exception e) {
+            LOGGER.error(e);
+            return false;
+        } finally {
+            close(rs);
+
+            try {
+                LOCK.unlock();
+            } catch (Exception e) {
+                LOGGER.error(e);
+            }
+        }
+        return true;
+    }
+
+    public boolean deleteProductFromReceipt(Receipt receipt) {
+        ResultSet rs = null;
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_DELETE_PRODUCT_FROM_RECEIPT, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setTimestamp(1, new Timestamp(receipt.getCancelTime()));
+            ps.setInt(2, receipt.getCancelUserID());
+            ps.setInt(3, receipt.getReceiptId());
+
+            if (ps.executeUpdate() == 0)
+                return false;
+        } catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error(e);
             return false;
         } finally {
@@ -323,6 +365,71 @@ public class ReceiptsDaoImpl extends GenericDao {
         return result;
     }
 
+    public List<TotalReceipt> findAllReceiptsGrouping(Integer offset, Integer userId) {
+        ResultSet rs = null;
+        List<TotalReceipt> totalReceipts = new LinkedList<>();
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL_BY_USER_ID_GROUPING)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, offset);
+            rs = ps.executeQuery();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            DecimalFormat formatter = new DecimalFormat("#####0.00");
+            while (rs.next()) {
+
+                TotalReceipt totalReceipt = new TotalReceipt();
+                totalReceipt.setId(rs.getInt("receipt_id"));
+                totalReceipt.setLogin(rs.getString("login"));
+                totalReceipt.setStatus(rs.getShort("status"));
+                Timestamp processingTime = rs.getTimestamp("processing_time");
+                totalReceipt.setDate(sdf.format(processingTime));
+                totalReceipt.setTotalAmount(formatter.format(rs.getLong("sum") / 100.0));
+
+                totalReceipts.add(totalReceipt);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            LOGGER.error(e);
+        } finally {
+            close(rs);
+            LOCK.unlock();
+        }
+        return totalReceipts;
+    }
+
+    public List<TotalReceipt> findAllReceiptsGrouping(Integer offset) {
+        ResultSet rs = null;
+        List<TotalReceipt> totalReceipts = new LinkedList<>();
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_FIND_ALL_GROUPING)) {
+            ps.setInt(1, offset);
+            rs = ps.executeQuery();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            DecimalFormat formatter = new DecimalFormat("#####0.00");
+            while (rs.next()) {
+
+                TotalReceipt totalReceipt = new TotalReceipt();
+                totalReceipt.setId(rs.getInt("receipt_id"));
+                totalReceipt.setLogin(rs.getString("login"));
+                totalReceipt.setStatus(rs.getShort("status"));
+                Timestamp processingTime = rs.getTimestamp("processing_time");
+                totalReceipt.setDate(sdf.format(processingTime));
+                totalReceipt.setTotalAmount(formatter.format(rs.getLong("sum") / 100.0));
+
+                totalReceipts.add(totalReceipt);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            LOGGER.error(e);
+        } finally {
+            close(rs);
+            LOCK.unlock();
+        }
+        return totalReceipts;
+    }
+
     public List<Receipt> findAllReceipts(Integer offset) {
         ResultSet rs = null;
         List<Receipt> receipts = new LinkedList<>();
@@ -355,6 +462,39 @@ public class ReceiptsDaoImpl extends GenericDao {
             LOCK.unlock();
         }
         return receipts;
+    }
+
+    public List<TotalReceipt> findAllTotalReceiptsByCurrentDate(User user) {
+        ResultSet rs = null;
+        List<TotalReceipt> totalReceipts = new LinkedList<>();
+        LOCK.lock();
+        try (Connection connection = DataSourceConfig.getInstance().getConnection();
+             PreparedStatement ps = connection.prepareStatement(SQL_FIND_RECEIPTS_TODAY)) {
+            ps.setInt(1, user.getId());
+            rs = ps.executeQuery();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            DecimalFormat formatter = new DecimalFormat("#####0.00");
+
+            while (rs.next()) {
+                TotalReceipt totalReceipt = new TotalReceipt();
+
+                totalReceipt.setId(rs.getInt("receipt_id"));
+                Timestamp processingTime = rs.getTimestamp("processing_time");
+                totalReceipt.setDate(sdf.format(processingTime));
+                totalReceipt.setStatus(rs.getShort("status"));
+                totalReceipt.setTotalAmount(formatter.format(rs.getLong("sum") / 100.0));
+
+                totalReceipts.add(totalReceipt);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            LOGGER.error(e);
+        } finally {
+            close(rs);
+            LOCK.unlock();
+        }
+        return totalReceipts;
     }
 
     public List<Receipt> findAllReceiptsByCurrentDate(User user) {

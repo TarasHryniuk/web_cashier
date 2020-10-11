@@ -4,10 +4,7 @@ import cashier.Path;
 import cashier.Statuses;
 import cashier.dao.CategoriesDaoImpl;
 import cashier.dao.ProductsDaoImpl;
-import cashier.dao.entity.Category;
-import cashier.dao.entity.Product;
-import cashier.dao.entity.Receipt;
-import cashier.dao.entity.User;
+import cashier.dao.entity.*;
 import cashier.servlet.Command;
 import cashier.util.GenerateReceiptNumber;
 import cashier.util.CalculateValuesByReceipts;
@@ -40,6 +37,7 @@ public class InitializeCashierWorkStationCommand extends Command {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
+        Role userRole = Role.getRole(user);
 
         // error handler
         String errorMessage = null;
@@ -83,7 +81,6 @@ public class InitializeCashierWorkStationCommand extends Command {
                     session.setAttribute("total_price", CalculateValuesByReceipts.getTotalAmount(receipts) / 100.0);
                 }
             } else if (request.getParameter("command").equals("remove_from_basket")) {
-
                 Product product = productsDao.getProductsByName(request.getParameter("cancel_product_name"));
                 product.setCount(Integer.parseInt(request.getParameter("cancel_product_count")));
 
@@ -110,7 +107,6 @@ public class InitializeCashierWorkStationCommand extends Command {
                 session.setAttribute("basket", null);
                 session.setAttribute("total_price", 0.00);
             } else if (request.getParameter("command").equals("refactor_product")) {
-
                 Product product = new Product();
                 product.setPrice(Long.parseLong(request.getParameter("count")));
                 product.setCount(Integer.parseInt(request.getParameter("price")));
@@ -124,15 +120,23 @@ public class InitializeCashierWorkStationCommand extends Command {
                 }
 
             } else if (request.getParameter("command").equals("create_category")) {
-                Category category = new Category();
-                category.setName(request.getParameter("name"));
-                if (categoriesDao.insertCategory(category)) {
-                    forward = Path.SUCCESS;
-                    return forward;
+                if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
+                    Category category = new Category();
+                    category.setName(request.getParameter("name"));
+                    if (categoriesDao.insertCategory(category)) {
+                        forward = Path.SUCCESS;
+                        return forward;
+                    } else {
+                        throw new Exception();
+                    }
                 } else {
-                    throw new Exception();
+                    errorMessage = "User don't have permissions";
+                    request.setAttribute("errorMessage", errorMessage);
+                    LOGGER.error("errorMessage --> " + errorMessage);
+                    return forward;
                 }
             } else if (request.getParameter("command").equals("create_product")) {
+                if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
                 Product product = new Product();
                 product.setName(request.getParameter("name"));
                 product.setPrice(Long.parseLong(request.getParameter("price")));
@@ -145,8 +149,10 @@ public class InitializeCashierWorkStationCommand extends Command {
                 } else {
                     throw new Exception();
                 }
+                } else {
+                    throw new Exception();
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             errorMessage = "Something went wrong....";
