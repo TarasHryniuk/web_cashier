@@ -9,9 +9,9 @@
 			<param name="ConversionPattern" value="%-5p: %c - %m%n"/>
 		</layout>
 	</appender>
-	
+
 	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="${catalina.base}/logs/cashier.log"/>
+		<param name="File" value="${catalina.home}/logs/cashier.log"/>
 		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
 		<param name="Append" value="true"/>
 		<layout class="org.apache.log4j.PatternLayout">
@@ -21,7 +21,7 @@
 
 	<!-- Application Loggers -->
 	<logger name="cashier">
-		<level value="trace" />
+		<level value="debug" />
 	</logger>
 
 	<!-- Root Logger -->

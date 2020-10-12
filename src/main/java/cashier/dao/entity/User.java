@@ -12,7 +12,6 @@ public class User {
     private String login;
     private String authCode;
     private Integer role;
-    private Integer terminalId;
     private String fullName;
     private String roleName;
 
@@ -67,15 +66,6 @@ public class User {
         this.role = role;
     }
 
-    public Integer getTerminalId() {
-        return terminalId;
-    }
-
-    public void setTerminalId(Integer terminalId) {
-        this.terminalId = terminalId;
-    }
-
-
     public String getLogin() {
         return login;
     }
@@ -102,13 +92,12 @@ public class User {
                 Objects.equals(login, user.login) &&
                 Objects.equals(authCode, user.authCode) &&
                 Objects.equals(role, user.role) &&
-                Objects.equals(terminalId, user.terminalId) &&
                 Objects.equals(fullName, user.fullName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, active, login, authCode, role, terminalId, fullName);
+        return Objects.hash(id, active, login, authCode, role, fullName);
     }
 
     @Override
@@ -117,34 +106,9 @@ public class User {
         stringBuilder.append("User{id=").append(id)
                 .append(", active=").append(active)
                 .append(", login=").append(login)
-                .append(", authCode='").append(authCode).append('\'')
                 .append(", role=").append(role)
-                .append(", terminalId=").append(terminalId)
                 .append(", fullName=").append(fullName)
                 .append("}");
         return stringBuilder.toString();
     }
-
-//    public boolean hasRole(Role role) {
-//        return (role & role.role()) != 0;
-//    }
-//
-//    public void addRole(Role role) {
-//        role = role | role.getMask();
-//    }
-//
-//    public void removeRole(Role role) {
-//        role = role ^ role.getMask();
-//    }
-//
-//    public static void main(String[] args) {
-//        User uo = new User();
-//        uo.setRoles(666L);
-//        System.out.println(uo.hasRole(Role.HIGH_CASHIER));
-//        uo.addRole(Role.CASHIER);
-////        uo.addRole(Role.CHART_ACCOUNT);
-//        System.out.println(uo.hasRole(Role.HIGH_CASHIER));
-////        uo.removeRole(Role.CASHIER);
-////        System.out.println(uo.hasRole(Role.CASHIER));
-//    }
 }

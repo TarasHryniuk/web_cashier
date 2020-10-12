@@ -1,27 +1,19 @@
-import cashier.conf.DataSourceConfig;
 import cashier.dao.CategoriesDaoImpl;
 import cashier.dao.UserDaoImpl;
 import cashier.dao.entity.Category;
 import cashier.dao.entity.User;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 /**
@@ -29,9 +21,6 @@ import static org.junit.Assert.assertNotEquals;
  * email : hryniuk.t@gmail.com
  */
 public class CategoriesDaoTest {
-
-    @Spy //actually this annotation is not necessary here
-    private static DataSourceConfig dbManager;
 
     @Mock
     private CategoriesDaoImpl categoriesDao;
@@ -47,7 +36,7 @@ public class CategoriesDaoTest {
     }
 
     @Test
-    public void test() {
+    public void getAllCategories() {
         MockitoAnnotations.initMocks(this);
         categoriesDao.getAllCategories();
         Mockito.verify(categoriesDao).getAllCategories();
@@ -63,63 +52,52 @@ public class CategoriesDaoTest {
         Mockito.verify(categoriesDao).insertCategory(category);
     }
 
-    private static final String JDBC_DRIVER = "org.h2.Driver";
-    private static final String DB_URL = "jdbc:h2:~/test";
-    private static final String URL_CONNECTION = "jdbc:h2:~/test;user=youruser;password=yourpassword;";
-    private static final String USER = "youruser";
-    private static final String PASS = "yourpassword";
+    @Test
+    public void testToString() {
+        Category category = new Category();
+        category.setId(1);
+        category.setName("name");
 
-    @BeforeClass
-    public static void beforeTest() throws SQLException, ClassNotFoundException {
-        Class.forName(JDBC_DRIVER);
-
-        try (OutputStream output = new FileOutputStream("app.properties")) {
-            Properties prop = new Properties();
-            prop.setProperty("connection.url", URL_CONNECTION);
-            prop.store(output, null);
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
-
-        dbManager = DataSourceConfig.getInstance();
-
-        try (Connection con = DriverManager.getConnection(DB_URL, USER, PASS);
-             Statement statement = con.createStatement()) {
-            String sql = "CREATE TABLE IF NOT EXISTS users (\n" +
-                    "  id INTEGER(11) NOT NULL AUTO_INCREMENT,\n" +
-                    " login VARCHAR(20) NOT NULL, \n" +
-                    "  PRIMARY KEY (id));";
-
-            String sql1 = "CREATE TABLE IF NOT EXISTS teams (\n" +
-                    "  id INTEGER(11) NOT NULL AUTO_INCREMENT,\n" +
-                    " name VARCHAR(20) NOT NULL, \n" +
-                    "  PRIMARY KEY (id));";
-
-            String sql2 = "CREATE TABLE IF NOT EXISTS users_teams (  \n" +
-                    "\n" +
-                    " user_id INT REFERENCES users(id) ON DELETE CASCADE,  \n" +
-                    "\n" +
-                    " team_id INT REFERENCES teams(id) ON DELETE CASCADE,  \n" +
-                    "\n" +
-                    " UNIQUE (user_id, team_id) \n" +
-                    "\n" +
-                    ");";
-
-            statement.executeUpdate(sql);
-            statement.executeUpdate(sql1);
-            statement.executeUpdate(sql2);
-        }
+        assertEquals("Category{id=1, name='name'}", category.toString());
     }
 
-//    @org.junit.Test
-//    public void s1Test13dfgfg() throws Exception{
-//        UserDaoImpl userDao = new UserDaoImpl();
-//        User user = new User();
-//        user.setLogin("aaa");
-//        user.setAuthCode("aaa");
-//        user.setFullName("aaa");
-//        user.setRole(0);
-//        assertNotEquals(false, userDao.insertUser(user));
-//    }
+    @Test
+    public void testHashCode() {
+        Category category = new Category();
+        category.setId(1);
+        category.setName("name");
 
+        assertEquals(3374699, category.hashCode());
+    }
+
+    @Test
+    public void testGetName() {
+        Category category = new Category();
+        category.setId(1);
+        category.setName("name");
+
+        assertEquals("name", category.getName());
+    }
+
+    @Test
+    public void testGetId() {
+        Category category = new Category();
+        category.setId(1);
+        category.setName("name");
+
+        assertEquals(new Integer(1), category.getId());
+    }
+
+    @Test
+    public void testEquals() {
+        Category category = new Category();
+        category.setId(1);
+        category.setName("name");
+
+        Category categorySecondary = new Category();
+        categorySecondary.setId(1);
+        categorySecondary.setName("name");
+
+        assertEquals(true, category.equals(categorySecondary));
+    }
 }
