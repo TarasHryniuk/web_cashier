@@ -5,6 +5,7 @@
   Time: 18:28
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib uri="/WEB-INF/mytaglib.tld" prefix="finalproject"%>
 <%@ include file="/WEB-INF/views/parts/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="language"
@@ -73,4 +74,7 @@
     </form>
 </div>
 </body>
+<footer>
+    <p align="center"><finalproject:footer/><p>
+</footer>
 </html>

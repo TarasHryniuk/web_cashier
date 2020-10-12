@@ -5,6 +5,7 @@
   Time: 00:13
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib uri="/WEB-INF/mytaglib.tld" prefix="finalproject"%>
 <%@ include file="/WEB-INF/views/parts/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="language"
@@ -34,6 +35,8 @@
 
         <label><fmt:message key="full.name"/></label>
         <input name="full.name" type="text" value="<c:out value="${param.refactor_user_full_name}"/>" required="required" placeholder=<fmt:message key="full.name"/> class="form-control"/>
+
+        <c:if test="${sessionScope.userRole=='MANAGER'}">
         <label><fmt:message key="role"/></label>
         <select name="role" class="form-control">
             <c:if test="${param.refactor_user_role=='2'}">
@@ -62,10 +65,15 @@
             <option value="true"><fmt:message key="active"/></option>
             <option value="false"><fmt:message key="non.active"/></option>
         </select>
+
+        </c:if>
         <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="save"/>"/>
     </form>
 </div>
 </div>
 
 </body>
+<footer>
+    <p align="center"><finalproject:footer/><p>
+</footer>
 </html>

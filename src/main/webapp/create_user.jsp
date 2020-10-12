@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ include file="/WEB-INF/views/parts/include.jsp" %>
+<%@ taglib uri="/WEB-INF/mytaglib.tld" prefix="finalproject"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
@@ -71,5 +72,8 @@
 </div>
 
 </body>
+<footer>
+    <p align="center"><finalproject:footer/><p>
+</footer>
 </html>
 

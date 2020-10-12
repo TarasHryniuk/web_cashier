@@ -59,7 +59,15 @@ public class InitializeCashierWorkStationCommand extends Command {
             if (request.getParameter("command").equals("add_to_basket")) {
 
                 Product product = productsDao.getProductsById(Integer.parseInt(request.getParameter("product_id")));
-                product.setCount(product.getCount() - Integer.parseInt(request.getParameter("count")));
+
+                if(null != session.getAttribute("products") && !((List<Product>) session.getAttribute("products")).isEmpty()){
+                    for (Product prod : ((List<Product>) session.getAttribute("products"))){
+                        if(prod.getId() == product.getId())
+                            product.setCount(prod.getCount() - Integer.parseInt(request.getParameter("count")));
+                    }
+                } else {
+                    product.setCount(product.getCount() - Integer.parseInt(request.getParameter("count")));
+                }
 
                 if (!products.contains(product)) {
                     Receipt receipt = new Receipt();
@@ -108,8 +116,8 @@ public class InitializeCashierWorkStationCommand extends Command {
                 session.setAttribute("total_price", 0.00);
             } else if (request.getParameter("command").equals("refactor_product")) {
                 Product product = new Product();
-                product.setPrice(Long.parseLong(request.getParameter("count")));
-                product.setCount(Integer.parseInt(request.getParameter("price")));
+                product.setPrice(Long.parseLong(request.getParameter("price")));
+                product.setCount(Integer.parseInt(request.getParameter("count")));
                 product.setId(Integer.parseInt(request.getParameter("goods_id")));
 
                 if (productsDao.updateProduct(product)) {

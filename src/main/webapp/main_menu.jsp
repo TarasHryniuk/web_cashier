@@ -1,4 +1,3 @@
-<%@ page import="cashier.dao.entity.User" %>
 <%@ include file="/WEB-INF/views/parts/include.jsp" %>
 <fmt:setLocale value="${language}"/>
 <fmt:setBundle basename="messages"/>
@@ -9,6 +8,7 @@
   Time: 23:15
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib uri="/WEB-INF/mytaglib.tld" prefix="finalproject"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap/bootstrap.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="resources/css/custom.css" media="screen"/>
@@ -24,4 +24,7 @@
 <body>
 
 </body>
+<footer>
+    <p align="center"><finalproject:footer/><p>
+</footer>
 </html>
