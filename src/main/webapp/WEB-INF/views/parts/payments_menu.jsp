@@ -11,10 +11,10 @@
 <fmt:setBundle basename="messages"/>
 <html>
 <head>
-    <div class="nav justify-content-center">
-        <div id="navigation" class="nav-item">
-            <ul id="main-nav" class="nav-item">
-                <c:if test="${sessionScope.userRole=='MANAGER'}">
+    <c:if test="${sessionScope.userRole=='MANAGER'}">
+        <div class="nav justify-content-center">
+            <div id="navigation" class="nav-item">
+                <ul id="main-nav" class="nav-item">
                     <ul class="nav-item">
                         <form action="edit_products.jsp">
                             <input class="btn btn-link" type="submit" value="<fmt:message key="edit.products"/>"/>
@@ -30,10 +30,10 @@
                             <input class="btn btn-link" type="submit" value="<fmt:message key="create.product"/>"/>
                         </form>
                     </ul>
-                </c:if>
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
+    </c:if>
 </head>
 <body>
 </body>

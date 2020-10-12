@@ -87,39 +87,19 @@ public class ProcessingReceiptCommand extends Command {
                 }
             } else if (request.getParameter("command").equals("cancel_product_from_receipt")) {
                 if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
-                    Receipt receipt = new Receipt();
-
-                    Integer productName = Integer.parseInt(request.getParameter("cancel_product_name"));
-                    Integer productId = Integer.parseInt(request.getParameter("cancel_product_id"));
-                    Integer productCount = Integer.parseInt(request.getParameter("cancel_product_count"));
-                    Integer cancelReceiptId = Integer.parseInt(request.getParameter("cancel_receipt_id"));
-
-                    User user = (User) session.getAttribute("user");
-
-                    List<Receipt> receiptsForCancelation = receiptsDao.findAllSuccessByReceiptId(cancelReceiptId);
-
-                    if (null == receiptsForCancelation || receiptsForCancelation.isEmpty()) {
-                        errorMessage = new StringBuilder().append("Receipt № ").append(cancelReceiptId).append(" has already canceled").toString();
-                        request.setAttribute("errorMessage", errorMessage);
-                        LOGGER.error("errorMessage --> " + errorMessage);
-                        return forward;
-                    }
-
-                    receipt.setReceiptId(cancelReceiptId);
-                    receipt.setCancelTime(new Date().getTime());
-                    receipt.setCancelUserID(user.getId());
-
-                    if (receiptsDao.cancelReceipt(receipt)) {
-                        for (Receipt r : receiptsForCancelation) {
-                            Product product = productsDao.getProductsById(r.getProductID());
-                            product.setCount(product.getCount() + r.getCount());
-                            if (!productsDao.updateCountForProduct(product)) {
-                            }
+                    Integer id = Integer.parseInt(request.getParameter("cancel_product_id"));
+                    Integer count = Integer.parseInt(request.getParameter("cancel_product_count"));
+                    System.out.println("id: " + id);
+                    Receipt receipt = receiptsDao.findById(id);
+                    Product product = productsDao.getProductsById(receipt.getProductID());
+                    if (receiptsDao.removeProductFromReceipt(id)) {
+                        product.setCount(product.getCount() + count);
+                        if (!productsDao.updateCountForProduct(product)) {
+                            throw new Exception("Error while cancel receipt. Id: " + id);
                         }
                     } else {
-                        throw new Exception("Error while cancel receipt. Id: " + cancelReceiptId);
+                        throw new Exception("Error while cancel receipt. Id: " + id);
                     }
-
                     forward = Path.SUCCESS;
                     return forward;
                 } else {

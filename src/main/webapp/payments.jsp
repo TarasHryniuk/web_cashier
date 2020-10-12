@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ include file="/WEB-INF/views/parts/include.jsp" %>
+<%@ taglib uri="/WEB-INF/mytaglib.tld" prefix="finalproject"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
@@ -21,7 +22,7 @@
 
     <title><fmt:message key="all.user"/></title>
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
-    <%@ include file="/WEB-INF/views/parts/payments_filter_menu.jsp" %>
+    <%--    <%@ include file="/WEB-INF/views/parts/payments_filter_menu.jsp" %>--%>
 
 </head>
 <body>
@@ -56,43 +57,43 @@
                         <td>${element.login}</td>
                         <td>${element.date}</td>
 
-                        <c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
-                            <td>
-                                <form id="edit_receipt" action="controller" method="post">
-                                    <input type="hidden" name="command" value="edit_receipt"/>
-                                    <input type="hidden" name="edit_receipt" value=${element.id}>
-                                    <c:if test="${element.status == '212'}">
-                                        <input type="submit" class="btn btn-link" value="<fmt:message key="edit"/>" disabled>
-                                    </c:if>
-                                    <c:if test="${element.status == '3'}">
-                                        <input type="submit" class="btn btn-link" value="<fmt:message key="edit"/>">
-                                    </c:if>
-                                </form>
-                            </td>
+                        <td>
+                            <form id="edit_receipt" action="controller" method="post">
+                                <input type="hidden" name="command" value="edit_receipt"/>
+                                <input type="hidden" name="edit_receipt" value=${element.id}>
+                                <c:if test="${element.status == '212' || sessionScope.userRole=='CASHIER'}">
+                                    <input type="submit" class="btn btn-link" value="<fmt:message key="edit"/>" disabled>
+                                </c:if>
+                                <c:if test="${element.status == '3' && (sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER')}">
+                                    <input type="submit" class="btn btn-link" value="<fmt:message key="edit"/>">
+                                </c:if>
+                            </form>
+                        </td>
 
-                            <td>
-                                <form id="cancel_receipt" action="controller" method="post">
-                                    <input type="hidden" name="command" value="cancel_receipt"/>
-                                    <input type="hidden" name="cancel_receipt_id" value=${element.id}>
-                                    <c:if test="${element.status == '212'}">
-                                        <input type="submit" class="btn btn-link" value="<fmt:message key="cancel"/>" disabled>
-                                    </c:if>
-                                    <c:if test="${element.status == '3'}">
-                                        <input type="submit" class="btn btn-link" value="<fmt:message key="cancel"/>">
-                                    </c:if>
-                                </form>
-                            </td>
-                        </c:if>
+                        <td>
+                            <form id="cancel_receipt" action="controller" method="post">
+                                <input type="hidden" name="command" value="cancel_receipt"/>
+                                <input type="hidden" name="cancel_receipt_id" value=${element.id}>
+                                <c:if test="${element.status == '212' || sessionScope.userRole=='CASHIER'}">
+                                    <input type="submit" class="btn btn-link" value="<fmt:message key="cancel"/>" disabled>
+                                </c:if>
+                                <c:if test="${element.status == '3' && (sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER')}">
+                                    <input type="submit" class="btn btn-link" value="<fmt:message key="cancel"/>">
+                                </c:if>
+                            </form>
+                        </td>
 
                         <td>
                             <form id="print_receipt" action="controller" method="post">
                                 <input type="hidden" name="command" value="print_receipt"/>
                                 <input type="hidden" name="print_bill" value=${element.id}>
                                 <c:if test="${element.status == '212'}">
-                                    <input type="submit" class="btn btn-link" value="<fmt:message key="print.receipt"/>" disabled>
+                                    <input type="submit" class="btn btn-link" value="<fmt:message key="print.receipt"/>"
+                                           disabled>
                                 </c:if>
                                 <c:if test="${element.status == '3'}">
-                                    <input type="submit" class="btn btn-link" value="<fmt:message key="print.receipt"/>">
+                                    <input type="submit" class="btn btn-link"
+                                           value="<fmt:message key="print.receipt"/>">
                                 </c:if>
                             </form>
                         </td>
@@ -122,4 +123,7 @@
 <script type="text/javascript" src="resources/js/payments.js"></script>
 
 </body>
+<footer>
+    <p align="center"><finalproject:footer/><p>
+</footer>
 </html>

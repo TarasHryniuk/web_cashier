@@ -16,11 +16,13 @@
                     <input id="payments-window-tab" class="btn btn-link" type="submit" value="<fmt:message key="payments"/>"/>
                 </form>
             </ul>
-            <ul class="nav-item">
-                <form action="documents.jsp">
-                    <input id="documents-window-tab" class="btn btn-link" type="submit" value=<fmt:message key="documents"/>>
-                </form>
-            </ul>
+            <c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
+                <ul class="nav-item">
+                    <form action="documents.jsp">
+                        <input id="documents-window-tab" class="btn btn-link" type="submit" value=<fmt:message key="documents"/>>
+                    </form>
+                </ul>
+            </c:if>
             <ul class="nav-item">
                 <form id="users" action="controller" method="post">
                     <input type="hidden" name="command" value="all_users"/>

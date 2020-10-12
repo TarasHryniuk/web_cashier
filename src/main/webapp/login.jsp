@@ -1,3 +1,4 @@
+<%@ taglib uri="/WEB-INF/mytaglib.tld" prefix="finalproject"%>
 <%@ include file="/WEB-INF/views/parts/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
@@ -83,7 +84,9 @@
         </form>
     </div>
 </div>
-<%@ include file="parts/footer.jspf" %>
 </body>
+<footer>
+    <p align="center"><finalproject:footer/><p>
+</footer>
 </html>
 

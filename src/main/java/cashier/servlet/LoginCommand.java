@@ -79,14 +79,6 @@ public class LoginCommand extends Command {
         Role userRole = Role.getRole(user);
         LOGGER.trace("userRole --> " + userRole);
 
-        String terminalId = request.getParameter("terminal.id");
-        if (userRole == Role.CASHIER && null == terminalId) {
-            errorMessage = "Cashier must have terminal id";
-            request.setAttribute("errorMessage", errorMessage);
-            LOGGER.error("errorMessage --> " + errorMessage);
-            return forward;
-        }
-
         forward = Path.PAGE_MENU;
 
         String language = request.getParameter("language");

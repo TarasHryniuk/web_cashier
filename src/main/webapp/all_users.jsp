@@ -5,6 +5,7 @@
   Time: 17:37
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib uri="/WEB-INF/mytaglib.tld" prefix="finalproject"%>
 <%@ include file="/WEB-INF/views/parts/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <c:set var="language"
@@ -60,15 +61,24 @@
                                 <input type="hidden" name="refactor_user_role" value=${element.role}>
                                 <input type="hidden" name="refactor_user_terminal_id" value=${element.terminalId}>
                                 <input type="hidden" name="refactor_user_login" value=${element.login}>
-                                <input type="submit" value="<fmt:message key="edit"/>">
+                                <input type="submit" class="btn btn-link" value="<fmt:message key="edit"/>">
                             </form>
                         </td>
                         <td>
-                            <form id="delete_user" action="controller" method="post">
-                                <input type="hidden" name="command" value="delete_user"/>
-                                <input type="hidden" name="refactor_user_login" value=${element.login}>
-                                <input type="submit" value="<fmt:message key="delete"/>">
-                            </form>
+                            <c:if test="${sessionScope.userRole=='CASHIER'}">
+                                <form id="delete_user" action="controller" method="post">
+                                    <input type="hidden" name="command" value="delete_user"/>
+                                    <input type="hidden" name="refactor_user_login" value=${element.login}>
+                                    <input type="submit" class="btn btn-link" value="<fmt:message key="delete"/>" disabled>
+                                </form>
+                            </c:if>
+                            <c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
+                                <form id="delete_user" action="controller" method="post">
+                                    <input type="hidden" name="command" value="delete_user"/>
+                                    <input type="hidden" name="refactor_user_login" value=${element.login}>
+                                    <input type="submit" class="btn btn-link" value="<fmt:message key="delete"/>">
+                                </form>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>
@@ -80,7 +90,7 @@
                         <form id="pagination" action="controller" method="post">
                             <input type="hidden" name="command" value="all_users"/>
                             <input type="hidden" name="page" value=${element1}>
-                            <input type="submit" value=${element1}>
+                            <input type="submit" class="btn btn-link" value=${element1}>
                         </form>
                     </th>
                 </c:forEach>
@@ -94,6 +104,8 @@
 <script type="text/javascript" src="resources/js/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="resources/js/users.js"></script>
-
 </body>
+<footer>
+    <p align="center"><finalproject:footer/><p>
+</footer>
 </html>

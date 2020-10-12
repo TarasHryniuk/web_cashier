@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -38,7 +39,7 @@ public class ReceiptsDaoImpl extends GenericDao {
 
     private static final String SQL_FIND_ALL_BY_USER_ID_GROUPING = "SELECT receipt_id as receipt_id, \"sum\"(rec.price * rec.count) as sum, processing_time " +
             "as processing_time, u.\"login\" as login , status FROM receipts as rec JOIN users u ON rec.user_id = u.\"id\" " +
-            "GROUP BY receipt_id, processing_time, user_id, u.\"login\", status WHERE user_id = ? ORDER BY rec.receipt_id DESC LIMIT 20 OFFSET ?";
+            "WHERE user_id = ? GROUP BY receipt_id, processing_time, user_id, u.\"login\", status ORDER BY rec.receipt_id DESC LIMIT 20 OFFSET ?";
 
     private static final String SQL_FIND_BY_RECEIPT_ID = "SELECT rec.*, prod.\"name\" as product_name FROM receipts " +
             "as rec JOIN products as prod ON rec.id_product = prod.id AND rec.id = ?";
@@ -61,7 +62,7 @@ public class ReceiptsDaoImpl extends GenericDao {
     private static final String SQL_FIND_ALL_RECEIPTS_COUNT = "SELECT count(*) AS total FROM receipts";
     private static final String SQL_FIND_ALL_USER_RECEIPTS_COUNT = "SELECT count(*) AS total FROM receipts WHERE cashier_id = ?";
 
-    private static final String SQL_DELETE_PRODUCT_FROM_RECEIPT = "DELETE FROM receipts WHERE \"receipt_id\" = ? AND user_id = ?";
+    private static final String SQL_DELETE_PRODUCT_FROM_RECEIPT = "DELETE FROM receipts WHERE id = ?";
 
     public boolean insertReceipts(List<Receipt> receipts) {
         ResultSet rs = null;
@@ -129,14 +130,12 @@ public class ReceiptsDaoImpl extends GenericDao {
         return true;
     }
 
-    public boolean deleteProductFromReceipt(Receipt receipt) {
+    public boolean removeProductFromReceipt(Integer id) {
         ResultSet rs = null;
         LOCK.lock();
         try (Connection connection = DataSourceConfig.getInstance().getConnection();
              PreparedStatement ps = connection.prepareStatement(SQL_DELETE_PRODUCT_FROM_RECEIPT, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setTimestamp(1, new Timestamp(receipt.getCancelTime()));
-            ps.setInt(2, receipt.getCancelUserID());
-            ps.setInt(3, receipt.getReceiptId());
+            ps.setInt(1, id);
 
             if (ps.executeUpdate() == 0)
                 return false;
