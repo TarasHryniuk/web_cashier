@@ -76,10 +76,6 @@ public class CalculateValuesByReceipts {
         return receipts.stream().filter(receipt -> receipt.getStatus() == Statuses.CANCELED.shortValue()).count();
     }
 
-    public static Long getTotalCancelledReceiptsCount(List<Receipt> receipts) {
-        return receipts.stream().filter(receipt -> receipt.getStatus() == Statuses.CANCELED.shortValue()).count();
-    }
-
     public static Long getTotalCancelReceiptsAmount(List<Receipt> receipts) {
         Long startPrice = 0L;
 

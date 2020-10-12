@@ -59,8 +59,6 @@ public class EditUserCommand extends Command {
                 user.setActive(Boolean.parseBoolean(request.getParameter("active")));
                 user.setRole(Integer.parseInt(request.getParameter("role")));
                 user.setFullName(request.getParameter("full.name"));
-                user.setTerminalId(!StringHelpers.isNullOrEmpty(request.getParameter("terminal.id")) ?
-                        Integer.parseInt(request.getParameter("terminal.id")) : null);
 
                 if (!userDao.updateUserByLogin(user)) {
                     errorMessage = "Something went wrong....";

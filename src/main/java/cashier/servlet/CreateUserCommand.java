@@ -50,8 +50,6 @@ public class CreateUserCommand extends Command {
             user.setAuthCode(StringHelpers.digest(request.getParameter("login") + request.getParameter("password")));
             user.setRole(Integer.parseInt(request.getParameter("role")));
             user.setFullName(request.getParameter("full.name"));
-            user.setTerminalId(!StringHelpers.isNullOrEmpty(request.getParameter("terminal.id")) ?
-                    Integer.parseInt(request.getParameter("terminal.id")) : null);
         }
 
         try {
