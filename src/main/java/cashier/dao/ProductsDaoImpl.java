@@ -78,16 +78,7 @@ public class ProductsDaoImpl extends GenericDao {
             ps.setInt(1, categoryId);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Product product = new Product();
-                product.setId(rs.getInt("id"));
-                product.setActive(rs.getBoolean("active"));
-                product.setName(rs.getString("name"));
-                product.setPrice(rs.getLong("price"));
-                product.setWeight(rs.getLong("weight"));
-                product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
-                product.setCategoriesId(rs.getInt("categories_id"));
-                product.setCount(rs.getInt("count"));
-                products.add(product);
+                products.add(initProduct(rs));
             }
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -107,15 +98,7 @@ public class ProductsDaoImpl extends GenericDao {
             ps.setInt(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                product = new Product();
-                product.setId(rs.getInt("id"));
-                product.setActive(rs.getBoolean("active"));
-                product.setName(rs.getString("name"));
-                product.setPrice(rs.getLong("price"));
-                product.setWeight(rs.getLong("weight"));
-                product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
-                product.setCategoriesId(rs.getInt("categories_id"));
-                product.setCount(rs.getInt("count"));
+                product = initProduct(rs);
             }
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -135,15 +118,7 @@ public class ProductsDaoImpl extends GenericDao {
             ps.setString(1, name);
             rs = ps.executeQuery();
             if (rs.next()) {
-                product = new Product();
-                product.setId(rs.getInt("id"));
-                product.setActive(rs.getBoolean("active"));
-                product.setName(rs.getString("name"));
-                product.setPrice(rs.getLong("price"));
-                product.setWeight(rs.getLong("weight"));
-                product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
-                product.setCategoriesId(rs.getInt("categories_id"));
-                product.setCount(rs.getInt("count"));
+                product = initProduct(rs);
             }
         } catch (SQLException e) {
             LOGGER.error(e);
@@ -162,16 +137,7 @@ public class ProductsDaoImpl extends GenericDao {
              Statement ps = connection.createStatement()) {
             rs = ps.executeQuery(SQL_FIND_ALL_PRODUCTS);
             while (rs.next()) {
-                Product product = new Product();
-                product.setId(rs.getInt("id"));
-                product.setActive(rs.getBoolean("active"));
-                product.setName(rs.getString("name"));
-                product.setPrice(rs.getLong("price"));
-                product.setWeight(rs.getLong("weight"));
-                product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
-                product.setCategoriesId(rs.getInt("categories_id"));
-                product.setCount(rs.getInt("count"));
-                products.add(product);
+                products.add(initProduct(rs));
             }
         } catch (Exception e) {
             LOGGER.error(e);
@@ -191,16 +157,7 @@ public class ProductsDaoImpl extends GenericDao {
              PreparedStatement ps = connection.prepareStatement(SQL_FIND_PRODUCT_BY_NAME)) {
             ps.setString(1, name);
             while (rs.next()) {
-                Product product = new Product();
-                product.setId(rs.getInt("id"));
-                product.setActive(rs.getBoolean("active"));
-                product.setName(rs.getString("name"));
-                product.setPrice(rs.getLong("price"));
-                product.setWeight(rs.getLong("weight"));
-                product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
-                product.setCategoriesId(rs.getInt("categories_id"));
-                product.setCount(rs.getInt("count"));
-                products.add(product);
+                products.add(initProduct(rs));
             }
         } catch (Exception e) {
             LOGGER.error(e);
@@ -220,16 +177,7 @@ public class ProductsDaoImpl extends GenericDao {
              Statement ps = connection.createStatement()) {
             rs = ps.executeQuery(SQL_FIND_ALL_PRESENT_PRODUCTS);
             while (rs.next()) {
-                Product product = new Product();
-                product.setId(rs.getInt("id"));
-                product.setActive(rs.getBoolean("active"));
-                product.setName(rs.getString("name"));
-                product.setPrice(rs.getLong("price"));
-                product.setWeight(rs.getLong("weight"));
-                product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
-                product.setCategoriesId(rs.getInt("categories_id"));
-                product.setCount(rs.getInt("count"));
-                products.add(product);
+                products.add(initProduct(rs));
             }
         } catch (Exception e) {
             LOGGER.error(e);
@@ -249,16 +197,7 @@ public class ProductsDaoImpl extends GenericDao {
              PreparedStatement ps = connection.prepareStatement(SQL_FIND_PRODUCTS_BY_CATEGORY_ID)) {
             ps.setInt(1, categoryId);
             while (rs.next()) {
-                Product product = new Product();
-                product.setId(rs.getInt("id"));
-                product.setActive(rs.getBoolean("active"));
-                product.setName(rs.getString("name"));
-                product.setPrice(rs.getLong("price"));
-                product.setWeight(rs.getLong("weight"));
-                product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
-                product.setCategoriesId(rs.getInt("categories_id"));
-                product.setCount(rs.getInt("count"));
-                products.add(product);
+                products.add(initProduct(rs));
             }
         } catch (Exception e) {
             LOGGER.error(e);
@@ -345,6 +284,19 @@ public class ProductsDaoImpl extends GenericDao {
             LOCK.unlock();
         }
         return true;
+    }
+
+    private Product initProduct(ResultSet rs) throws SQLException{
+        Product product = new Product();
+        product.setId(rs.getInt("id"));
+        product.setActive(rs.getBoolean("active"));
+        product.setName(rs.getString("name"));
+        product.setPrice(rs.getLong("price"));
+        product.setWeight(rs.getLong("weight"));
+        product.setDateOfAdding(rs.getDate("date_of_adding").getTime());
+        product.setCategoriesId(rs.getInt("categories_id"));
+        product.setCount(rs.getInt("count"));
+        return product;
     }
 
 }
