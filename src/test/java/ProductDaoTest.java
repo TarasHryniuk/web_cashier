@@ -1,3 +1,4 @@
+import cashier.conf.DataSourceConfig;
 import cashier.dao.ProductsDaoImpl;
 import cashier.dao.entity.Category;
 import cashier.dao.entity.Product;
@@ -9,6 +10,24 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.sql.*;
+import javax.sql.DataSource;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import org.mockito.Mock;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.runners.MockitoJUnitRunner;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -16,6 +35,18 @@ import static org.junit.Assert.assertEquals;
  * email : hryniuk.t@gmail.com
  */
 public class ProductDaoTest {
+
+    @Mock
+    DataSourceConfig mockDataSource;
+
+    @Mock
+    Connection mockConn;
+
+    @Mock
+    PreparedStatement mockPreparedStmnt;
+
+    @Mock
+    ResultSet mockResultSet;
 
     @Mock
     private ProductsDaoImpl productsDao;
@@ -55,29 +86,47 @@ public class ProductDaoTest {
 
     @Test
     public void testToString() {
-        Category category = new Category();
-        category.setId(1);
-        category.setName("name");
+        Product product = new Product();
+        product.setCount(0);
+        product.setCategoriesId(1);
+        product.setWeight(0L);
+        product.setPrice(15L);
+        product.setId(15);
+        product.setName("name");
+        product.setActive(true);
+        product.setDateOfAdding(1L);
 
-        assertEquals("Category{id=1, name='name'}", category.toString());
+        assertEquals("Products{id='15', active='true', name='name', price='15', weight='0', dateOfAdding='1', categoriesId='1', count='0'}", product.toString());
     }
 
     @Test
     public void testHashCode() {
-        Category category = new Category();
-        category.setId(1);
-        category.setName("name");
+        Product product = new Product();
+        product.setCount(0);
+        product.setCategoriesId(1);
+        product.setWeight(0L);
+        product.setPrice(15L);
+        product.setId(15);
+        product.setName("name");
+        product.setActive(true);
+        product.setDateOfAdding(1L);
 
-        assertEquals(3374699, category.hashCode());
+        assertEquals(596662523, product.hashCode());
     }
 
     @Test
     public void testGetName() {
-        Category category = new Category();
-        category.setId(1);
-        category.setName("name");
+        Product product = new Product();
+        product.setCount(0);
+        product.setCategoriesId(1);
+        product.setWeight(0L);
+        product.setPrice(15L);
+        product.setId(15);
+        product.setName("name");
+        product.setActive(true);
+        product.setDateOfAdding(1L);
 
-        assertEquals("name", category.getName());
+        assertEquals("name", product.getName());
     }
 
     @Test
@@ -92,7 +141,7 @@ public class ProductDaoTest {
         product.setActive(true);
         product.setDateOfAdding(1L);
 
-        assertEquals(new Long(15), product.getId());
+        assertEquals(new Integer(15), product.getId());
     }
 
     @Test
@@ -122,7 +171,22 @@ public class ProductDaoTest {
         product.setActive(true);
         product.setDateOfAdding(1L);
 
-        assertEquals(new Integer(1), product.getCategoriesId());
+        assertEquals(new Long(0), product.getWeight());
+    }
+
+    @Test
+    public void testGetDateOfAdding() {
+        Product product = new Product();
+        product.setCount(0);
+        product.setCategoriesId(1);
+        product.setWeight(0L);
+        product.setPrice(15L);
+        product.setId(15);
+        product.setName("name");
+        product.setActive(true);
+        product.setDateOfAdding(1L);
+
+        assertEquals(new Long(1), product.getDateOfAdding());
     }
 
     @Test
@@ -153,6 +217,21 @@ public class ProductDaoTest {
         product.setDateOfAdding(1L);
 
         assertEquals(new Integer(0), product.getCount());
+    }
+
+    @Test
+    public void testisActive() {
+        Product product = new Product();
+        product.setCount(0);
+        product.setCategoriesId(1);
+        product.setWeight(0L);
+        product.setPrice(15L);
+        product.setId(15);
+        product.setName("name");
+        product.setActive(true);
+        product.setDateOfAdding(1L);
+
+        assertEquals(true, product.getActive());
     }
 
     @Test

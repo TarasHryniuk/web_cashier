@@ -16,18 +16,6 @@ public enum Role {
         mask = 1 << id;
     }
 
-    public int getMask() {
-        return mask;
-    }
-
-    public Role valueOf(Integer id) {
-        for (Role value : values()) {
-            if (value.getMask() == id)
-                return value;
-        }
-        return null;
-    }
-
     public static Role getRole(User user) {
         int roleId = user.getRole();
         return Role.values()[roleId];

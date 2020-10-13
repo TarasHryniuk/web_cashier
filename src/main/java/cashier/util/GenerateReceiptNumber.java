@@ -17,9 +17,9 @@ public class GenerateReceiptNumber {
         this.no = no;
     }
 
-    public static Integer getReceiptNo(){
+    public static Integer getReceiptNo() {
 
-        if(no.get() == 1){
+        if (no.get() == 1) {
             receiptsDao = new ReceiptsDaoImpl();
             no = new AtomicInteger(receiptsDao.getLastReceiptNo());
         }

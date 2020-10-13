@@ -50,14 +50,6 @@ public class User {
         this.authCode = authCode;
     }
 
-//    public Integer getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(Integer roles) {
-//        this.roles = roles;
-//    }
-
     public Integer getRole() {
         return role;
     }
