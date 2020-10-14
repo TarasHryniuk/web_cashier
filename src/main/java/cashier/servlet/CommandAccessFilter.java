@@ -2,6 +2,7 @@ package cashier.servlet;
 
 import cashier.Path;
 import cashier.dao.entity.Role;
+import cashier.util.StringHelpers;
 import org.apache.log4j.Logger;
 
 
@@ -53,22 +54,18 @@ public class CommandAccessFilter implements Filter {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 
 		String commandName = request.getParameter("command");
-		if (commandName == null || commandName.isEmpty())
-			return false;
+		if (StringHelpers.isNullOrEmpty(commandName)) return false;
 		
-		if (outOfControl.contains(commandName))
-			return true;
+		if (outOfControl.contains(commandName)) return true;
 		
 		HttpSession session = httpRequest.getSession(false);
 		if (session == null) 
 			return false;
 		
 		Role userRole = (Role)session.getAttribute("userRole");
-		if (userRole == null)
-			return false;
+		if (userRole == null) return false;
 		
-		return accessMap.get(userRole).contains(commandName)
-				|| commons.contains(commandName);
+		return accessMap.get(userRole).contains(commandName) || commons.contains(commandName);
 	}
 
 	public void init(FilterConfig fConfig) throws ServletException {

@@ -19,7 +19,7 @@ public class GetProductById extends HttpServlet {
 
     private ProductsDaoImpl productsDao;
 
-    protected void doGet(HttpServletRequest request,
+    public void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
         process(request, response);
     }
@@ -31,8 +31,6 @@ public class GetProductById extends HttpServlet {
                          HttpServletResponse response) throws IOException, ServletException {
 
         productsDao = new ProductsDaoImpl();
-
-        System.out.println(request.getParameter("id"));
 
         Integer id = Integer.parseInt(request.getParameter("id"));
 

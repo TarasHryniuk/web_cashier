@@ -42,7 +42,7 @@ public class LoginCommand extends Command {
         String errorMessage = null;
         String forward = Path.PAGE_ERROR_PAGE;
 
-        if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
+        if (StringHelpers.isNullOrEmpty(login) || StringHelpers.isNullOrEmpty(password)) {
             errorMessage = "Login/password cannot be empty";
             request.setAttribute("errorMessage", errorMessage);
             LOGGER.error("errorMessage --> " + errorMessage);

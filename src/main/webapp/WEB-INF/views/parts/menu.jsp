@@ -23,6 +23,13 @@
                     </form>
                 </ul>
             </c:if>
+            <c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
+                <ul class="nav-item">
+                    <form action="analytics.jsp">
+                        <input id="analytics-window-tab" class="btn btn-link" type="submit" value=<fmt:message key="analytics"/>>
+                    </form>
+                </ul>
+            </c:if>
             <ul class="nav-item">
                 <form id="users" action="controller" method="post">
                     <input type="hidden" name="command" value="all_users"/>

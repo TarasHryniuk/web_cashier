@@ -42,6 +42,8 @@ public class CommandContainer {
 		commands.put("edit_receipt", new ProcessingReceiptCommand());
 		commands.put("cancel_product_from_receipt", new ProcessingReceiptCommand());
 		commands.put("print_receipt", new PrintBillCommand());
+		commands.put("all_products_analytics", new PrintAnalyticsCommand());
+		commands.put("analytics_by_cashier_per_day", new PrintAnalyticsCommand());
 
 		LOGGER.debug("Command container was successfully initialized");
 		LOGGER.trace("Number of commands --> " + commands.size());

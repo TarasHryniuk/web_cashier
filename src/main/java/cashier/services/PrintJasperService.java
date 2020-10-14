@@ -1,5 +1,6 @@
 package cashier.services;
 
+import cashier.conf.DataSourceConfig;
 import net.sf.jasperreports.engine.*;
 import org.apache.log4j.Logger;
 
@@ -18,6 +19,8 @@ public class PrintJasperService {
 
     public static final String REPORT = File.separator + "reports" + File.separator + "document.jasper";
     public static final String BILL = File.separator + "reports" + File.separator + "bill.jasper";
+    public static final String ALL_PRODUCTS_ANALYTICS = File.separator + "reports" + File.separator + "all_products.jasper";
+    public static final String ANALYTICS_BY_CASHIER_PER_DAY = File.separator + "reports" + File.separator + "analytics_by_cashier_per_day.jasper";
 
     private static final JasperPrintManager printManager = JasperPrintManager.getInstance(DefaultJasperReportsContext.getInstance());
 
@@ -34,6 +37,32 @@ public class PrintJasperService {
             print = JasperFillManager.fillReport(inputStream, map, new JREmptyDataSource());
 
             return print;
+        } catch (JRException e) {
+            LOGGER.error(e);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        }
+
+        return null;
+    }
+
+    public Image getJasperPrintAnalytics(String fileName) {
+        InputStream inputStream = getClass().getResourceAsStream(fileName);
+        JasperPrint print;
+        try {
+
+            print = JasperFillManager.fillReport(inputStream, null, DataSourceConfig.getInstance().getConnection());
+
+            Image rendered_image = null;
+            try {
+
+                rendered_image = (BufferedImage) printManager.printPageToImage(print, 0, 1.9f);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                LOGGER.error(e);
+            }
+            return rendered_image;
         } catch (JRException e) {
             LOGGER.error(e);
         } catch (Exception e) {

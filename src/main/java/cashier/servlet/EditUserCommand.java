@@ -84,9 +84,7 @@ public class EditUserCommand extends Command {
             return forward;
         }
 
-
         forward = Path.SUCCESS;
-
 
         LOGGER.debug("Command finished");
         return forward;

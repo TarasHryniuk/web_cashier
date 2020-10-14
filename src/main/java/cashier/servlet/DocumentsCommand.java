@@ -2,26 +2,20 @@ package cashier.servlet;
 
 import cashier.Path;
 import cashier.dao.ReceiptsDaoImpl;
-import cashier.dao.entity.Receipt;
 import cashier.dao.entity.Role;
 import cashier.dao.entity.User;
 import cashier.protocol.TotalReceipt;
 import cashier.services.PrintJasperService;
 import cashier.util.CalculateValuesByReceipts;
-import net.sf.jasperreports.engine.*;
 import org.apache.log4j.Logger;
 
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -90,6 +84,5 @@ public class DocumentsCommand extends Command {
         LOGGER.debug("Command finished");
         return forward;
     }
-
 
 }
