@@ -25,6 +25,7 @@
     <%@ include file="/WEB-INF/views/parts/menu.jsp" %>
 </head>
 <body>
+<c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
 <div class="col-xs-12 col-sm-6 col-md-12">
     <b><fmt:message key="summary"/></b>
     <table class="table table-bordered table-hover table-striped table-condensed">
@@ -55,7 +56,7 @@
     </table>
 
 </div>
-
+</c:if>
 </body>
 <footer>
     <p align="center"><finalproject:footer/><p>

@@ -47,7 +47,7 @@ public class CreateUserCommand extends Command {
 
         if (!request.getParameter("command").equals("create_category")) {
             user.setLogin(request.getParameter("login"));
-            user.setAuthCode(StringHelpers.digest(request.getParameter("login") + request.getParameter("password")));
+            user.setAuthCode(StringHelpers.digest(request.getParameter("login") + request.getParameter("password") + "salt"));
             user.setRole(Integer.parseInt(request.getParameter("role")));
             user.setFullName(request.getParameter("full.name"));
         }

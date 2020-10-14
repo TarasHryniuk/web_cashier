@@ -6,8 +6,8 @@ import cashier.dao.CategoriesDaoImpl;
 import cashier.dao.ProductsDaoImpl;
 import cashier.dao.entity.*;
 import cashier.servlet.Command;
-import cashier.util.GenerateReceiptNumber;
 import cashier.util.CalculateValuesByReceipts;
+import cashier.util.GenerateReceiptNumber;
 import cashier.util.StringHelpers;
 import org.apache.log4j.Logger;
 
@@ -58,11 +58,33 @@ public class InitializeCashierWorkStationCommand extends Command {
 
             if (request.getParameter("command").equals("add_to_basket")) {
 
-                Product product = productsDao.getProductsById(Integer.parseInt(request.getParameter("product_id")));
+                Product product = null;
+                if (!StringHelpers.isNullOrEmpty(request.getParameter("product_id")))
+                    product = productsDao.getProductsById(Integer.parseInt(request.getParameter("product_id")));
+                if (!StringHelpers.isNullOrEmpty(request.getParameter("find_by_product_id")))
+                    product = productsDao.getProductsById(Integer.parseInt(request.getParameter("find_by_product_id")));
 
-                if(null != session.getAttribute("products") && !((List<Product>) session.getAttribute("products")).isEmpty()){
-                    for (Product prod : ((List<Product>) session.getAttribute("products"))){
-                        if(prod.getId() == product.getId())
+                if (null == product) {
+                    errorMessage = "Product id: " + (!StringHelpers.isNullOrEmpty(request.getParameter("find_by_product_id")) ?
+                            request.getParameter("find_by_product_id") : request.getParameter("product_id"))
+                            + " not found";
+                    request.setAttribute("errorMessage", errorMessage);
+                    LOGGER.error("errorMessage --> " + errorMessage);
+                    return forward;
+                }
+
+                if (product.getCount() < Integer.parseInt(request.getParameter("count"))) {
+                    errorMessage = "Product id: " + (!StringHelpers.isNullOrEmpty(request.getParameter("find_by_product_id")) ?
+                            request.getParameter("find_by_product_id") : request.getParameter("product_id"))
+                            + " out of stock";
+                    request.setAttribute("errorMessage", errorMessage);
+                    LOGGER.error("errorMessage --> " + errorMessage);
+                    return forward;
+                }
+
+                if (null != session.getAttribute("products") && !((List<Product>) session.getAttribute("products")).isEmpty()) {
+                    for (Product prod : ((List<Product>) session.getAttribute("products"))) {
+                        if (prod.getId() == product.getId())
                             product.setCount(prod.getCount() - Integer.parseInt(request.getParameter("count")));
                     }
                 } else {
@@ -145,18 +167,18 @@ public class InitializeCashierWorkStationCommand extends Command {
                 }
             } else if (request.getParameter("command").equals("create_product")) {
                 if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
-                Product product = new Product();
-                product.setName(request.getParameter("name"));
-                product.setPrice(Long.parseLong(request.getParameter("price")));
-                product.setCount(Integer.parseInt(request.getParameter("count")));
-                product.setWeight(Long.parseLong(request.getParameter("weight")));
-                product.setCategoriesId(Integer.parseInt(request.getParameter("category_id")));
-                if (productsDao.insertProduct(product)) {
-                    forward = Path.SUCCESS;
-                    return forward;
-                } else {
-                    throw new Exception();
-                }
+                    Product product = new Product();
+                    product.setName(request.getParameter("name"));
+                    product.setPrice(Long.parseLong(request.getParameter("price")));
+                    product.setCount(Integer.parseInt(request.getParameter("count")));
+                    product.setWeight(Long.parseLong(request.getParameter("weight")));
+                    product.setCategoriesId(Integer.parseInt(request.getParameter("category_id")));
+                    if (productsDao.insertProduct(product)) {
+                        forward = Path.SUCCESS;
+                        return forward;
+                    } else {
+                        throw new Exception();
+                    }
                 } else {
                     throw new Exception();
                 }

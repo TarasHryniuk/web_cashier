@@ -46,7 +46,7 @@
         }
     }
 </script>
-
+<c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
 <div class="col-xs-12 col-sm-6">
     <form id="create_product" action="controller" method="post" class="tab-content">
         <input type="hidden" name="command" value="create_product"/>
@@ -73,6 +73,11 @@
         <input class="btn btn-primary btn-block" type="submit" value="<fmt:message key="save"/>"/>
     </form>
 </div>
+
+<script type="text/javascript" src="resources/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/create_product.js"></script>
+</c:if>
 </body>
 <footer>
     <p align="center"><finalproject:footer/><p>

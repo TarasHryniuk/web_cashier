@@ -73,7 +73,6 @@ public class ProcessingReceiptCommand extends Command {
             } else if (request.getParameter("command").equals("edit_receipt")) {
                 if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
                     Integer receiptId = Integer.parseInt(request.getParameter("edit_receipt"));
-                    System.out.println("receiptId: " + receiptId);
                     List<Receipt> receiptsForEdit = receiptsDao.findAllByReceiptId(receiptId);
                     request.setAttribute("receipt_for_editing", receiptsForEdit);
                     forward = Path.PAGE_EDIT_RECEIPT;
@@ -89,7 +88,6 @@ public class ProcessingReceiptCommand extends Command {
                 if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
                     Integer id = Integer.parseInt(request.getParameter("cancel_product_id"));
                     Integer count = Integer.parseInt(request.getParameter("cancel_product_count"));
-                    System.out.println("id: " + id);
                     Receipt receipt = receiptsDao.findById(id);
                     Product product = productsDao.getProductsById(receipt.getProductID());
                     if (receiptsDao.removeProductFromReceipt(id)) {
@@ -111,13 +109,9 @@ public class ProcessingReceiptCommand extends Command {
             } else if (request.getParameter("command").equals("cancel_receipt")) {
                 if (userRole == Role.HIGH_CASHIER || userRole == Role.MANAGER) {
                     Receipt receipt = new Receipt();
-
                     Integer cancelReceiptId = Integer.parseInt(request.getParameter("cancel_receipt_id"));
-
                     User user = (User) session.getAttribute("user");
-
                     List<Receipt> receiptsForCancelation = receiptsDao.findAllSuccessByReceiptId(cancelReceiptId);
-
                     if (null == receiptsForCancelation || receiptsForCancelation.isEmpty()) {
                         errorMessage = new StringBuilder().append("Receipt № ").append(cancelReceiptId).append(" has already canceled").toString();
                         request.setAttribute("errorMessage", errorMessage);

@@ -84,6 +84,14 @@
         <url-pattern>/products</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>GetProductById</servlet-name>
+        <servlet-class>cashier.servlet.GetProductById</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetProductById</servlet-name>
+        <url-pattern>/product</url-pattern>
+    </servlet-mapping>
 
     <!--============================================================
         Encoding support filter
@@ -102,43 +110,6 @@
         <url-pattern>/*</url-pattern>
         <servlet-name>Controller</servlet-name>
     </filter-mapping>
-
-
-    <!--============================================================
-        Security filter.
-        1) admin: admin commands
-        2) client: client commands
-        3) commons: commands for all roles
-        4) out-of-control: commands without access control
-        Delimiter - space/tab
-    =============================================================-->
-    <!--
-        <filter>
-            <filter-name>CommandAccessFilter</filter-name>
-            <filter-class>.CommandAccessFilter</filter-class>
-            <init-param>
-                <param-name>admin</param-name>
-                <param-value>listOrders</param-value>
-            </init-param>
-            <init-param>
-                <param-name>client</param-name>
-                <param-value>listMenu</param-value>
-            </init-param>
-            <init-param>
-                <param-name>common</param-name>
-                <param-value>logout noCommand viewSettings updateSettings</param-value>
-            </init-param>
-            <init-param>
-                <param-name>out-of-control</param-name>
-                <param-value>login</param-value>
-            </init-param>
-        </filter>
-
-        <filter-mapping>
-            <filter-name>CommandAccessFilter</filter-name>
-            <servlet-name>Controller</servlet-name>
-        </filter-mapping>
-    -->
 
 
     <!--============================================================

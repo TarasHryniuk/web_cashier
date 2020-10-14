@@ -23,7 +23,7 @@ public class ProductsDaoImpl extends GenericDao {
 
     private static final String SQL_INSERT_PRODUCT = "INSERT INTO products VALUES (DEFAULT ,? ,? ,?, ?, ?, ?, ?)";
     private static final String SQL_FIND_ALL_PRESENT_PRODUCTS = "SELECT * FROM products WHERE count != 0 AND active = true";
-    private static final String SQL_FIND_PRODUCT_BY_ID = "SELECT * FROM products WHERE count != 0 AND active = true AND id = ?";
+    private static final String SQL_FIND_PRODUCT_BY_ID = "SELECT * FROM products WHERE id = ?";
     private static final String SQL_FIND_PRODUCT_BY_CATEGORY_ID = "SELECT * FROM products WHERE count != 0 AND active = true AND categories_id = ?";
     private static final String SQL_FIND_PRODUCT_BY_NAME = "SELECT * FROM products WHERE name = ?";
     private static final String SQL_FIND_ALL_PRODUCTS = "SELECT * FROM products";

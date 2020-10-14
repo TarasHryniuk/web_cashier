@@ -43,7 +43,7 @@ public class EditUserCommand extends Command {
         User user = userDao.getUserByLogin(login);
 
         if (!StringHelpers.isNullOrEmpty(password)) {
-            user.setAuthCode(StringHelpers.digest(login + password));
+            user.setAuthCode(StringHelpers.digest(login + password + "salt"));
             try {
                 userDao.changePasswordUserByLogin(user);
             } catch (Exception e) {

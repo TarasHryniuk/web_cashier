@@ -17,17 +17,17 @@
                 <ul id="main-nav" class="nav-item">
                     <ul class="nav-item">
                         <form action="edit_products.jsp">
-                            <input class="btn btn-link" type="submit" value="<fmt:message key="edit.products"/>"/>
+                            <input id="edit-products-window-tab" class="btn btn-link" type="submit" value="<fmt:message key="edit.products"/>"/>
                         </form>
                     </ul>
                     <ul class="nav-item">
                         <form action="create_category.jsp">
-                            <input class="btn btn-link" type="submit" value="<fmt:message key="category.create"/>"/>
+                            <input id="create-category-window-tab" class="btn btn-link" type="submit" value="<fmt:message key="category.create"/>"/>
                         </form>
                     </ul>
                     <ul class="nav-item">
                         <form action="create_product.jsp">
-                            <input class="btn btn-link" type="submit" value="<fmt:message key="create.product"/>"/>
+                            <input id="create-product-window-tab" class="btn btn-link" type="submit" value="<fmt:message key="create.product"/>"/>
                         </form>
                     </ul>
                 </ul>

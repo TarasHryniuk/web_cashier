@@ -10,12 +10,12 @@
                 <ul class="nav navbar-nav navbar-left">
                     <form id="cashier" action="controller" method="post">
                         <input type="hidden" name="command" value="all_users"/>
-                        <input class="btn btn-link" type="submit" value="<fmt:message key="all.user"/>"/>
+                        <input id="users-window-tab"  class="btn btn-link" type="submit" value="<fmt:message key="all.user"/>"/>
                     </form>
                 </ul>
                 <ul class="nav navbar-nav navbar-left">
                     <form action="create_user.jsp">
-                        <input class="btn btn-link" type="submit" value="<fmt:message key="create.user"/>"/>
+                        <input id="create-user-window-tab" class="btn btn-link" type="submit" value="<fmt:message key="create.user"/>"/>
                     </form>
                 </ul>
             </ul>

@@ -26,6 +26,7 @@
 
 </head>
 <body>
+<c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
 <script type="text/javascript">
 
     function validate(evt) {
@@ -71,6 +72,10 @@
 </div>
 </div>
 
+<script type="text/javascript" src="resources/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/create_user.js"></script>
+</c:if>
 </body>
 <footer>
     <p align="center"><finalproject:footer/><p>

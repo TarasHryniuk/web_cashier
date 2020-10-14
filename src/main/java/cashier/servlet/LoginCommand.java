@@ -67,7 +67,7 @@ public class LoginCommand extends Command {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(login).append(password);
+        sb.append(login).append(password).append("salt");
 
         if (!user.getAuthCode().equals(StringHelpers.digest(sb.toString()))) {
             errorMessage = "Auth failed";

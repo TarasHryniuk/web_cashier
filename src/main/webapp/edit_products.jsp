@@ -26,6 +26,7 @@
 
 </head>
 <body>
+<c:if test="${sessionScope.userRole=='MANAGER' || sessionScope.userRole=='HIGH_CASHIER'}">
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-6">
@@ -72,6 +73,10 @@
     </div>
 </div>
 
+<script type="text/javascript" src="resources/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="resources/js/edit_products.js"></script>
+</c:if>
 </body>
 
 <footer>

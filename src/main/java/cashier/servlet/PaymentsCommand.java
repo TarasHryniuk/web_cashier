@@ -76,6 +76,8 @@ public class PaymentsCommand extends Command {
             request.setAttribute("payments", receipts);
             Long count = receipts.stream().count() / 20;
 
+            System.out.println(count);
+
             List<Integer> list = new ArrayList<>();
 
             for (int i = 0; i <= count; i++) {

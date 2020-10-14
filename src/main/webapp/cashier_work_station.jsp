@@ -81,14 +81,24 @@
                     <tbody></tbody>
                 </table>
 
-                <div id="product-count-group" class="form-group hided">
+                <label><fmt:message key="find.product.by.id"/></label>
+                <input id="find_by_product_id" name="find_by_product_id" type="number" onkeypress='validate(event)' type="text" min="1" class="form-control" placeholder="<fmt:message key="find.product.by.id"/>">
+
+
+                <div id="product-count-group" class="form-group">
                     <label><fmt:message key="count"/></label>
-                    <input name="count" type="number" onkeypress='validate(event)' type="text" min="0" required="required" class="form-control" id="product-count" placeholder="<fmt:message key="count"/>">
+                    <input name="count" type="number" onkeypress='validate(event)' type="text" min="1" required="required" class="form-control" id="product-count" placeholder="<fmt:message key="count"/>">
                 </div>
+
 
                 <div id="countAlertError" class="alert alert-danger hided" role="alert">
                     <h4 class="alert-heading"><fmt:message key="error"/></h4>
                     <p><fmt:message key="error.count.product"/></p>
+                </div>
+
+                <div id="productNotFoundAlertError" class="alert alert-danger hided" role="alert">
+                    <h4 class="alert-heading"><fmt:message key="error"/></h4>
+                    <p><fmt:message key="product.not.found"/></p>
                 </div>
 
                 <input type="hidden" name="product_id" value=""/>
