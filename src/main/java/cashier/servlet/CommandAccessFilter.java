@@ -23,9 +23,9 @@ public class CommandAccessFilter implements Filter {
 	private static final Logger log = Logger.getLogger(CommandAccessFilter.class);
 
 	// commands access	
-	private static Map<Role, List<String>> accessMap = new HashMap<Role, List<String>>();
-	private static List<String> commons = new ArrayList<String>();	
-	private static List<String> outOfControl = new ArrayList<String>();
+	private static Map<Role, List<String>> accessMap = new HashMap<>();
+	private static List<String> commons = new ArrayList<>();
+	private static List<String> outOfControl = new ArrayList<>();
 	
 	public void destroy() {
 		log.debug("Filter destruction starts");
@@ -96,7 +96,7 @@ public class CommandAccessFilter implements Filter {
 	 * @return list of parameter values.
 	 */
 	private List<String> asList(String str) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		StringTokenizer st = new StringTokenizer(str);
 		while (st.hasMoreTokens()) list.add(st.nextToken());
 		return list;		
