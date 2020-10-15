@@ -16,7 +16,7 @@
                 </ul>
                 <ul>
                     <form id="analytics_by_cashier_per_day" action="controller" method="post">
-                        <input type="hidden" name="command" value="all_products_analytics"/>
+                        <input type="hidden" name="command" value="analytics_by_cashier_per_day"/>
                         <input class="btn btn-link" type="submit" value="<fmt:message key="analytics_by_cashier_per_day"/>"/>
                     </form>
                 </ul>
