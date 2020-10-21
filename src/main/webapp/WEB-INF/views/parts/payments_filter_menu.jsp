@@ -60,8 +60,8 @@
 
         <ul id="main-nav" class="nav-item">
             <ul class="nav-item">
-                <form id="initialize.work.station" action="controller" method="post">
-                    <input type="hidden" name="command" value="initialize.work.station"/>
+                <form id="initialize_work_station" action="controller" method="post">
+                    <input type="hidden" name="command" value="initialize_work_station"/>
                     <input type="date" name="calendar" class="form-control">
                     <input class="btn btn-link" type="submit" value="<fmt:message key="search"/>"/>
                 </form>

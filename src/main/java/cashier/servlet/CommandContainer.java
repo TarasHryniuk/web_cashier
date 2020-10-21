@@ -30,13 +30,13 @@ public class CommandContainer {
 		commands.put("delete_user", new EditUserCommand());
 		commands.put("x_report", new DocumentsCommand());
 		commands.put("z_report", new DocumentsCommand());
-		commands.put("initialize.work.station", new InitializeCashierWorkStationCommand());
+		commands.put("initialize_work_station", new InitializeCashierWorkStationCommand());
 		commands.put("add_to_basket", new InitializeCashierWorkStationCommand());
 		commands.put("remove_from_basket", new InitializeCashierWorkStationCommand());
 		commands.put("clear_basket", new InitializeCashierWorkStationCommand());
 		commands.put("create_category", new InitializeCashierWorkStationCommand());
 		commands.put("create_product", new InitializeCashierWorkStationCommand());
-		commands.put("refactor_product", new InitializeCashierWorkStationCommand());
+		commands.put("edit_product", new InitializeCashierWorkStationCommand());
 		commands.put("pay_basket", new ProcessingReceiptCommand());
 		commands.put("cancel_receipt", new ProcessingReceiptCommand());
 		commands.put("edit_receipt", new ProcessingReceiptCommand());

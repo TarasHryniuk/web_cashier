@@ -136,7 +136,7 @@ public class InitializeCashierWorkStationCommand extends Command {
                 session.setAttribute("products", null);
                 session.setAttribute("basket", null);
                 session.setAttribute("total_price", 0.00);
-            } else if (request.getParameter("command").equals("refactor_product")) {
+            } else if (request.getParameter("command").equals("edit_product")) {
                 Product product = new Product();
                 product.setPrice(Long.parseLong(request.getParameter("price")));
                 product.setCount(Integer.parseInt(request.getParameter("count")));
